@@ -1,6 +1,6 @@
-## Welcome to downbeat! 
+## Welcome to indieHood! 
 
-downbeat is the best way to connect yourself to a local music scene.
+indieHood is the best way to connect yourself to a local music scene.
 
 ### Markdown
 
@@ -26,6 +26,6 @@ Syntax highlighted code block
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
-### What is downbeat?
+### What is indieHood?
 
 Well well well, let me tell you.
