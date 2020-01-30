@@ -29,3 +29,11 @@ For more details see [GitHub Flavored Markdown](https://guides.github.com/featur
 ### What is indieHood?
 
 Well well well, let me tell you.
+
+### Deliverables?
+
+Well well well, let me tell you.
+
+### About?
+
+Well well well, let me tell you.
