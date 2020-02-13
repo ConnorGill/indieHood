@@ -1,16 +1,16 @@
-package com.example.myapplication.ui.send;
+package com.example.myapplication.ui.report;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SendViewModel extends ViewModel {
+public class ReportViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SendViewModel() {
+    public ReportViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is send fragment");
+        mText.setValue("This is report an issue fragment");
     }
 
     public LiveData<String> getText() {

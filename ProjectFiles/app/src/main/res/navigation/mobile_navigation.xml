@@ -3,41 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_listings">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.myapplication.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_listings"
+        android:name="com.example.myapplication.ui.listings.ListingsFragment"
+        android:label="@string/menu_listings"
+        tools:layout="@layout/fragment_listings" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.myapplication.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_favorites"
+        android:name="com.example.myapplication.ui.favorites.FavoritesFragment"
+        android:label="@string/menu_favorites"
+        tools:layout="@layout/fragment_favorites" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.myapplication.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_settings"
+        android:name="com.example.myapplication.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
 
     <fragment
-        android:id="@+id/nav_tools"
-        android:name="com.example.myapplication.ui.tools.ToolsFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
+        android:id="@+id/nav_login"
+        android:name="com.example.myapplication.ui.login.LoginFragment"
+        android:label="@string/menu_login"
+        tools:layout="@layout/fragment_login" />
 
     <fragment
-        android:id="@+id/nav_share"
-        android:name="com.example.myapplication.ui.share.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
+        android:id="@+id/nav_suggest"
+        android:name="com.example.myapplication.ui.suggest.SuggestFragment"
+        android:label="@string/menu_suggest"
+        tools:layout="@layout/fragment_suggest" />
 
     <fragment
-        android:id="@+id/nav_send"
-        android:name="com.example.myapplication.ui.send.SendFragment"
-        android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
+        android:id="@+id/nav_report"
+        android:name="com.example.myapplication.ui.report.ReportFragment"
+        android:label="@string/menu_report"
+        tools:layout="@layout/fragment_report" />
 </navigation>

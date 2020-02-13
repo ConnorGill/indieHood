@@ -1,16 +1,16 @@
-package com.example.myapplication.ui.home;
+package com.example.myapplication.ui.suggest;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class SuggestViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public SuggestViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("This is suggest a venue fragment");
     }
 
     public LiveData<String> getText() {

@@ -1,16 +1,16 @@
-package com.example.myapplication.ui.gallery;
+package com.example.myapplication.ui.listings;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
+public class ListingsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public ListingsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+        mText.setValue("This is listings fragment");
     }
 
     public LiveData<String> getText() {
