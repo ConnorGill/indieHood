@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.myapplication.R;
 
@@ -46,8 +48,13 @@ public class LoginFragment extends Fragment {
                             String password = txtPassword.getText().toString();
                             String username = txtArtistUsername.getText().toString();
 
-                            if(password.equals("pass") && username.equals("band"))
+
+                            //implement Firebase here to check dummy data when created
+                            if(password.equals("pass") && username.equals("band")) {
                                 Toast.makeText(textView.getContext(), "Go To Account", 2).show();
+                                Navigation.findNavController(textView).navigate(R.id.nav_listings);
+                            }
+                                //change destination to account profile from listings after created
                             else
                                 Toast.makeText(textView.getContext(), "Login Failed", 2).show();
 
