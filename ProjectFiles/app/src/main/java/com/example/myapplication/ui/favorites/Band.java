@@ -1,11 +1,21 @@
 package com.example.myapplication.ui.favorites;
 
+import android.media.Image;
+
 import java.util.ArrayList;
 
 public class Band {
     private String bandName;
     private boolean favorited;
     private String bandBio;
+    private String city;
+    private String state;
+    private String social_media_1;
+    private String social_media_2;
+    private String streaming_link_1;
+    private String streaming_link_2;
+    private Image bandPicture;
+    private Image headerPhoto;
     // TODO add more data fields
 
     public Band(String name) {
