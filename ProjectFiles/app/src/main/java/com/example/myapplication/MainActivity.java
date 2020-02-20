@@ -2,6 +2,8 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 
+import com.example.myapplication.ui.favorites.Band;
+import com.example.myapplication.ui.favorites.FavoritesAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -20,6 +22,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.R;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,5 +86,21 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+}
+
+class FavoritesActivity extends AppCompatActivity {
+    ArrayList<Band> bands;
+    ArrayList<Band> favorites;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        RecyclerView favorites_rv = findViewById(R.id.favorites_rv);
+        bands = Band.createBandList(20);
+        //favorites = Band.createFavoritesList(bands);
+        FavoritesAdapter adapter = new FavoritesAdapter(bands);
+        favorites_rv.setAdapter(adapter);
+        favorites_rv.setLayoutManager(new LinearLayoutManager(this));
     }
 }
