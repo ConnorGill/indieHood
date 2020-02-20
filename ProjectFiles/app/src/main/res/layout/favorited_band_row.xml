@@ -52,6 +52,6 @@
 
 </LinearLayout>
 
-<androidx.cardview.widget.CardView>
-    
-</androidx.cardview.widget.CardView>
+<!-- <androidx.cardview.widget.CardView>
+    TODO finish cardView
+</androidx.cardview.widget.CardView> -->
