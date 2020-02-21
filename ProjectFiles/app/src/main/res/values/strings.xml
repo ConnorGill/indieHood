@@ -18,4 +18,6 @@
     <string name="band">This is a band</string>
     <string name="venue">This is a venue</string>
     <string name="band_venue_icon_cd">Band/venue content description</string>
+    <string name="band_venue_icon">band/venue icon</string>
+    <string name="favorite_button_card">favorite_button</string>
 </resources>

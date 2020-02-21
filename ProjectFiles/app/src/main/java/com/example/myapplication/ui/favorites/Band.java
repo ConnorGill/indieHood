@@ -47,7 +47,7 @@ public class Band {
     public void setBandBio(String bandBio) {
         this.bandBio = bandBio;
     }
-
+    // TODO remove this code and create list class
     public static ArrayList<Band> createBandList(int numBands) {
         ArrayList<Band> bands = new ArrayList<>();
         for (int i = 0; i < numBands; i++) {
@@ -59,7 +59,7 @@ public class Band {
 
         return bands;
     }
-
+    // TODO create favorites class; remove this code
     public static ArrayList<Band> createFavoritesList(ArrayList<Band> bands) {
         ArrayList<Band> favorites = new ArrayList<>();
         for (int i = 0; i < bands.size(); i++) {
