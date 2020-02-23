@@ -10,7 +10,7 @@ public class ReportViewModel extends ViewModel {
 
     public ReportViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is report an issue fragment");
+        mText.setValue("Have an issue with our app, a venue, or an artist? Tell us about it!");
     }
 
     public LiveData<String> getText() {
