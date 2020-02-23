@@ -62,10 +62,10 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
         holder.mTextTime.setText(currentItem.getTime());
         holder.mInterestedText.setText(currentItem.getNumberInterested());
         if (currentItem.getBandFavorite()){
-            holder.mBandFavorited.setImageResource(R.drawable.favorites_icon_24dp);
+            holder.mBandFavorited.setImageResource(R.drawable.favorites_icon);
         }
         if (currentItem.getVenueFavorite()){
-            holder.mVenueFavorited.setImageResource(R.drawable.favorites_icon_24dp);
+            holder.mVenueFavorited.setImageResource(R.drawable.favorites_icon);
         }
     }
 
