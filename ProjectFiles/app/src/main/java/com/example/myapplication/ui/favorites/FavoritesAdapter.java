@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 
@@ -15,21 +17,24 @@ import java.util.List;
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView bandName;
-        public ImageView bandIcon;
+        public TextView artistName;
+        public ImageView artistIcon;
         public ImageButton favorite;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            bandIcon = itemView.findViewById(R.id.band_venue_icon);
-            bandName = itemView.findViewById(R.id.band_venue_name);
+            artistIcon = itemView.findViewById(R.id.band_venue_icon);
+            artistName = itemView.findViewById(R.id.band_venue_name);
             favorite = itemView.findViewById(R.id.favorite_button);
         }
     }
 
-    private List<Band> myBands;
-    public FavoritesAdapter(List<Band> favorites) { myBands = favorites; }
+    private List<Artist> myArtists;
+    public FavoritesAdapter(List<Artist> favorites) {
+        myArtists = favorites;
+    }
 
+    @NonNull
     @Override
     public FavoritesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -41,19 +46,22 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(FavoritesAdapter.ViewHolder viewHolder, int position) {
-        Band band = myBands.get(position);
+        Artist artist = myArtists.get(position);
 
-        TextView name = viewHolder.bandName;
-        ImageView icon = viewHolder.bandIcon;
+        TextView name = viewHolder.artistName;
+        ImageView icon = viewHolder.artistIcon;
         ImageButton fav = viewHolder.favorite;
 
-        name.setText(band.getBandName());
+        if (artist.getName() != null) {
+            name.setText(artist.getName());
+        }
+
         // icon.setImageIcon(); TODO how to implement? Right now they are hardcoded
-        fav.setEnabled(band.isFavorited());
+        fav.setEnabled(artist.getFavorited());
     }
 
     @Override
     public int getItemCount() {
-        return myBands.size();
+        return myArtists.size();
     }
 }

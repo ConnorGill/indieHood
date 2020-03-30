@@ -1,57 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fav_band_venue_container"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
-    android:layout_marginBottom="6dp"
-    android:clickable="true"
-    android:focusable="true"
-    >
-
-    <ImageView
-        android:id="@+id/band_venue_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/band_venue_icon"
-        android:layout_gravity="center"
-        android:paddingStart="3dp"
-        android:paddingEnd="3dp"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"
-        android:contentDescription="band/venue icon" />
-
-    <TextView
-        android:id="@+id/band_venue_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingStart="5sp"
-        android:paddingEnd="5sp"
-        android:paddingLeft="5sp"
-        android:paddingRight="5sp"
-        android:textSize="@dimen/msg_text_primary"
-        android:textStyle="bold"
-        android:layout_gravity="center"
-        />
-
-    <ImageButton
-        android:id="@+id/favorite_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:src="@drawable/favorites_icon"
-        android:layout_gravity="center"
-        />
-
-</LinearLayout> -->
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fav_card"
     android:orientation="horizontal"
@@ -81,8 +29,8 @@
 
         <ImageView
             android:id="@+id/band_venue_icon"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
             android:src="@drawable/band_venue_icon"
             android:layout_gravity="center"
             android:paddingStart="3dp"
@@ -96,6 +44,7 @@
 
         <TextView
             android:id="@+id/band_venue_name"
+            android:text="Add favorites and they'll appear here!"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -103,13 +52,16 @@
             android:paddingEnd="5sp"
             android:paddingLeft="5sp"
             android:paddingRight="5sp"
-            android:textSize="@dimen/msg_text_primary"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
             android:textStyle="bold"
             android:layout_gravity="center"
             />
 
         <ImageButton
             android:id="@+id/favorite_button"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:paddingLeft="10dp"

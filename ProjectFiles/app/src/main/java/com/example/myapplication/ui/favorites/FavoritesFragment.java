@@ -20,19 +20,23 @@ import java.util.ArrayList;
 
 public class FavoritesFragment extends Fragment {
 
-    private FavoritesViewModel favoritesViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+        FavoritesViewModel favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_favorites, container, false);
 
         super.onCreate(savedInstanceState);
         RecyclerView favorites_rv = root.findViewById(R.id.favorites_rv);
-        ArrayList<Band> bands = Band.createBandList(20);
-        ArrayList<Band> favorites = Band.createFavoritesList(bands);
+        ArrayList<Artist> artists = Artist.createArtistList(20);
+        ArrayList<Artist> favorites = Artist.createFavoritesList(artists);
         FavoritesAdapter adapter = new FavoritesAdapter(favorites);
         favorites_rv.setAdapter(adapter);
         favorites_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        // test code to write to database and create new artist in ArtistCollection
+        Artist test = new Artist("Four Tet", "test", 5, "https://twitter.com/FourTet",
+                "http://www.fourtet.net", "apple music", "spotify");
+        Artist test2 = new Artist();
+        test2.writeNewArtist(test);
 
         return root;
     }
