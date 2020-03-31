@@ -14,13 +14,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Artist {
     // get instance of current database TODO maybe move from Artist?
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //private FirebaseFirestore db = FirebaseFirestore.getInstance();
     // create reference directly to ArtistCollection
-    private CollectionReference ArtistCollection = this.db.collection("ArtistCollection");
+    //private CollectionReference ArtistCollection = this.db.collection("ArtistCollection");
     private String artistName;
     private boolean favorited;
     private String bio;
@@ -50,6 +52,10 @@ public class Artist {
     }
 
     public void writeNewArtist(final Artist newArtist) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // create reference directly to ArtistCollection
+        CollectionReference ArtistCollection = db.collection("ArtistCollection");
+        // for logging purposes
         final String TAG = "writeNewArtist";
 
         ArtistCollection.document(newArtist.getArtistName()).set(newArtist)
@@ -64,31 +70,46 @@ public class Artist {
 
     public ArrayList<Artist> readArtists() {
         final ArrayList<Artist> artists = new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // create reference directly to ArtistCollection
+        final CollectionReference ArtistCollection = db.collection("ArtistCollection");
         // for logging purposes
         final String TAG = "readArtists";
         ArtistCollection.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    //ArrayList<Artist> artists = new ArrayList<>();
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            Artist artist = documentSnapshot.toObject(Artist.class);
-                            artist.setArtistName(documentSnapshot.getId());
-                            /*String name = artist.getArtistName();
-                            String bio = artist.getBio();
-                            int rating = artist.getRating();
-                            System.out.println(
-                                    "artist: " + name + "\nBio: " + bio + "\nRating: " + rating + "\n\n"
-                            );*/
-                            artists.add(artist);
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            Log.d(TAG, "onSuccess: LIST EMPTY");
+                            return;
                         }
+                        List<Artist> a = queryDocumentSnapshots.toObjects(Artist.class);
+                        artists.addAll(a);
+
+                        /*for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Artist artist = documentSnapshot.toObject(Artist.class);
+                            artists.add(artist);
+                        }*/
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, e.toString());
                     }
                 });
+
+        if (artists.size() == 11) System.out.println("TRUE");
+        for (int i = 0; i < artists.size(); i++) {
+            System.out.println(artists.get(i).getArtistName());
+        }
 
         return artists;
     }
 
     // TODO put into Favorite class
-    public static ArrayList<Artist> createFavoritesList(ArrayList<Artist> artists) {
+    public ArrayList<Artist> createFavoritesList(ArrayList<Artist> artists) {
         ArrayList<Artist> favorites = new ArrayList<>();
         for (int i = 0; i < artists.size(); i++) {
             if (artists.get(i).getFavorited()) {

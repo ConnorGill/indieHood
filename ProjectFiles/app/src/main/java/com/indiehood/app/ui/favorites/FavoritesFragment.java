@@ -51,14 +51,9 @@ public class FavoritesFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         RecyclerView favorites_rv = root.findViewById(R.id.favorites_rv);
-        Artist testArtist = new Artist();
-        ArrayList<Artist> artists = testArtist.readArtists();
-
-        for (int i = 0; i < artists.size(); i++) {
-            System.out.println(artists.get(i).getArtistName());
-        }
-
-        ArrayList<Artist> favorites = Artist.createFavoritesList(artists);
+        Artist temp = new Artist();
+        ArrayList<Artist> artists = temp.readArtists();
+        ArrayList<Artist> favorites = temp.createFavoritesList(artists);
         FavoritesAdapter adapter = new FavoritesAdapter(favorites);
         favorites_rv.setAdapter(adapter);
         favorites_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!-- android:onClick="" TODO add unfavorite action onClick for favorites button-->
+
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fav_card"
     android:orientation="horizontal"
@@ -58,7 +60,6 @@
             android:layout_gravity="center"
             />
 
-        <!-- android:onClick="" TODO add unfavorite action onClick-->
         <ImageButton
             android:id="@+id/favorite_button"
             android:clickable="true"
