@@ -18,6 +18,7 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
 
     public class FavoritesHolder extends RecyclerView.ViewHolder {
         public TextView artistName;
+        public TextView artistBio;
         public ImageView artistIcon;
         public ImageButton favorite;
 
@@ -25,6 +26,7 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
             super(itemView);
             artistIcon = itemView.findViewById(R.id.band_venue_icon);
             artistName = itemView.findViewById(R.id.band_venue_name);
+            artistBio = itemView.findViewById(R.id.band_venue_description);
             favorite = itemView.findViewById(R.id.favorite_button);
         }
 
@@ -39,6 +41,10 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
 
         if (currArtist.getArtistName() != null) {
             viewHolder.artistName.setText(currArtist.getArtistName());
+        }
+
+        if (currArtist.getBio() != null) {
+            viewHolder.artistBio.setText(currArtist.getBio());
         }
 
         // icon.setImageIcon(); TODO how to implement? Right now they are hardcoded
