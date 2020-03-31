@@ -58,6 +58,7 @@
             android:layout_gravity="center"
             />
 
+        <!-- android:onClick="" TODO add unfavorite action onClick-->
         <ImageButton
             android:id="@+id/favorite_button"
             android:clickable="true"
@@ -68,7 +69,8 @@
             android:paddingRight="10dp"
             android:src="@drawable/favorites_icon"
             android:layout_gravity="center"
-            android:contentDescription="@string/favorite_button_card" />
+            android:contentDescription="@string/favorite_button_card"
+            />
 
     </LinearLayout>
 

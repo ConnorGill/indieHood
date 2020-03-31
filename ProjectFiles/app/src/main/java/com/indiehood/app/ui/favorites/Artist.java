@@ -1,16 +1,22 @@
 package com.indiehood.app.ui.favorites;
 
 import android.media.Image;
+import android.util.Log;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 public class Artist {
-    private FirebaseDatabase myDatabase;
-    private DatabaseReference dbRef;
-    private String name;
+    private FirebaseFirestore db;
+    private CollectionReference ArtistCollection;
+    private String artistName;
     private boolean favorited;
     private String bio;
     private int rating;
@@ -20,36 +26,92 @@ public class Artist {
     private String media2;
     private Image profilePicture;
     private Image coverPhoto;
-    // TODO add more data fields
 
     public Artist() {
-        // default constructor to pass Band object to Firebase
+        // default constructor to pass Artist object to Firebase
     }
 
     // TODO find out how to pass in proPic and coverPhoto to constructor
     public Artist (String name, String bio, int rating, String social1, String social2,
                    String media1, String media2) {
-        this.name = name;
+        this.artistName = name;
         this.bio = bio;
         this.rating = rating;
         this.social1 = social1;
         this.social2 = social2;
         this.media1 = media1;
         this.media2 = media2;
+        // get instance of current database
+        this.db = FirebaseFirestore.getInstance();
+        // create reference directly to ArtistCollection
+        this.ArtistCollection = this.db.collection("/ArtistCollection");
     }
 
-    public void writeNewArtist(Artist newArtist) {
-        myDatabase = FirebaseDatabase.getInstance();
-        dbRef = myDatabase.getReference().child("/ArtistCollection");
-        dbRef.child(newArtist.getName()).setValue(newArtist);
+    public void writeNewArtist(final Artist newArtist) { // TODO GET WORKING
+        final String TAG = "writeNewArtist";
+
+        this.ArtistCollection.add(newArtist)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        // TODO change to toast in production
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // TODO change to toasts in production
+                        Log.d(TAG, e.toString());
+                    }
+                });
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public static ArrayList<Artist> readArtists(/*int numArtists*/) {
+        ArrayList<Artist> artists = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            artists.add(new Artist());
+            // artists.get(i).setName("Phish"); TODO get rid of this test code
+            if (i % 3 == 0) {
+                artists.get(i).setFavorited(true);
+            } // TODO REMOVE THIS IF STMT
+        }
+        /*ValueEventListener changeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Artist artist = dataSnapshot.getValue(Artist.class);
+
+                assert artist != null;
+                Log.d(TAG, "Artist name: " + artist.getName());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Failed to read", error.toException());
+            }
+        };
+        (new Artist()).dbRef.addListenerForSingleValueEvent(changeListener);*/
+
+        return artists;
+    }
+    // TODO put into Favorite class
+    public static ArrayList<Artist> createFavoritesList(ArrayList<Artist> artists) {
+        ArrayList<Artist> favorites = new ArrayList<>();
+        for (int i = 0; i < artists.size(); i++) {
+            if (artists.get(i).getFavorited()) {
+                favorites.add(artists.get(i));
+            }
+        }
+
+        return favorites;
     }
 
-    public String getName() {
-        return this.name;
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public String getArtistName() {
+        return this.artistName;
     }
 
     public void setFavorited(boolean status) {
@@ -106,29 +168,5 @@ public class Artist {
 
     public String getMedia2() {
         return media2;
-    }
-
-    // TODO remove this code and use list class?
-    public static ArrayList<Artist> createArtistList(int numArtists) {
-        ArrayList<Artist> artists = new ArrayList<>();
-        for (int i = 0; i < numArtists; i++) {
-            artists.add(new Artist());
-            // artists.get(i).setName("Phish");
-            // TODO REMOVE THIS IF STMT
-            if (i % 3 == 0) artists.get(i).setFavorited(true);
-        }
-
-        return artists;
-    }
-    // TODO create favorites class; remove this code
-    public static ArrayList<Artist> createFavoritesList(ArrayList<Artist> artists) {
-        ArrayList<Artist> favorites = new ArrayList<>();
-        for (int i = 0; i < artists.size(); i++) {
-            if (artists.get(i).getFavorited()) {
-                favorites.add(artists.get(i));
-            }
-        }
-
-        return favorites;
     }
 }

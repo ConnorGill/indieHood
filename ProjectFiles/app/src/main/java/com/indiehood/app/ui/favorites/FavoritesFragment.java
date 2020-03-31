@@ -23,13 +23,14 @@ public class FavoritesFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         RecyclerView favorites_rv = root.findViewById(R.id.favorites_rv);
-        ArrayList<Artist> artists = Artist.createArtistList(20);
+        ArrayList<Artist> artists = Artist.readArtists();
         ArrayList<Artist> favorites = Artist.createFavoritesList(artists);
         FavoritesAdapter adapter = new FavoritesAdapter(favorites);
         favorites_rv.setAdapter(adapter);
         favorites_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         // test code to write to database and create new artist in ArtistCollection
+        // TODO get working
         Artist test = new Artist("Four Tet", "test", 5, "https://twitter.com/FourTet",
                 "http://www.fourtet.net", "apple music", "spotify");
         Artist test2 = new Artist();

@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.indiehood.app.R;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
@@ -29,9 +29,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         }
     }
 
-    private List<Artist> myArtists;
-    public FavoritesAdapter(List<Artist> favorites) {
-        myArtists = favorites;
+    private ArrayList<Artist> myFavorites;
+    public FavoritesAdapter(ArrayList<Artist> favorites) {
+        myFavorites = favorites;
     }
 
     @NonNull
@@ -46,14 +46,14 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(FavoritesAdapter.ViewHolder viewHolder, int position) {
-        Artist artist = myArtists.get(position);
+        Artist artist = myFavorites.get(position);
 
         TextView name = viewHolder.artistName;
         ImageView icon = viewHolder.artistIcon;
         ImageButton fav = viewHolder.favorite;
 
-        if (artist.getName() != null) {
-            name.setText(artist.getName());
+        if (artist.getArtistName() != null) {
+            name.setText(artist.getArtistName());
         }
 
         // icon.setImageIcon(); TODO how to implement? Right now they are hardcoded
@@ -62,6 +62,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public int getItemCount() {
-        return myArtists.size();
+        return myFavorites.size();
     }
 }
