@@ -1,6 +1,7 @@
 package com.indiehood.app.ui.favorites;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,7 @@ public class FavoritesFragment extends Fragment {
         favorites_rv.setAdapter(adapter);
         favorites_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        // test code to write to database and create new artist in ArtistCollection
-        // TODO get working
+        // TODO remove test code to write to database and create new artist in ArtistCollection
         Artist test = new Artist("Four Tet", "test", 5, "https://twitter.com/FourTet",
                 "http://www.fourtet.net", "apple music", "spotify");
         Artist test2 = new Artist();

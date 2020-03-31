@@ -14,8 +14,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 public class Artist {
-    private FirebaseFirestore db;
-    private CollectionReference ArtistCollection;
+    // get instance of current database
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    // create reference directly to ArtistCollection
+    private CollectionReference ArtistCollection = this.db.collection("ArtistCollection");
     private String artistName;
     private boolean favorited;
     private String bio;
@@ -41,23 +43,12 @@ public class Artist {
         this.social2 = social2;
         this.media1 = media1;
         this.media2 = media2;
-        // get instance of current database
-        this.db = FirebaseFirestore.getInstance();
-        // create reference directly to ArtistCollection
-        this.ArtistCollection = this.db.collection("/ArtistCollection");
     }
 
-    public void writeNewArtist(final Artist newArtist) { // TODO GET WORKING
+    public void writeNewArtist(final Artist newArtist) {
         final String TAG = "writeNewArtist";
 
-        this.ArtistCollection.add(newArtist)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        // TODO change to toast in production
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
+        this.ArtistCollection.document(newArtist.getArtistName()).set(newArtist)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -94,6 +85,7 @@ public class Artist {
 
         return artists;
     }
+
     // TODO put into Favorite class
     public static ArrayList<Artist> createFavoritesList(ArrayList<Artist> artists) {
         ArrayList<Artist> favorites = new ArrayList<>();
