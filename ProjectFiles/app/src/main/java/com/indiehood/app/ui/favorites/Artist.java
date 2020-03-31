@@ -1,6 +1,7 @@
 package com.indiehood.app.ui.favorites;
 
 import android.media.Image;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,11 +11,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 public class Artist {
-    // get instance of current database
+    // get instance of current database TODO maybe move from Artist?
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     // create reference directly to ArtistCollection
     private CollectionReference ArtistCollection = this.db.collection("ArtistCollection");
@@ -34,10 +37,11 @@ public class Artist {
     }
 
     // TODO find out how to pass in proPic and coverPhoto to constructor
-    public Artist (String name, String bio, int rating, String social1, String social2,
+    public Artist (String name, String bio, boolean fav, int rating, String social1, String social2,
                    String media1, String media2) {
         this.artistName = name;
         this.bio = bio;
+        this.favorited = fav;
         this.rating = rating;
         this.social1 = social1;
         this.social2 = social2;
@@ -48,7 +52,7 @@ public class Artist {
     public void writeNewArtist(final Artist newArtist) {
         final String TAG = "writeNewArtist";
 
-        this.ArtistCollection.document(newArtist.getArtistName()).set(newArtist)
+        ArtistCollection.document(newArtist.getArtistName()).set(newArtist)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -58,30 +62,27 @@ public class Artist {
                 });
     }
 
-    public static ArrayList<Artist> readArtists(/*int numArtists*/) {
-        ArrayList<Artist> artists = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            artists.add(new Artist());
-            // artists.get(i).setName("Phish"); TODO get rid of this test code
-            if (i % 3 == 0) {
-                artists.get(i).setFavorited(true);
-            } // TODO REMOVE THIS IF STMT
-        }
-        /*ValueEventListener changeListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Artist artist = dataSnapshot.getValue(Artist.class);
-
-                assert artist != null;
-                Log.d(TAG, "Artist name: " + artist.getName());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(TAG, "Failed to read", error.toException());
-            }
-        };
-        (new Artist()).dbRef.addListenerForSingleValueEvent(changeListener);*/
+    public ArrayList<Artist> readArtists() {
+        final ArrayList<Artist> artists = new ArrayList<>();
+        // for logging purposes
+        final String TAG = "readArtists";
+        ArtistCollection.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Artist artist = documentSnapshot.toObject(Artist.class);
+                            artist.setArtistName(documentSnapshot.getId());
+                            /*String name = artist.getArtistName();
+                            String bio = artist.getBio();
+                            int rating = artist.getRating();
+                            System.out.println(
+                                    "artist: " + name + "\nBio: " + bio + "\nRating: " + rating + "\n\n"
+                            );*/
+                            artists.add(artist);
+                        }
+                    }
+                });
 
         return artists;
     }
@@ -98,6 +99,7 @@ public class Artist {
         return favorites;
     }
 
+    // TODO in all setters allow for update to Firestorm
     public void setArtistName(String artistName) {
         this.artistName = artistName;
     }

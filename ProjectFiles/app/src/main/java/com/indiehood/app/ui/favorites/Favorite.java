@@ -32,4 +32,6 @@ public class Favorite extends Artist {
         return favorites;
     }*/
 
+    // TODO add method to unfavorite artists from FavoritesView
+
 }

@@ -32,6 +32,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private ArrayList<Artist> myFavorites;
     public FavoritesAdapter(ArrayList<Artist> favorites) {
         myFavorites = favorites;
+        assert myFavorites != null;
     }
 
     @NonNull
