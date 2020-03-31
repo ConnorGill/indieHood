@@ -7,55 +7,53 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.indiehood.app.R;
 
-import java.util.ArrayList;
 
 public class FavoritesFragment extends Fragment {
-    // TODO implement later? conserves resources is all
-    /*private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ArtistCollection = db.collection("ArtistCollection");
-    private Artist testArtist;
-    private ArrayList<Artist> artists;
-    private ArrayList<Artist> favorites;
+    private FavoritesAdapter adapter;
+
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_favorites, container, false);
+        super.onCreate(savedInstanceState);
+        setUpRecyclerView(root);
+
+        return root;
+    }
+
+    private void setUpRecyclerView(View r) {
+        Query query = ArtistCollection.whereEqualTo("favorited", true);
+
+        FirestoreRecyclerOptions<Artist> options = new FirestoreRecyclerOptions.Builder<Artist>()
+                .setQuery(query, Artist.class)
+                .build();
+
+        adapter = new FavoritesAdapter(options);
+
+        RecyclerView favorites_rv = r.findViewById(R.id.favorites_rv);
+        favorites_rv.setHasFixedSize(true);
+        favorites_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        favorites_rv.setAdapter(adapter);
+    }
 
     @Override
     public void onStart() {
         super.onStart();
-        ArtistCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (e != null) return;
-                testArtist = new Artist();
-                artists = testArtist.readArtists(ArtistCollection);
-                favorites = testArtist.createFavoritesList(artists);
-            }
-        });
+        adapter.startListening();
+    }
 
-    } */
-
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FavoritesViewModel favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_favorites, container, false);
-
-        super.onCreate(savedInstanceState);
-        RecyclerView favorites_rv = root.findViewById(R.id.favorites_rv);
-        Artist temp = new Artist();
-        ArrayList<Artist> artists = temp.loadArtists();
-        ArrayList<Artist> favorites = temp.createFavoritesList(artists);
-        FavoritesAdapter adapter = new FavoritesAdapter(favorites);
-        favorites_rv.setAdapter(adapter);
-        favorites_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
-        // TODO remove test code, put elsewhere
-        /*Artist test = new Artist("Foo Fighters", "Love hurts, ask Courtney, she killed Kurt", false, 2, "nil",
-                "nil", "apple music", "spotify");
-        testArtist.writeNewArtist(test);*/
-
-        return root;
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }

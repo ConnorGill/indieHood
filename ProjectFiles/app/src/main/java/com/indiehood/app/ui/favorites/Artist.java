@@ -68,61 +68,14 @@ public class Artist {
                 });
     }
 
-    public ArrayList<Artist> loadArtists() {
-        final String TAG = "loadArtists";
-        //final ArrayList<Artist> artists = new ArrayList<>();
-        final ArrayList<Artist> artists = readData(new FirestoreCallback() {
-            @Override
-            public void onCallback(ArrayList<Artist> list) {
-                for (int i = 0; i < list.size(); i++) {
-                    Log.d(TAG, "artist: " + list.get(i).getArtistName());
-                }
-            }
-        });
-
-        return artists;
-    }
-
-    private ArrayList<Artist> readData(final FirestoreCallback cb) {
-        final ArrayList<Artist> artists = new ArrayList<>();
+    // TODO may or may not need this... all reading capabilities are in FavoritesFragment
+    /*public ArrayList<Artist> readArtists() {
         // for logging purposes
-        final String TAG = "readData";
-        ArtistCollection.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // iterate through each document in collection
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Artist artist = document.toObject(Artist.class);
-                                artists.add(artist);
-                            }
-                            cb.onCallback(artists);
-                        }
-                        else {
-                            Log.d(TAG, "Error getting documents");
-                        }
-                    }
-                });
+        final String TAG = "readArtists";
+        final ArrayList<Artist> artists = new ArrayList<>();
 
         return artists;
-    }
-
-    private interface FirestoreCallback {
-        void onCallback(ArrayList<Artist> list);
-    }
-
-    // TODO put into Favorite class
-    public ArrayList<Artist> createFavoritesList(ArrayList<Artist> artists) {
-        ArrayList<Artist> favorites = new ArrayList<>();
-        for (int i = 0; i < artists.size(); i++) {
-            if (artists.get(i).getFavorited()) {
-                favorites.add(artists.get(i));
-            }
-        }
-
-        return favorites;
-    }
+    }*/
 
     // TODO in all setters allow for update to Firestorm
     public void setArtistName(String artistName) {

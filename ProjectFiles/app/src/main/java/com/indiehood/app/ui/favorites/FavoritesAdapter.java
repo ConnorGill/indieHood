@@ -1,6 +1,5 @@
 package com.indiehood.app.ui.favorites;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,59 +9,52 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.indiehood.app.R;
 
-import java.util.ArrayList;
+public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, FavoritesAdapter.FavoritesHolder> {
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class FavoritesHolder extends RecyclerView.ViewHolder {
         public TextView artistName;
         public ImageView artistIcon;
         public ImageButton favorite;
 
-        public ViewHolder(View itemView) {
+        public FavoritesHolder(View itemView) {
             super(itemView);
             artistIcon = itemView.findViewById(R.id.band_venue_icon);
             artistName = itemView.findViewById(R.id.band_venue_name);
             favorite = itemView.findViewById(R.id.favorite_button);
         }
+
     }
 
-    private ArrayList<Artist> myFavorites;
-    public FavoritesAdapter(ArrayList<Artist> favorites) {
-        myFavorites = favorites;
-        assert myFavorites != null;
+    public FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options) {
+        super(options);
+    }
+
+    @Override
+    protected void onBindViewHolder(@NonNull FavoritesHolder viewHolder, int position, @NonNull Artist currArtist) {
+
+        if (currArtist.getArtistName() != null) {
+            viewHolder.artistName.setText(currArtist.getArtistName());
+        }
+
+        // icon.setImageIcon(); TODO how to implement? Right now they are hardcoded
+
+        if (currArtist.getFavorited()) {
+            viewHolder.favorite.setEnabled(currArtist.getFavorited());
+        }
     }
 
     @NonNull
     @Override
-    public FavoritesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-
+    public FavoritesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View favoriteView = inflater.inflate(R.layout.favorited_band_row, parent, false);
-        return new ViewHolder(favoriteView);
+
+        return new FavoritesHolder(favoriteView);
     }
 
-    @Override
-    public void onBindViewHolder(FavoritesAdapter.ViewHolder viewHolder, int position) {
-        Artist artist = myFavorites.get(position);
-
-        TextView name = viewHolder.artistName;
-        ImageView icon = viewHolder.artistIcon;
-        ImageButton fav = viewHolder.favorite;
-
-        if (artist.getArtistName() != null) {
-            name.setText(artist.getArtistName());
-        }
-
-        // icon.setImageIcon(); TODO how to implement? Right now they are hardcoded
-        fav.setEnabled(artist.getFavorited());
-    }
-
-    @Override
-    public int getItemCount() {
-        return myFavorites.size();
-    }
 }
