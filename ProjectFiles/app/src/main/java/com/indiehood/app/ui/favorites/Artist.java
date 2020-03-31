@@ -20,9 +20,9 @@ import java.util.List;
 
 public class Artist {
     // get instance of current database TODO maybe move from Artist?
-    //private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     // create reference directly to ArtistCollection
-    //private CollectionReference ArtistCollection = this.db.collection("ArtistCollection");
+    private CollectionReference ArtistCollection = this.db.collection("ArtistCollection");
     private String artistName;
     private boolean favorited;
     private String bio;
@@ -52,9 +52,6 @@ public class Artist {
     }
 
     public void writeNewArtist(final Artist newArtist) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        // create reference directly to ArtistCollection
-        CollectionReference ArtistCollection = db.collection("ArtistCollection");
         // for logging purposes
         final String TAG = "writeNewArtist";
 
@@ -70,27 +67,16 @@ public class Artist {
 
     public ArrayList<Artist> readArtists() {
         final ArrayList<Artist> artists = new ArrayList<>();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        // create reference directly to ArtistCollection
-        final CollectionReference ArtistCollection = db.collection("ArtistCollection");
         // for logging purposes
         final String TAG = "readArtists";
         ArtistCollection.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    //ArrayList<Artist> artists = new ArrayList<>();
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if (queryDocumentSnapshots.isEmpty()) {
-                            Log.d(TAG, "onSuccess: LIST EMPTY");
-                            return;
-                        }
-                        List<Artist> a = queryDocumentSnapshots.toObjects(Artist.class);
-                        artists.addAll(a);
-
-                        /*for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            Artist artist = documentSnapshot.toObject(Artist.class);
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Artist artist = document.toObject(Artist.class);
                             artists.add(artist);
-                        }*/
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -100,9 +86,8 @@ public class Artist {
                     }
                 });
 
-        if (artists.size() == 11) System.out.println("TRUE");
-        for (int i = 0; i < artists.size(); i++) {
-            System.out.println(artists.get(i).getArtistName());
+        if (artists.size() != 0) {
+            Log.d(TAG, "artists != 0");
         }
 
         return artists;
