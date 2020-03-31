@@ -1,23 +1,16 @@
 package com.indiehood.app.ui.favorites;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.indiehood.app.R;
 
 import java.util.ArrayList;
@@ -52,7 +45,7 @@ public class FavoritesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         RecyclerView favorites_rv = root.findViewById(R.id.favorites_rv);
         Artist temp = new Artist();
-        ArrayList<Artist> artists = temp.readArtists();
+        ArrayList<Artist> artists = temp.loadArtists();
         ArrayList<Artist> favorites = temp.createFavoritesList(artists);
         FavoritesAdapter adapter = new FavoritesAdapter(favorites);
         favorites_rv.setAdapter(adapter);

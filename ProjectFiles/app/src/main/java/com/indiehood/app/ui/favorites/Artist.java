@@ -6,8 +6,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,6 +19,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Artist {
     // get instance of current database TODO maybe move from Artist?
@@ -65,32 +68,48 @@ public class Artist {
                 });
     }
 
-    public ArrayList<Artist> readArtists() {
+    public ArrayList<Artist> loadArtists() {
+        final String TAG = "loadArtists";
+        //final ArrayList<Artist> artists = new ArrayList<>();
+        final ArrayList<Artist> artists = readData(new FirestoreCallback() {
+            @Override
+            public void onCallback(ArrayList<Artist> list) {
+                for (int i = 0; i < list.size(); i++) {
+                    Log.d(TAG, "artist: " + list.get(i).getArtistName());
+                }
+            }
+        });
+
+        return artists;
+    }
+
+    private ArrayList<Artist> readData(final FirestoreCallback cb) {
         final ArrayList<Artist> artists = new ArrayList<>();
         // for logging purposes
-        final String TAG = "readArtists";
+        final String TAG = "readData";
         ArtistCollection.get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            Artist artist = document.toObject(Artist.class);
-                            artists.add(artist);
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // iterate through each document in collection
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Artist artist = document.toObject(Artist.class);
+                                artists.add(artist);
+                            }
+                            cb.onCallback(artists);
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, e.toString());
+                        else {
+                            Log.d(TAG, "Error getting documents");
+                        }
                     }
                 });
 
-        if (artists.size() != 0) {
-            Log.d(TAG, "artists != 0");
-        }
-
         return artists;
+    }
+
+    private interface FirestoreCallback {
+        void onCallback(ArrayList<Artist> list);
     }
 
     // TODO put into Favorite class
