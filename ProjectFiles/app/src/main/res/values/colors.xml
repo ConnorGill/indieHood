@@ -3,4 +3,5 @@
     <color name="colorPrimary">#7348B9</color>
     <color name="colorPrimaryDark">#643EA0</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="favorite_button_filled">#FFD700</color>
 </resources>

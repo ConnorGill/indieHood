@@ -14,9 +14,11 @@
     <string name="menu_report">Report Issue</string>
     <string name="menu_terms">Terms of Service</string>
 
-    <string name="band">This is a band</string>
+    <string name="artist">This is an artist</string>
     <string name="venue">This is a venue</string>
     <string name="band_venue_icon_cd">Band/venue content description</string>
-    <string name="band_venue_icon">band/venue icon</string>
+    <string name="band_venue_icon">artist/venue icon</string>
     <string name="favorite_button_card">favorite_button</string>
+    <string name="favorites_dummy_text">Add favorites and they\'ll appear here!</string>
+    <string name="band_bio">Band bio</string>
 </resources>
