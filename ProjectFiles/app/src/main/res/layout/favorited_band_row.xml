@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- android:onClick="" TODO add unfavorite action onClick for favorites button-->
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fav_card"
     android:orientation="horizontal"
@@ -17,7 +15,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        >
 
         <ImageView
             android:id="@+id/band_venue_icon"
@@ -31,7 +32,7 @@
             android:adjustViewBounds="true"
             />
 
-        <ImageButton
+        <CheckBox
             android:id="@+id/favorite_button"
             android:clickable="true"
             android:focusable="true"
@@ -42,6 +43,8 @@
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:contentDescription="@string/favorite_button_card"
+            style="?android:attr/starStyle"
+            android:buttonTint="@color/favorite_button_filled"
             />
 
         <TextView
