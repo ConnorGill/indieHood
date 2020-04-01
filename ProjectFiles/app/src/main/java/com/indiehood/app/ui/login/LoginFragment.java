@@ -36,31 +36,38 @@ public class LoginFragment extends Fragment {
 
         //Login Code
             final Button btnLogin = (Button) root.findViewById(R.id.btnLogin);
+            // Chance added this and is working on Firestore implementation
+            final Button btnRegister = (Button) root.findViewById(R.id.btnRegister);
             final TextView txtArtistUsername = (TextView) root.findViewById(R.id.txtArtistUsername);
             final TextView txtPassword = (TextView) root.findViewById(R.id.txtPassword);
 
-            btnLogin.setOnClickListener(new View.OnClickListener(){
+            btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
-                        public void onClick(View textView){
-                            String password = txtPassword.getText().toString();
-                            String username = txtArtistUsername.getText().toString();
+                public void onClick(View textView){
+                    String password = txtPassword.getText().toString();
+                    String username = txtArtistUsername.getText().toString();
 
+                    //implement Firebase here to check dummy data when created
+                    if(password.equals("pass") && username.equals("band")) {
+                        Toast.makeText(textView.getContext(), "Go To Account", Toast.LENGTH_LONG).show();
+                        Navigation.findNavController(textView).navigate(R.id.nav_listings);
+                    }
+                    //change destination to account profile from listings after created
+                    else
+                        Toast.makeText(textView.getContext(), "Login Failed", 2).show();
 
-                            //implement Firebase here to check dummy data when created
-                            if(password.equals("pass") && username.equals("band")) {
-                                Toast.makeText(textView.getContext(), "Go To Account", 2).show();
-                                Navigation.findNavController(textView).navigate(R.id.nav_listings);
-                            }
-                                //change destination to account profile from listings after created
-                            else
-                                Toast.makeText(textView.getContext(), "Login Failed", 2).show();
+                    txtArtistUsername.setText("");
+                    txtPassword.setText("");
+                }
+            });
 
-                            txtArtistUsername.setText("");
-                            txtPassword.setText("");
-            }
-
-
-                });
+            btnRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(textView.getContext(), "Go to registration page", Toast.LENGTH_LONG).show();
+                    Navigation.findNavController(textView).navigate(R.id.nav_register);
+                }
+            });
 
 
         return root;
