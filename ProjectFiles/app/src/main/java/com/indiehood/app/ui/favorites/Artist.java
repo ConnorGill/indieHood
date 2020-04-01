@@ -12,9 +12,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Artist {
     // get instance of current database TODO maybe move from Artist?
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //private FirebaseFirestore db = FirebaseFirestore.getInstance();
     // create reference directly to ArtistCollection
-    private CollectionReference ArtistCollection = this.db.collection("ArtistCollection");
+    //private CollectionReference ArtistCollection = this.db.collection("ArtistCollection");
     private String artistName;
     private boolean favorited;
     private String bio;
@@ -44,6 +44,8 @@ public class Artist {
     }
 
     public void writeNewArtist(final Artist newArtist) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference ArtistCollection = db.collection("ArtistCollection");
         // for logging purposes
         final String TAG = "writeNewArtist";
 
