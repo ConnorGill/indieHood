@@ -4,18 +4,11 @@ import android.media.Image;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Transaction;
-
-import java.util.ArrayList;
 
 public class Artist {
     // get instance of current database TODO maybe move from Artist?
@@ -55,11 +48,17 @@ public class Artist {
         final String TAG = "writeNewArtist";
 
         ArtistCollection.document(newArtist.getArtistName()).set(newArtist)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // TODO change to toasts in production
-                        Log.d(TAG, e.toString());
+                        Log.d(TAG, "Error writing document: " + e.toString());
                     }
                 });
     }

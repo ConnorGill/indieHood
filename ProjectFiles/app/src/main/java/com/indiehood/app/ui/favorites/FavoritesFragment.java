@@ -17,11 +17,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.indiehood.app.R;
 
@@ -52,6 +49,7 @@ public class FavoritesFragment extends Fragment {
         favorites_rv.setHasFixedSize(true);
         favorites_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         favorites_rv.setAdapter(adapter);
+
         // for when the favorite button is clicked to unfavorite artist
         adapter.setOnFavoriteClickListener(new FavoritesAdapter.OnFavoriteClickListener() {
             final String TAG = "onFavClick";
