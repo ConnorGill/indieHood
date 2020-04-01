@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -24,14 +25,17 @@ public class ListingsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         RecyclerView allListings;
-        RecyclerView.Adapter mAdapter;
+        ListingAdapter mAdapter;
         RecyclerView.LayoutManager mLayoutManager;
 
         listingsViewModel =
                 ViewModelProviders.of(this).get(ListingsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_listings, container, false);
-        ArrayList<ShowListing> showLists = new ArrayList<>();
+        final ArrayList<ShowListing> showLists = new ArrayList<>();
+
+
         showLists.add(new ShowListing("Banana Rays", "The Alcove", "6:00pm"));
         showLists.add(new ShowListing("Gears", "Rounders", "6:30pm"));
         showLists.add(new ShowListing("The Beatles", "High Tide", "7:00pm"));
@@ -45,7 +49,6 @@ public class ListingsFragment extends Fragment {
         showLists.add(new ShowListing("Taylor Swift", "Houndstooth", "11:00pm"));
         showLists.add(new ShowListing("Lil' Nas X", "Rhythm and Brews", "11:30pm"));
         showLists.add(new ShowListing("Drake", "Green Bar", "12:00am"));
-        mAdapter = new ListingAdapter(showLists);
 
 
 ;
@@ -53,8 +56,15 @@ public class ListingsFragment extends Fragment {
         allListings = root.findViewById(R.id.listings);
         allListings.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this.getContext());
+        mAdapter = new ListingAdapter(showLists);
         allListings.setLayoutManager(mLayoutManager);
         allListings.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new ListingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+               //showLists.get(position) resolve clicking on a card in that position
+            }
+        });
         return root;
     }
 

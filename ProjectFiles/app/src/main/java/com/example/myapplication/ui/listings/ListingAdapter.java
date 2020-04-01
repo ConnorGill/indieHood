@@ -17,7 +17,15 @@ import java.util.ResourceBundle;
 
 public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingViewHolder> {
     private ArrayList<ShowListing> showListings;
+    private OnItemClickListener mListener;
 
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
     public static class ListingViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextBandName;
         public TextView mTextVenue;
@@ -27,7 +35,7 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
         public ImageView mVenueFavorited;
         public CheckBox mUserInterested;
 
-        public ListingViewHolder(View itemView){
+        public ListingViewHolder(View itemView, final OnItemClickListener listener){
             super(itemView);
             mTextBandName = itemView.findViewById(R.id.bandName);
             mTextVenue = itemView.findViewById(R.id.venue);
@@ -36,6 +44,17 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
             mBandFavorited = itemView.findViewById(R.id.bandFavorited);
             mVenueFavorited = itemView.findViewById(R.id.venueFavorited);
             mUserInterested = itemView.findViewById(R.id.interested);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -47,7 +66,7 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
     @Override
     public ListingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_listing, parent, false);
-        ListingViewHolder evh = new ListingViewHolder(v);
+        ListingViewHolder evh = new ListingViewHolder(v, mListener);
         return evh;
     }
     @Override
