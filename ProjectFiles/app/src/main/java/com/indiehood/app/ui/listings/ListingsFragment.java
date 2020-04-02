@@ -9,7 +9,7 @@ import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,10 +32,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.Transaction;
 
 public class ListingsFragment extends Fragment {
 
@@ -43,8 +41,7 @@ public class ListingsFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ListingAdapter mAdapter;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        listingsViewModel =
-                ViewModelProviders.of(this).get(ListingsViewModel.class);
+        listingsViewModel = new ViewModelProvider(this).get(ListingsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_listings, container, false);
         setupRecycler(root);
         return root;

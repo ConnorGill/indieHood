@@ -124,7 +124,7 @@ public class ShowListing {
         else {
             NumberFormat formatter = new DecimalFormat("#0.00");
             String formatted = formatter.format(price);
-            return "$ " + formatted;
+            return "$" + formatted;
         }
     }
 
