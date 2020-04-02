@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/venueNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -32,7 +32,7 @@
         app:layout_constraintVertical_bias="0.449" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/venueAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -45,7 +45,7 @@
         app:layout_constraintVertical_bias="0.556" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/venueText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -59,7 +59,7 @@
         app:layout_constraintVertical_bias="0.666" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/venueName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -72,7 +72,7 @@
         app:layout_constraintVertical_bias="0.348" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/venueButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit Venue"
