@@ -25,6 +25,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.indiehood.app.R;
+import com.indiehood.app.databinding.FragmentFavoritesBinding;
 
 
 public class FavoritesFragment extends Fragment {
@@ -32,11 +33,12 @@ public class FavoritesFragment extends Fragment {
     private CollectionReference ArtistCollection = db.collection("ArtistCollection");
     private FavoritesAdapter adapter;
     private TextView emptyList;
-
+    private FragmentFavoritesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_favorites, container, false);
         super.onCreate(savedInstanceState);
+        binding = FragmentFavoritesBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
         emptyList = root.findViewById(R.id.empty_rv);
         setUpRecyclerView(root);
 
@@ -61,8 +63,8 @@ public class FavoritesFragment extends Fragment {
         FirestoreRecyclerOptions<Artist> options = new FirestoreRecyclerOptions.Builder<Artist>()
                 .setQuery(query, Artist.class)
                 .build();
-
-        adapter = new FavoritesAdapter(options);
+        // pass empty list for OnDataChanged() method to use if no favorites populated
+        adapter = new FavoritesAdapter(options, emptyList);
 
         RecyclerView favorites_rv = r.findViewById(R.id.favorites_rv);
         favorites_rv.setHasFixedSize(true);
@@ -105,5 +107,11 @@ public class FavoritesFragment extends Fragment {
     public void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

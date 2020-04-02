@@ -18,9 +18,12 @@ import com.indiehood.app.R;
 // implements a recycler view using data pulled directly from firestore
 public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, FavoritesAdapter.FavoritesHolder> {
     private OnFavoriteClickListener listener;
+    private TextView emptyList;
 
-    public FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options) {
+    public FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options,
+                            TextView emptyList) {
         super(options);
+        this.emptyList = emptyList;
     }
 
     class FavoritesHolder extends RecyclerView.ViewHolder {
@@ -65,10 +68,10 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
         }
     }
 
-    /*@Override
-    public void onDataChanged() { // TODO implement empty data view
-
-    }*/
+    @Override
+    public void onDataChanged() {
+        emptyList.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
+    }
 
     @NonNull
     @Override
