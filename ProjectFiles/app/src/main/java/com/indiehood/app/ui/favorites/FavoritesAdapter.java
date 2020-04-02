@@ -20,8 +20,8 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
     private OnFavoriteClickListener listener;
     private TextView emptyList;
 
-    public FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options,
-                            TextView emptyList) {
+    FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options,
+                     TextView emptyList) {
         super(options);
         this.emptyList = emptyList;
     }

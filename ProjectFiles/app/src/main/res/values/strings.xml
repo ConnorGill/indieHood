@@ -29,4 +29,5 @@
     <string name="registration_title">Registration</string>
     <string name="register_band_name">Band name</string>
     <string name="communicate">Communicate</string>
+    <string name="empty_favorites_message">Add favorites and they\'ll appear here!</string>
 </resources>
