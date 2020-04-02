@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.indiehood.app.R;
-
+// TODO COMPLETE
 public class RegisterFragment extends Fragment {
     private RegisterViewModel registerViewModel;
 
