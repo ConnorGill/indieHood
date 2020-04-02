@@ -31,6 +31,7 @@ public class RegisterFragment extends Fragment {
 
         // TODO add register code... all text fields and onClick for "register" button
         final Button btn_submit_registration = (Button) root.findViewById(R.id.btn_submit_registration);
+        //btn_submit_registration.setOnClickListener(new View.OnClickListener(){
 
 
 
