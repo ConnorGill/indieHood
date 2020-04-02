@@ -8,21 +8,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:viewBindingIgnore="true">
 
-    <TextView
-        android:id="@+id/registration_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="352dp"
-        android:layout_marginBottom="450dp"
-        android:text="@string/registration_title"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/relativeLayout2"
-        app:layout_constraintTop_toTopOf="@+id/relativeLayout2" />
-
     <RelativeLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
@@ -35,12 +20,10 @@
             android:layout_width="241dp"
             android:layout_height="56dp"
             android:layout_above="@+id/register_password"
-            android:layout_below="@+id/imageView2"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="82dp"
             android:layout_marginLeft="84dp"
-            android:layout_marginTop="56dp"
             android:layout_marginEnd="87dp"
             android:layout_marginRight="86dp"
             android:layout_marginBottom="38dp"
@@ -93,8 +76,25 @@
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="298dp"
+            android:layout_above="@+id/register_band_name"
+            android:layout_marginBottom="62dp"
             android:background="#E0F2F1"
             app:srcCompat="@mipmap/ic_logo_foreground" />
+
+        <TextView
+            android:id="@+id/registration_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/register_band_name"
+            android:layout_marginBottom="24dp"
+            android:text="@string/registration_title"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/register_band_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </RelativeLayout>
 
