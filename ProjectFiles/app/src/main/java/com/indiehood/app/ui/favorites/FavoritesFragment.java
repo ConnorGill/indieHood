@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,8 +18,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.indiehood.app.R;
 
@@ -27,10 +31,13 @@ public class FavoritesFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ArtistCollection = db.collection("ArtistCollection");
     private FavoritesAdapter adapter;
+    private TextView emptyList;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_favorites, container, false);
         super.onCreate(savedInstanceState);
+        emptyList = root.findViewById(R.id.empty_rv);
         setUpRecyclerView(root);
 
         return root;
@@ -38,6 +45,18 @@ public class FavoritesFragment extends Fragment {
 
     private void setUpRecyclerView(View r) {
         final Query query = ArtistCollection.whereEqualTo("favorited", true);
+        // add listener to see if there are no favorites to show
+        // TODO does not work perfectly; implement onDataChanged function to keep listening
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (queryDocumentSnapshots != null && queryDocumentSnapshots.isEmpty()) {
+                    emptyList.setVisibility(View.VISIBLE);
+                    // no favorites, so return
+                    return;
+                }
+            }
+        });
 
         FirestoreRecyclerOptions<Artist> options = new FirestoreRecyclerOptions.Builder<Artist>()
                 .setQuery(query, Artist.class)

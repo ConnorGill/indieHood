@@ -14,17 +14,22 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.indiehood.app.R;
+
 // implements a recycler view using data pulled directly from firestore
 public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, FavoritesAdapter.FavoritesHolder> {
     private OnFavoriteClickListener listener;
 
-    class FavoritesHolder extends RecyclerView.ViewHolder {
-        public TextView artistName;
-        public TextView artistBio;
-        public ImageView artistIcon;
-        public CheckBox favorite;
+    public FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options) {
+        super(options);
+    }
 
-        public FavoritesHolder(View itemView) {
+    class FavoritesHolder extends RecyclerView.ViewHolder {
+        TextView artistName;
+        TextView artistBio;
+        ImageView artistIcon;
+        CheckBox favorite;
+
+        FavoritesHolder(View itemView) {
             super(itemView);
             // initialize the items to appear in each card in recycler view
             artistIcon = itemView.findViewById(R.id.band_venue_icon);
@@ -32,7 +37,7 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
             artistBio = itemView.findViewById(R.id.band_venue_description);
             favorite = itemView.findViewById(R.id.favorite_button);
             // sets on click listener for the favorite button
-            // if clicked, pass the document snapshot and its position to function in FavoritesFragment
+            // if clicked, pass document snapshot & its position to function in FavoritesFragment
             favorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -46,7 +51,8 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull FavoritesHolder viewHolder, int position, @NonNull Artist currArtist) {
+    protected void onBindViewHolder(@NonNull FavoritesHolder viewHolder, int position,
+                                    @NonNull Artist currArtist) {
         if (currArtist.getArtistName() != null) {
             viewHolder.artistName.setText(currArtist.getArtistName());
         }
@@ -58,6 +64,11 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
             viewHolder.favorite.setEnabled(currArtist.getFavorited());
         }
     }
+
+    /*@Override
+    public void onDataChanged() { // TODO implement empty data view
+
+    }*/
 
     @NonNull
     @Override
@@ -74,18 +85,7 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
         void onFavoriteClick(DocumentSnapshot snapshot, int position);
     }
 
-    public void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
+    void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
         this.listener = listener;
     }
-
-    public FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options) {
-        super(options);
-    }
-
-    /*@Override
-    public void onDataChanged() { // TODO implement empty data view
-        // Called each time there is a new query snapshot. You may want to use this method
-        // to hide a loading spinner or check for the "no documents" state and update your UI.
-        // ...
-    }*/
 }

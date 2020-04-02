@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fav_card"
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -10,6 +11,7 @@
     android:layout_marginEnd="5dp"
     android:clickable="true"
     android:focusable="true"
+    tools:viewBindingIgnore="true"
     >
     
     <RelativeLayout

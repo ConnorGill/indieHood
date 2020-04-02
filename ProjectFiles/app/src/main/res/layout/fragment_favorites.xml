@@ -19,8 +19,12 @@
         android:id="@+id/empty_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:text="Add favorites and they'll appear here!"
         android:gravity="center"
-        android:visibility="gone"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/msg_text_primary"
+        android:textStyle="bold"
+        android:visibility="invisible"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
