@@ -21,4 +21,13 @@
     <string name="favorite_button_card">favorite_button</string>
     <string name="favorites_dummy_text">Add favorites and they\'ll appear here!</string>
     <string name="band_bio">Band bio</string>
+    <string name="login_message">Artists, Login Below to Access Account</string>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Username</string>
+    <string name="register">Register</string>
+    <string name="menu_register">Register</string>
+    <string name="registration_title">Registration</string>
+    <string name="register_band_name">Band name</string>
+    <string name="communicate">Communicate</string>
+    <string name="empty_favorites_message">Add favorites and they\'ll appear here!</string>
 </resources>

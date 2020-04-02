@@ -30,6 +30,12 @@
         tools:layout="@layout/fragment_login" />
 
     <fragment
+        android:id="@+id/nav_register"
+        android:name="com.indiehood.app.ui.register.RegisterFragment"
+        android:label="@string/menu_register"
+        tools:layout="@layout/fragment_register" />
+
+    <fragment
         android:id="@+id/nav_suggest"
         android:name="com.indiehood.app.ui.suggest.SuggestFragment"
         android:label="@string/menu_suggest"
