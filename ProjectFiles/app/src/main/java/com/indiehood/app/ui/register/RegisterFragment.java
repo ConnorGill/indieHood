@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,9 @@ public class RegisterFragment extends Fragment {
         });
 
         // TODO add register code... all text fields and onClick for "register" button
+        final Button btn_submit_registration = (Button) root.findViewById(R.id.btn_submit_registration);
+
+
 
         return root;
     }
