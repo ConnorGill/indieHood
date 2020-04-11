@@ -10,7 +10,7 @@ public class SuggestViewModel extends ViewModel {
 
     public SuggestViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Have a venue you'd like to see listed on indieHood? Tell us about it below!");
+        //mText.setValue("");
     }
 
     public LiveData<String> getText() {
