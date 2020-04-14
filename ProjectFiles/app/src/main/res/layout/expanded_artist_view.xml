@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/cover_photo"
+        android:layout_width="414dp"
+        android:layout_height="272dp"
+        android:src="@drawable/abbey_road_2"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/band_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/artist_pro_pic"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="0dp"
+        android:contentDescription="@string/artist_profile_picture"
+        android:src="@drawable/temp_pro_pic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cover_photo"
+
+        />
+
+    <TextView
+        android:id="@+id/band_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:maxLines="2"
+        android:text="BAND NAME"
+        android:ellipsize="end"
+        app:layout_constraintStart_toEndOf="@id/artist_pro_pic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cover_photo"
+        android:textColor="@android:color/black"
+        android:textSize="35sp"
+        android:textStyle="bold"
+
+
+        />
+
+    <TextView
+        android:id="@+id/band_bio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="This is a test band biography. Preferably, it will be about three lines long. This ensures that the recycler view below is not obscured."
+        android:maxLines="6"
+        app:layout_constraintStart_toStartOf="@id/band_name"
+        app:layout_constraintEnd_toEndOf="@id/band_name"
+        app:layout_constraintTop_toBottomOf="@id/band_name"
+        android:textSize="20sp"
+
+        />
+
+    <ImageButton
+        android:id="@+id/social1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/social1"
+        android:src="@drawable/temp_social_icon"
+        app:layout_constraintStart_toStartOf="@id/artist_pro_pic"
+        app:layout_constraintTop_toBottomOf="@id/artist_pro_pic"
+        android:layout_marginStart="10dp"
+
+        />
+
+    <ImageButton
+        android:id="@+id/social2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:contentDescription="@string/social2"
+        android:src="@drawable/temp_social_icon"
+
+        app:layout_constraintLeft_toRightOf="@id/social1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/artist_pro_pic" />
+
+    <ImageButton
+        android:id="@+id/media1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/media1"
+        android:src="@drawable/temp_streaming_pic"
+        app:layout_constraintStart_toStartOf="@id/artist_pro_pic"
+        app:layout_constraintTop_toBottomOf="@id/social1"
+        android:layout_marginStart="10dp"
+
+        />
+
+    <ImageButton
+        android:id="@+id/media2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:contentDescription="@string/media2"
+        android:src="@drawable/temp_streaming_pic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/media1"
+        app:layout_constraintTop_toBottomOf="@id/social2"
+
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/artist_shows"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/media2" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

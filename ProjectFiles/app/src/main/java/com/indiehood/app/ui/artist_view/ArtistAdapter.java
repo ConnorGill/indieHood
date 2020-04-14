@@ -1,4 +1,4 @@
-package com.indiehood.app.ui.favorites;
+package com.indiehood.app.ui.artist_view;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,17 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
-
 import com.indiehood.app.R;
-import com.indiehood.app.ui.artist_view.Artist;
 
 // implements a recycler view using data pulled directly from firestore
-public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, FavoritesAdapter.FavoritesHolder> {
+public class ArtistAdapter extends FirestoreRecyclerAdapter<Artist, ArtistAdapter.FavoritesHolder> {
     private OnFavoriteClickListener listener;
     private TextView emptyList;
 
-    FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options,
-                     TextView emptyList) {
+    ArtistAdapter(@NonNull FirestoreRecyclerOptions<Artist> options,
+                  TextView emptyList) {
         super(options);
         this.emptyList = emptyList;
     }

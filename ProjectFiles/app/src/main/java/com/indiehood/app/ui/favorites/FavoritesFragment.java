@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.indiehood.app.R;
 import com.indiehood.app.databinding.FragmentFavoritesBinding;
+import com.indiehood.app.ui.artist_view.Artist;
 
 
 public class FavoritesFragment extends Fragment {
@@ -48,7 +49,6 @@ public class FavoritesFragment extends Fragment {
     private void setUpRecyclerView(View r) {
         final Query query = ArtistCollection.whereEqualTo("favorited", true);
         // add listener to see if there are no favorites to show
-        // TODO does not work perfectly; implement onDataChanged function to keep listening
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {

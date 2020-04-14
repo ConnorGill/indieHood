@@ -30,4 +30,13 @@
     <string name="register_band_name">Band name</string>
     <string name="communicate">Communicate</string>
     <string name="empty_favorites_message">Add favorites and they\'ll appear here!</string>
+    <string name="artist_cover_photo">artist_cover_photo</string>
+    <string name="artist_profile_picture">artist_profile_picture</string>
+    <string name="social1">social1</string>
+    <string name="social2">social2</string>
+    <string name="media1">streaming1</string>
+    <string name="media2">streamind2</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
