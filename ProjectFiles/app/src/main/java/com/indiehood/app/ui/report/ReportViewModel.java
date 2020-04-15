@@ -9,8 +9,10 @@ public class ReportViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
     public ReportViewModel() {
+
+        //LiveData<Classname> liveData = new MutableLiveData<Classname>();
         mText = new MutableLiveData<>();
-        mText.setValue("Have an issue with our app, a venue, or an artist? Tell us about it!");
+        //mText.setValue("Have an issue with our app, a venue, or an artist? Tell us about it!");
     }
 
     public LiveData<String> getText() {
