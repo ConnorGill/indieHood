@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <declare-styleable name="MultiSpinner">
+        <attr name="android:entries" />
+        <attr name='android:prompt' />
+    </declare-styleable>
+</resources>

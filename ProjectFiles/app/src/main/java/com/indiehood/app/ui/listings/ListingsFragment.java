@@ -1,11 +1,11 @@
 package com.indiehood.app.ui.listings;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.Spinner;
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,23 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Date;
-import java.util.Random;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
+import com.firebase.ui.firestore.ObservableSnapshotArray;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.indiehood.app.R;
 
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -38,16 +29,22 @@ import com.google.firebase.firestore.Query;
 public class ListingsFragment extends Fragment {
 
     private ListingsViewModel listingsViewModel;
+    private View root;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ListingAdapter mAdapter;
+    private MultiSpinner filter_options;
+    private Spinner sort_options;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         listingsViewModel = new ViewModelProvider(this).get(ListingsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_listings, container, false);
-        setupRecycler(root);
+        root = inflater.inflate(R.layout.fragment_listings, container, false);
+        setupRecycler();
+        setUpMultiSpinner();
+        setupDialogSpinner();
         return root;
     }
 
-    private Void setupRecycler(View root) {
+    private Void setupRecycler() {
     /*
         String[] stuff = {"Banana Rays", "Billie Eilish", "Chance the Rapper",  "Foo Fighters", "Four Tet", "Gears", "Journey", "Nine Inch Nails", "Phish", "The Grateful Dead"};
         String[] venue = {"Alcove", "BR House", "Copper Top",  "Druid City", "Egan's", "Gallettes", "Red Shed", "Wheelhouse"};
@@ -71,14 +68,12 @@ public class ListingsFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String currentDate = dateFormat.format(date);
-        Query query = ShowListing.whereGreaterThan("day", currentDate);   //change this to a more intelligent retrieval method later
-
-        FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
+        Query query = ShowListing.whereGreaterThan("day", currentDate).orderBy("day", Query.Direction.ASCENDING);   //change this to a more intelligent retrieval method later
+        final FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
                 .setQuery(query, ShowListing.class).build();
 
-        mAdapter = new ListingAdapter(options);
-        System.out.println(mAdapter.toString());
-        RecyclerView allListings = root.findViewById(R.id.listings);
+        mAdapter = new ListingAdapter(options, this);
+        final RecyclerView allListings = root.findViewById(R.id.listings);
         allListings.setHasFixedSize(true);
         allListings.setLayoutManager(new LinearLayoutManager(this.getContext()));
         allListings.setAdapter(mAdapter);
@@ -92,6 +87,17 @@ public class ListingsFragment extends Fragment {
 
         return null;
     }
+
+    private void setUpMultiSpinner() {
+        filter_options = root.findViewById(R.id.filter_options);
+        filter_options.addAdapter(mAdapter);
+    }
+
+    private void setupDialogSpinner() {
+        sort_options = root.findViewById(R.id.sort_options);
+        sort_options.setOnItemSelectedListener(new SortingSelection(mAdapter));
+    }
+
 
     @Override
     public void onStart() {
@@ -109,3 +115,4 @@ public class ListingsFragment extends Fragment {
 
 
 }
+

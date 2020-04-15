@@ -2,10 +2,11 @@ package com.indiehood.app.ui.listings;
 
 import com.google.type.Date;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-public class ShowListing {
+public class ShowListing implements Serializable {
     private String bandName;
     private String venueName;
     private String day;

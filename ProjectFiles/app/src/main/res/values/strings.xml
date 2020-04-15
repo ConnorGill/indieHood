@@ -30,4 +30,31 @@
     <string name="register_band_name">Band name</string>
     <string name="communicate">Communicate</string>
     <string name="empty_favorites_message">Add favorites and they\'ll appear here!</string>
+
+    <!-- Listing Filtering-->
+    <string name="filter_default">Filter</string>
+    <string name="filter">Filter</string>
+    <string-array name="filter_options">
+        <item>Filter Show Listings</item>
+        <item>Favorited: Bands</item>
+        <item>Date: Within 1 Week</item>
+        <item>Date: Within 1 Day</item>
+        <item>Price: Free</item>
+    </string-array>
+
+    <!-- Listing Sorting -->
+    <string name="sorting_default">Sort</string>
+    <string-array name="sort_options">
+        <item>Date: Soonest First</item>
+        <item>Price: Cheapest First</item>
+    </string-array>
+    <string name="title_activity_full_show">FullShow</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>
