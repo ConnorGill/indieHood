@@ -21,6 +21,11 @@
             android:id="@+id/nav_login"
             android:icon="@drawable/band_login"
             android:title="@string/menu_login" />
+
+        <item
+            android:id="@+id/nav_post"
+            android:icon="@drawable/post_show_foreground"
+            android:title="@string/menu_post" />
     </group>
 
     <item android:title="@string/communicate">

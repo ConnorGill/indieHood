@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 public class SuggestFragment extends Fragment {
 
-    private SuggestViewModel suggestViewModel;
+    private com.indiehood.app.ui.suggest.SuggestViewModel suggestViewModel;
 
     private Button mVenueButton;
     private EditText mVenueName;
@@ -38,7 +38,7 @@ public class SuggestFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         suggestViewModel =
-                ViewModelProviders.of(this).get(SuggestViewModel.class);
+                ViewModelProviders.of(this).get(com.indiehood.app.ui.suggest.SuggestViewModel.class);
         View root = inflater.inflate(R.layout.fragment_suggest, container, false);
         final TextView textView = root.findViewById(R.id.text_share);
         suggestViewModel.getText().observe(this, new Observer<String>() {
