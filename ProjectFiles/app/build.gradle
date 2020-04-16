@@ -56,4 +56,7 @@ dependencies {
     // firebase
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
     implementation 'com.firebaseui:firebase-ui-firestore:6.2.1'
+    //googleMaps
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 }

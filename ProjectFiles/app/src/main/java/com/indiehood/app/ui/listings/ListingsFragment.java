@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Date;
 
 import com.firebase.ui.firestore.ObservableSnapshotArray;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.indiehood.app.R;
 
 import java.text.DateFormat;
@@ -40,7 +42,7 @@ public class ListingsFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_listings, container, false);
         setupRecycler();
         setUpMultiSpinner();
-        setupDialogSpinner();
+        setupSingleSpinner();
         return root;
     }
 
@@ -69,6 +71,9 @@ public class ListingsFragment extends Fragment {
         Date date = new Date();
         String currentDate = dateFormat.format(date);
         Query query = ShowListing.whereGreaterThan("day", currentDate).orderBy("day", Query.Direction.ASCENDING);   //change this to a more intelligent retrieval method later
+       // Task<QuerySnapshot> stuff = query.get();
+     //   while(!stuff.isComplete()){}
+      //  System.out.println(stuff.getResult().getDocuments());
         final FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
                 .setQuery(query, ShowListing.class).build();
 
@@ -93,7 +98,7 @@ public class ListingsFragment extends Fragment {
         filter_options.addAdapter(mAdapter);
     }
 
-    private void setupDialogSpinner() {
+    private void setupSingleSpinner() {
         sort_options = root.findViewById(R.id.sort_options);
         sort_options.setOnItemSelectedListener(new SortingSelection(mAdapter));
     }

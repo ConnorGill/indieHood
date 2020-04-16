@@ -138,6 +138,93 @@ public class ShowListing implements Serializable {
         }
     }
 
+    public String getAdjustedTime() {
+        String time = getTime(); //format= 24 clock HH:MM
+        String[] divide = time.split(":");
+        if (divide.length == 2) {
+            int hours = Integer.parseInt(divide[0]);
+            String designation;
+            if (hours >= 12) {
+                designation = "PM";
+                if (hours != 12) {
+                    hours = hours - 12;
+                }
+            } else {
+                designation = "AM";
+            }
+            return hours + ":" + divide[1] + " " + designation;
+        }
+        else {
+            return time;
+        }
+    }
+
+    public String getAdjustedDate() {
+        String date = getDay();     //format = yyyy-MM-dd
+        String[] intervals = date.split("-");
+        if (intervals.length == 3) {
+            String month = intervals[1];
+            int day = Integer.parseInt(intervals[2]);
+            switch (month) {
+                case "01":
+                    month = "January";
+                    break;
+                case "02":
+                    month = "February";
+                    break;
+                case "03":
+                    month = "March";
+                    break;
+                case "04":
+                    month = "April";
+                    break;
+                case "05":
+                    month = "May";
+                    break;
+                case "06":
+                    month = "June";
+                    break;
+                case "07":
+                    month = "July";
+                    break;
+                case "08":
+                    month = "August";
+                    break;
+                case "09":
+                    month = "September";
+                    break;
+                case "10":
+                    month = "October";
+                    break;
+                case "11":
+                    month = "November";
+                    break;
+                case "12":
+                    month = "December";
+                    break;
+            }
+            String modifier;
+            switch(day) {
+                case 1:
+                    modifier = "st";
+                    break;
+                case 2:
+                    modifier = "nd";
+                    break;
+                case 3:
+                    modifier = "rd";
+                    break;
+                default:
+                    modifier = "th";
+                    break;
+            }
+            return month + " " + day + modifier;
+        }
+        else {
+            return date;
+        }
+    }
+
     public Boolean getBandFavorite() {
         //call overarching user class and pass getBandName() into checkFavorited() method
         //for now...

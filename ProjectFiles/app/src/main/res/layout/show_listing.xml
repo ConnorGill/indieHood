@@ -13,19 +13,10 @@
     tools:viewBindingIgnore="true">
 
     <RelativeLayout
+        android:id="@+id/show_listing"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp">
-
-        <ImageView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:padding="8dp"
-            android:src="@drawable/ic_calendar_placeholder" />
 
         <ImageView
             android:id="@+id/bandFavorited"
@@ -91,25 +82,65 @@
             android:textSize="17sp" />
 
         <TextView
+            android:id="@+id/day_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_above="@+id/time_label"
+            android:layout_toLeftOf="@+id/time"
+            android:paddingRight="10dp"
+            android:layout_marginRight="77dp"
+            android:text="Date:"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="5dp"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/time"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:text="showDay"
+            android:layout_marginBottom="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_above="@+id/price"
+            android:layout_toLeftOf="@+id/time"
+            android:paddingRight="10dp"
+            android:layout_marginRight="75dp"
+            android:layout_marginBottom="10dp"
+            android:text="Time:"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+        <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/date"
+            android:layout_above="@id/price"
             android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/listings"
-            android:paddingRight="10dp"
-            android:text="Time"
+            android:text="showTime"
+            android:layout_marginRight="5dp"
             android:textColor="@android:color/black"
+            android:layout_marginBottom="10dp"
             android:textSize="14sp" />
         <TextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/time"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:paddingRight="10dp"
             android:text="Price"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="17sp" />
+            android:textSize="17sp"
+            android:layout_marginBottom="5dp"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

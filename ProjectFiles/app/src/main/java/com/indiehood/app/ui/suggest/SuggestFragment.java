@@ -41,7 +41,7 @@ public class SuggestFragment extends Fragment {
                 ViewModelProviders.of(this).get(SuggestViewModel.class);
         View root = inflater.inflate(R.layout.fragment_suggest, container, false);
         final TextView textView = root.findViewById(R.id.text_share);
-        suggestViewModel.getText().observe(this, new Observer<String>() {
+        suggestViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

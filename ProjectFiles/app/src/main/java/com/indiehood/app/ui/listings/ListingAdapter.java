@@ -56,7 +56,8 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
     protected void onBindViewHolder(@NonNull final ListingHolder holder, final int position, @NonNull final ShowListing model) {
         holder.mTextBandName.setText(model.getBandName());
         holder.mTextVenue.setText(model.getVenueName());
-        holder.mTextTime.setText(model.getTime());
+        holder.mTextTime.setText(model.getAdjustedTime());
+        holder.mTextDate.setText(model.getAdjustedDate());
         holder.mInterestedText.setText(model.getInterestedText());
         holder.mPrice.setText(model.getStringifiedPrice());
         if (model.getBandFavorite()){
@@ -122,7 +123,6 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
         Date currentDate = new Date();
         String formattedCurrent = dateFormat.format(currentDate);
         Query result = null;
-        Boolean priceEquality = false;
         if (this.filters.contains("Favorited: Bands")) {
             if (result != null) {
                 result = result.whereEqualTo("userInterested", true);
@@ -164,10 +164,12 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
             else {
                 result = ShowListing.whereEqualTo("price", 0);
             }
-            priceEquality = true;
         }
         if (result == null) {
-            if ("Price: Cheapest First".contains(sort) && priceEquality != true) {
+            if ("Interested: Most First".contains(sort)) {
+                result = ShowListing.whereGreaterThan("numberInterested", -1).orderBy("numberInterested", Query.Direction.DESCENDING);
+            }
+            else if ("Price: Cheapest First".contains(sort)) {
                 result = ShowListing.whereGreaterThan("price", -1).orderBy("price", Query.Direction.ASCENDING);
             }
             else if ("Date: Soonest First".contains(sort)) {
@@ -198,6 +200,7 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
         public TextView mTextBandName;
         public TextView mTextVenue;
         public TextView mTextTime;
+        public TextView mTextDate;
         public TextView mInterestedText;
         public ImageView mBandFavorited;
         public CheckBox mUserInterested;
@@ -212,6 +215,7 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
             mBandFavorited = itemView.findViewById(R.id.bandFavorited);
             mUserInterested = itemView.findViewById(R.id.interested);
             mPrice = itemView.findViewById(R.id.price);
+            mTextDate = itemView.findViewById(R.id.day);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -40,6 +40,7 @@
         <item>Date: Within 1 Week</item>
         <item>Date: Within 1 Day</item>
         <item>Price: Free</item>
+    <!--    <item>Interested: I'm Interested</item> add once mega user exists -->
     </string-array>
 
     <!-- Listing Sorting -->
@@ -47,6 +48,7 @@
     <string-array name="sort_options">
         <item>Date: Soonest First</item>
         <item>Price: Cheapest First</item>
+        <item>Interested: Most First</item>
     </string-array>
     <string name="title_activity_full_show">FullShow</string>
     <!-- Strings used for fragments for navigation -->
@@ -57,4 +59,22 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <!-- Strings for Show Listing Placeholders -->
+    <string name="description">Description:</string>
+    <string name="details">Details:</string>
+    <string name="fulladdress">fullAddress</string>
+    <string name="show_address">show address</string>
+    <string name="show_time">show time</string>
+    <string name="price">Price</string>
+    <string name="fulldate">fullDate</string>
+    <string name="favorited_artist">favorited artist</string>
+    <string name="view_artist_page">View Artist Page</string>
+    <string name="_0">0</string>
+    <string name="interested">interested</string>
+    <string name="_0_interested">0 interested</string>
+    <string name="interested_button">Interested?</string>
+    <string name="view_artist">View Artist</string>
+    <string name="bandname">BandName</string>
+    <string name="show_description">show Description</string>
 </resources>
