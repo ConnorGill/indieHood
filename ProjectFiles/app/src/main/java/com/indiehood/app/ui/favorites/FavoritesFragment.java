@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,10 +25,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
+import com.indiehood.app.MainActivity;
 import com.indiehood.app.R;
 import com.indiehood.app.databinding.FragmentFavoritesBinding;
 import com.indiehood.app.ui.artist_view.Artist;
-
 
 public class FavoritesFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -66,7 +67,7 @@ public class FavoritesFragment extends Fragment {
         // pass empty list for OnDataChanged() method to use if no favorites populated
         adapter = new FavoritesAdapter(options, emptyList);
 
-        RecyclerView favorites_rv = r.findViewById(R.id.favorites_rv);
+        final RecyclerView favorites_rv = r.findViewById(R.id.favorites_rv);
         favorites_rv.setHasFixedSize(true);
         favorites_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         favorites_rv.setAdapter(adapter);
@@ -93,6 +94,17 @@ public class FavoritesFragment extends Fragment {
                         Log.w(TAG, "Transaction failure.", e);
                     }
                 });
+            }
+        });
+
+        // for when the user clicks an artist entirely
+        adapter.setOnArtistClickListener(new FavoritesAdapter.OnArtistClickListener() {
+            final String TAG = "onArtistClick";
+            @Override
+            public void onArtistClick(DocumentSnapshot snapshot, int position) {
+                String id = snapshot.getId();
+                Toast.makeText(getContext(), "Position: " + position + " ID: " + id, Toast.LENGTH_SHORT).show();
+                // TODO implement sending user to correct artist view
             }
         });
     }

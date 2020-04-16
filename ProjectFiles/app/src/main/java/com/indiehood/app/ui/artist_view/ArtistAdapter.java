@@ -14,16 +14,13 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.indiehood.app.R;
+import com.indiehood.app.ui.favorites.FavoritesAdapter;
 
 // implements a recycler view using data pulled directly from firestore
-public class ArtistAdapter extends FirestoreRecyclerAdapter<Artist, ArtistAdapter.FavoritesHolder> {
-    private OnFavoriteClickListener listener;
-    private TextView emptyList;
+/*public class ArtistAdapter extends FirestoreRecyclerAdapter<Artist, ArtistAdapter.FavoritesHolder> {
 
-    ArtistAdapter(@NonNull FirestoreRecyclerOptions<Artist> options,
-                  TextView emptyList) {
+    ArtistAdapter(@NonNull FirestoreRecyclerOptions<Artist> options) {
         super(options);
-        this.emptyList = emptyList;
     }
 
     class FavoritesHolder extends RecyclerView.ViewHolder {
@@ -62,15 +59,10 @@ public class ArtistAdapter extends FirestoreRecyclerAdapter<Artist, ArtistAdapte
         if (currArtist.getBio() != null) {
             viewHolder.artistBio.setText(currArtist.getBio());
         }
-        // icon.setImageIcon(); TODO how to implement? Right now they are hardcoded
+        // icon.setImageIcon(); TODO implement firebase storage
         if (currArtist.getFavorited()) {
             viewHolder.favorite.setEnabled(currArtist.getFavorited());
         }
-    }
-
-    @Override
-    public void onDataChanged() {
-        emptyList.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @NonNull
@@ -81,9 +73,13 @@ public class ArtistAdapter extends FirestoreRecyclerAdapter<Artist, ArtistAdapte
 
         return new FavoritesHolder(favoriteView);
     }
-    /*
-    this interface and its public function are callbacks for the on click listener
-     */
+
+    @Override
+    public void onDataChanged() {
+        emptyList.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
+    }
+
+    // this interface and its public function are callbacks for the on click listener
     public interface OnFavoriteClickListener {
         void onFavoriteClick(DocumentSnapshot snapshot, int position);
     }
@@ -91,4 +87,4 @@ public class ArtistAdapter extends FirestoreRecyclerAdapter<Artist, ArtistAdapte
     void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
         this.listener = listener;
     }
-}
+}*/

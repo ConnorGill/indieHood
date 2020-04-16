@@ -6,8 +6,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -19,11 +21,27 @@ import com.indiehood.app.ui.artist_view.Artist;
 
 // implements a recycler view using data pulled directly from firestore
 public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, FavoritesAdapter.FavoritesHolder> {
-    private OnFavoriteClickListener listener;
+    private OnFavoriteClickListener favoriteClickListener;
+    private OnArtistClickListener artistClickListener;
     private TextView emptyList;
+    // this interface and its public function are callbacks for favorite click listener
+    public interface OnFavoriteClickListener {
+        void onFavoriteClick(DocumentSnapshot snapshot, int position);
+    }
 
-    FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options,
-                     TextView emptyList) {
+    void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
+        this.favoriteClickListener = listener;
+    }
+    // this interface and pub function are callbacks for whole card click
+    public interface OnArtistClickListener {
+        void onArtistClick(DocumentSnapshot snapshot, int position);
+    }
+
+    public void setOnArtistClickListener(OnArtistClickListener listener) {
+        this.artistClickListener = listener;
+    }
+
+    FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options, TextView emptyList) {
         super(options);
         this.emptyList = emptyList;
     }
@@ -33,10 +51,12 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
         TextView artistBio;
         ImageView artistIcon;
         CheckBox favorite;
+        CardView artistCard;
 
-        FavoritesHolder(View itemView) {
+        public FavoritesHolder(final View itemView) {
             super(itemView);
             // initialize the items to appear in each card in recycler view
+            artistCard = itemView.findViewById(R.id.fav_card);
             artistIcon = itemView.findViewById(R.id.band_venue_icon);
             artistName = itemView.findViewById(R.id.band_venue_name);
             artistBio = itemView.findViewById(R.id.band_venue_description);
@@ -47,32 +67,22 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onFavoriteClick(getSnapshots().getSnapshot(position), position);
+                    if (position != RecyclerView.NO_POSITION && favoriteClickListener != null) {
+                        favoriteClickListener.onFavoriteClick(getSnapshots().getSnapshot(position), position);
+                    }
+                }
+            });
+            // sets on click listener for when a card is clicked
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && artistClickListener != null) {
+                        artistClickListener.onArtistClick(getSnapshots().getSnapshot(position), position);
                     }
                 }
             });
         }
-    }
-
-    @Override
-    protected void onBindViewHolder(@NonNull FavoritesHolder viewHolder, int position,
-                                    @NonNull Artist currArtist) {
-        if (currArtist.getArtistName() != null) {
-            viewHolder.artistName.setText(currArtist.getArtistName());
-        }
-        if (currArtist.getBio() != null) {
-            viewHolder.artistBio.setText(currArtist.getBio());
-        }
-        // icon.setImageIcon(); TODO how to implement? Right now they are hardcoded
-        if (currArtist.getFavorited()) {
-            viewHolder.favorite.setEnabled(currArtist.getFavorited());
-        }
-    }
-
-    @Override
-    public void onDataChanged() {
-        emptyList.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @NonNull
@@ -83,14 +93,29 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
 
         return new FavoritesHolder(favoriteView);
     }
-    /*
-    this interface and its public function are callbacks for the on click listener
-     */
-    public interface OnFavoriteClickListener {
-        void onFavoriteClick(DocumentSnapshot snapshot, int position);
+
+    @Override
+    protected void onBindViewHolder(@NonNull FavoritesHolder viewHolder, int position,
+                                    @NonNull Artist currArtist) {
+        if (currArtist.getArtistName() != null) { viewHolder.artistName.setText(currArtist.getArtistName()); }
+        if (currArtist.getBio() != null) { viewHolder.artistBio.setText(currArtist.getBio()); }
+        // icon.setImageIcon(); TODO implement firebase storage
+        if (currArtist.getFavorited()) { viewHolder.favorite.setEnabled(currArtist.getFavorited()); }
     }
 
-    void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
-        this.listener = listener;
+    @Override
+    public void onDataChanged() {
+        emptyList.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
+
+    // this interface and its public function are callbacks for artist click listener
+    // sends user to expanded artist view
+
+    /*public interface OnArtistClickListener {
+        void onArtistClick(DocumentSnapshot snapshot, int position);
+    }
+
+    void setOnArtistClickListener(OnArtistClickListener listener) {
+        this.artistClickListener = listener;
+    }*/
 }
