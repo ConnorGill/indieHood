@@ -14,4 +14,52 @@
     <string name="menu_suggest">Suggest Venue</string>
     <string name="menu_report">Report Issue</string>
     <string name="menu_terms">Terms of Service</string>
+<<<<<<< Updated upstream
+=======
+
+    <string name="artist">This is an artist</string>
+    <string name="venue">This is a venue</string>
+    <string name="band_venue_icon_cd">Band/venue content description</string>
+    <string name="band_venue_icon">artist/venue icon</string>
+    <string name="favorite_button_card">favorite_button</string>
+    <string name="favorites_dummy_text">Add favorites and they\'ll appear here!</string>
+    <string name="band_bio">Band bio</string>
+    <string name="login_message">Artists, Login Below to Access Account</string>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Username</string>
+    <string name="register">Register</string>
+    <string name="menu_register">Register</string>
+    <string name="registration_title">To Register, Please Fill Out Form Below:</string>
+    <string name="register_band_name">Band name</string>
+    <string name="communicate">Communicate</string>
+    <string name="empty_favorites_message">Add favorites and they\'ll appear here!</string>
+    <string name="Registration_Page">Artist Registration: Complete Form Below</string>
+
+    <!-- Listing Filtering-->
+    <string name="filter_default">Filter</string>
+    <string name="filter">Filter</string>
+    <string-array name="filter_options">
+        <item>Filter Show Listings</item>
+        <item>Favorited: Bands</item>
+        <item>Date: Within 1 Week</item>
+        <item>Date: Within 1 Day</item>
+        <item>Price: Free</item>
+    </string-array>
+
+    <!-- Listing Sorting -->
+    <string name="sorting_default">Sort</string>
+    <string-array name="sort_options">
+        <item>Date: Soonest First</item>
+        <item>Price: Cheapest First</item>
+    </string-array>
+    <string name="title_activity_full_show">FullShow</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+>>>>>>> Stashed changes
 </resources>
