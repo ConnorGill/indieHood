@@ -1,4 +1,4 @@
-package com.indiehood.app.ui.favorites;
+package com.indiehood.app.ui.artist_view;
 
 import android.media.Image;
 import android.util.Log;
@@ -11,17 +11,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Artist {
-    // get instance of current database TODO maybe move from Artist?
-    //private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    // create reference directly to ArtistCollection
-    //private CollectionReference ArtistCollection = this.db.collection("ArtistCollection");
     private String artistName;
     private boolean favorited;
     private String bio;
     private int rating;
     private String social1;
     private String social2;
-    private String media1; // link to streaming service
+    private String media1;
     private String media2;
     private Image profilePicture;
     private Image coverPhoto;
@@ -59,7 +55,6 @@ public class Artist {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // TODO change to toasts in production
                         Log.d(TAG, "Error writing document: " + e.toString());
                     }
                 });

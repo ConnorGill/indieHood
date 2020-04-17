@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,21 +27,24 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.indiehood.app.R;
-import com.indiehood.app.databinding.FragmentFavoritesBinding;
+import com.indiehood.app.ui.SharedArtistViewModel;
+import com.indiehood.app.ui.artist_view.Artist;
 
+import java.util.Objects;
 
 public class FavoritesFragment extends Fragment {
+    // to communicate with artist view
+    private SharedArtistViewModel viewModel;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ArtistCollection = db.collection("ArtistCollection");
     private FavoritesAdapter adapter;
     private TextView emptyList;
-    private FragmentFavoritesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = FragmentFavoritesBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        View root = inflater.inflate(R.layout.fragment_favorites, container, false);
         emptyList = root.findViewById(R.id.empty_rv);
+        viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
         setUpRecyclerView(root);
 
         return root;
@@ -48,10 +53,10 @@ public class FavoritesFragment extends Fragment {
     private void setUpRecyclerView(View r) {
         final Query query = ArtistCollection.whereEqualTo("favorited", true);
         // add listener to see if there are no favorites to show
-        // TODO does not work perfectly; implement onDataChanged function to keep listening
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                @Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null && queryDocumentSnapshots.isEmpty()) {
                     emptyList.setVisibility(View.VISIBLE);
                     // no favorites, so return
@@ -66,7 +71,7 @@ public class FavoritesFragment extends Fragment {
         // pass empty list for OnDataChanged() method to use if no favorites populated
         adapter = new FavoritesAdapter(options, emptyList);
 
-        RecyclerView favorites_rv = r.findViewById(R.id.favorites_rv);
+        final RecyclerView favorites_rv = r.findViewById(R.id.favorites_rv);
         favorites_rv.setHasFixedSize(true);
         favorites_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         favorites_rv.setAdapter(adapter);
@@ -95,6 +100,19 @@ public class FavoritesFragment extends Fragment {
                 });
             }
         });
+
+        // for when the user clicks an artist entirely
+         adapter.setOnArtistClickListener(new FavoritesAdapter.OnArtistClickListener() {
+            final String TAG = "onArtistClick";
+            @Override
+            public void onArtistClick(DocumentSnapshot snapshot, int position) {
+                assert snapshot != null;
+                String path = snapshot.getReference().getPath();
+                viewModel.setArtistPath(path);
+                // TODO send user to ArtistFragment
+                Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.nav_artist_view);
+            }
+        });
     }
 
     @Override
@@ -107,11 +125,5 @@ public class FavoritesFragment extends Fragment {
     public void onStop() {
         super.onStop();
         adapter.stopListening();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

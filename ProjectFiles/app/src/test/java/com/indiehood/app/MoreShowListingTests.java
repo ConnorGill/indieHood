@@ -1,6 +1,5 @@
 package com.indiehood.app;
 
-        import com.indiehood.app.ui.favorites.Artist;
         import com.indiehood.app.ui.listings.ShowListing;
 
         import org.junit.Test;
