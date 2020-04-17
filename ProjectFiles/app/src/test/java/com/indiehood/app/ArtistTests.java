@@ -1,6 +1,6 @@
 package com.indiehood.app;
 
-import com.indiehood.app.ui.favorites.Artist;
+import com.indiehood.app.ui.artist_view.Artist;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
