@@ -27,7 +27,8 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final ListingHolder holder, final int position, @NonNull final ShowListing model) {
+    protected void onBindViewHolder(@NonNull final ListingHolder holder, final int position,
+                                    @NonNull final ShowListing model) {
         holder.mTextBandName.setText(model.getBandName());
         holder.mTextVenue.setText(model.getVenueName());
         holder.mTextTime.setText(model.getTime());

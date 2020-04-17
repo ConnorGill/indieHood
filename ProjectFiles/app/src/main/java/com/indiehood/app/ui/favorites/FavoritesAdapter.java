@@ -1,10 +1,12 @@
 package com.indiehood.app.ui.favorites;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +39,7 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
         void onArtistClick(DocumentSnapshot snapshot, int position);
     }
 
-    public void setOnArtistClickListener(OnArtistClickListener listener) {
+    void setOnArtistClickListener(OnArtistClickListener listener) {
         this.artistClickListener = listener;
     }
 
@@ -51,7 +53,7 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
         TextView artistBio;
         ImageView artistIcon;
         CheckBox favorite;
-        CardView artistCard;
+        RelativeLayout artistCard;
 
         public FavoritesHolder(final View itemView) {
             super(itemView);
@@ -73,7 +75,7 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
                 }
             });
             // sets on click listener for when a card is clicked
-            itemView.setOnClickListener(new View.OnClickListener() {
+            artistCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
@@ -95,27 +97,20 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull FavoritesHolder viewHolder, int position,
+    protected void onBindViewHolder(@NonNull FavoritesHolder viewHolder, final int position,
                                     @NonNull Artist currArtist) {
-        if (currArtist.getArtistName() != null) { viewHolder.artistName.setText(currArtist.getArtistName()); }
+        if (currArtist.getArtistName() != null) {
+            viewHolder.artistName.setText(currArtist.getArtistName());
+        }
         if (currArtist.getBio() != null) { viewHolder.artistBio.setText(currArtist.getBio()); }
         // icon.setImageIcon(); TODO implement firebase storage
-        if (currArtist.getFavorited()) { viewHolder.favorite.setEnabled(currArtist.getFavorited()); }
+        if (currArtist.getFavorited()) {
+            viewHolder.favorite.setEnabled(currArtist.getFavorited());
+        }
     }
 
     @Override
     public void onDataChanged() {
         emptyList.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
-
-    // this interface and its public function are callbacks for artist click listener
-    // sends user to expanded artist view
-
-    /*public interface OnArtistClickListener {
-        void onArtistClick(DocumentSnapshot snapshot, int position);
-    }
-
-    void setOnArtistClickListener(OnArtistClickListener listener) {
-        this.artistClickListener = listener;
-    }*/
 }

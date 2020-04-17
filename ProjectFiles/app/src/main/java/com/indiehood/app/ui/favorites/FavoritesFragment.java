@@ -1,5 +1,6 @@
 package com.indiehood.app.ui.favorites;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,9 +31,12 @@ import com.google.firebase.firestore.Transaction;
 import com.indiehood.app.MainActivity;
 import com.indiehood.app.R;
 import com.indiehood.app.databinding.FragmentFavoritesBinding;
+import com.indiehood.app.ui.SharedArtistViewModel;
 import com.indiehood.app.ui.artist_view.Artist;
 
 public class FavoritesFragment extends Fragment {
+    // to communicate with artist view
+    private SharedArtistViewModel viewModel;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ArtistCollection = db.collection("ArtistCollection");
     private FavoritesAdapter adapter;
@@ -42,6 +48,7 @@ public class FavoritesFragment extends Fragment {
         binding = FragmentFavoritesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         emptyList = root.findViewById(R.id.empty_rv);
+        viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
         setUpRecyclerView(root);
 
         return root;
@@ -52,7 +59,8 @@ public class FavoritesFragment extends Fragment {
         // add listener to see if there are no favorites to show
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                @Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null && queryDocumentSnapshots.isEmpty()) {
                     emptyList.setVisibility(View.VISIBLE);
                     // no favorites, so return
@@ -98,13 +106,13 @@ public class FavoritesFragment extends Fragment {
         });
 
         // for when the user clicks an artist entirely
-        adapter.setOnArtistClickListener(new FavoritesAdapter.OnArtistClickListener() {
+         adapter.setOnArtistClickListener(new FavoritesAdapter.OnArtistClickListener() {
             final String TAG = "onArtistClick";
             @Override
             public void onArtistClick(DocumentSnapshot snapshot, int position) {
-                String id = snapshot.getId();
-                Toast.makeText(getContext(), "Position: " + position + " ID: " + id, Toast.LENGTH_SHORT).show();
-                // TODO implement sending user to correct artist view
+                String path = snapshot.getReference().getPath();
+                viewModel.setArtistPath(path);
+                // TODO send user to artist view
             }
         });
     }
