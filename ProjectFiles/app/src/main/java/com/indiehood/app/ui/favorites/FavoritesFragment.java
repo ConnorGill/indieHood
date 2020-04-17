@@ -1,19 +1,17 @@
 package com.indiehood.app.ui.favorites;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,11 +26,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
-import com.indiehood.app.MainActivity;
 import com.indiehood.app.R;
-import com.indiehood.app.databinding.FragmentFavoritesBinding;
 import com.indiehood.app.ui.SharedArtistViewModel;
 import com.indiehood.app.ui.artist_view.Artist;
+
+import java.util.Objects;
 
 public class FavoritesFragment extends Fragment {
     // to communicate with artist view
@@ -41,12 +39,10 @@ public class FavoritesFragment extends Fragment {
     private CollectionReference ArtistCollection = db.collection("ArtistCollection");
     private FavoritesAdapter adapter;
     private TextView emptyList;
-    private FragmentFavoritesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = FragmentFavoritesBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        View root = inflater.inflate(R.layout.fragment_favorites, container, false);
         emptyList = root.findViewById(R.id.empty_rv);
         viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
         setUpRecyclerView(root);
@@ -110,9 +106,11 @@ public class FavoritesFragment extends Fragment {
             final String TAG = "onArtistClick";
             @Override
             public void onArtistClick(DocumentSnapshot snapshot, int position) {
+                assert snapshot != null;
                 String path = snapshot.getReference().getPath();
                 viewModel.setArtistPath(path);
-                // TODO send user to artist view
+                // TODO send user to ArtistFragment
+                Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.nav_artist_view);
             }
         });
     }
@@ -127,11 +125,5 @@ public class FavoritesFragment extends Fragment {
     public void onStop() {
         super.onStop();
         adapter.stopListening();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

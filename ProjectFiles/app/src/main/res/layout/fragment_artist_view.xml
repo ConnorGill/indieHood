@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="The Band Name"
+        android:text="@string/dummy_band_name"
         android:textColor="@color/colorAccent"
         android:textSize="35sp"
         android:textStyle="bold"
@@ -52,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:maxLines="6"
-        android:text="This is a test band biography. Preferably, it will be about three lines long. This ensures that the recycler view below is not obscured."
+        android:text="@string/dummy_bio"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@id/band_name"
@@ -71,7 +71,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/social2"
         app:layout_constraintTop_toBottomOf="@id/artist_pro_pic"
-        app:layout_constraintBottom_toTopOf="media1"
+        app:layout_constraintBottom_toTopOf="@id/media1"
         android:background="@null"
 
         />
@@ -137,7 +137,7 @@
         android:id="@+id/favorite_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Favorite"
+        android:text="@string/favorite_prompt"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
@@ -155,7 +155,7 @@
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/media2" />
+        app:layout_constraintTop_toBottomOf="@id/favorite_prompt" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

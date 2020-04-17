@@ -39,4 +39,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="favorite_prompt">Favorite</string>
+    <string name="dummy_band_name">Band Name</string>
+    <string name="dummy_bio">This is a test band biography. Preferably, it will be about three lines long. This ensures that the recycler view below is not obscured.</string>
 </resources>
