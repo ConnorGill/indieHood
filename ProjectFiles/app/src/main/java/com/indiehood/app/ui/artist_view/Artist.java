@@ -17,7 +17,7 @@ public class Artist {
     private int rating;
     private String social1;
     private String social2;
-    private String media1; // link to streaming service
+    private String media1;
     private String media2;
     private Image profilePicture;
     private Image coverPhoto;

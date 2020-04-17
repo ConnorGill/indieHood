@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Transaction;
 import com.indiehood.app.R;
 import com.indiehood.app.ui.SharedArtistViewModel;
 
@@ -30,6 +33,11 @@ public class ArtistFragment extends Fragment {
     private ImageView proPic; // TODO implement firebase storage
     private TextView bandName;
     private TextView bandBio;
+    private CheckBox favorited;
+    private ImageButton twitter;
+    private ImageButton instagram;
+    private ImageButton appleMusic;
+    private ImageButton spotify;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference artistRef;
     private Artist artist;
@@ -44,9 +52,37 @@ public class ArtistFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_artist_view, container, false);
         bandName = root.findViewById(R.id.band_name);
         bandBio = root.findViewById(R.id.band_bio);
+        favorited = root.findViewById(R.id.favorite_button);
+        favorited.setOnClickListener(new FavoriteButtonClick());
         // TODO set up artist listing recycler view
 
         return root;
+    }
+
+    private void favoriteButtonClicked() {
+        final String TAG = "favButtonClicked";
+        artist.setFavorited(!artist.getFavorited());
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Nullable
+            @Override
+            public Void apply(@NonNull Transaction transaction) {
+                transaction.update(artistRef, "favorited", artist.getFavorited());
+                return null;
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Transaction failure.", e);
+            }
+        });
+        favorited.setEnabled(artist.getFavorited());
+    }
+
+    class FavoriteButtonClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            favoriteButtonClicked();
+        }
     }
 
     @Override

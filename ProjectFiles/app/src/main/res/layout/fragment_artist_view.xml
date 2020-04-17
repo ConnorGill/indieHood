@@ -27,7 +27,6 @@
         android:src="@drawable/temp_pro_pic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cover_photo"
-
         />
 
     <TextView
@@ -43,8 +42,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.194"
         app:layout_constraintStart_toEndOf="@id/artist_pro_pic"
-
-
         app:layout_constraintTop_toBottomOf="@id/cover_photo" />
 
     <TextView
@@ -58,64 +55,71 @@
         app:layout_constraintEnd_toEndOf="@id/band_name"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/band_name"
+        app:layout_constraintTop_toBottomOf="@id/band_name"
+        />
 
-        app:layout_constraintTop_toBottomOf="@id/band_name" />
-
+    <!-- TODO add links to image buttons -->
     <ImageButton
-        android:id="@+id/social1"
+        android:id="@+id/twitter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:contentDescription="@string/social1"
         android:src="@drawable/twitter"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/social2"
+        app:layout_constraintEnd_toStartOf="@id/instagram"
         app:layout_constraintTop_toBottomOf="@id/artist_pro_pic"
-        app:layout_constraintBottom_toTopOf="@id/media1"
+        app:layout_constraintBottom_toTopOf="@id/appleMusic"
         android:background="@null"
+        android:clickable="true"
+        android:focusable="true"
 
         />
 
     <ImageButton
-        android:id="@+id/social2"
+        android:id="@+id/instagram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:contentDescription="@string/social2"
-        android:src="@drawable/fb"
+        android:src="@drawable/ig"
         android:background="@null"
-
-        app:layout_constraintLeft_toRightOf="@id/social1"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintLeft_toRightOf="@id/twitter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/artist_pro_pic"
 
         />
 
     <ImageButton
-        android:id="@+id/media1"
+        android:id="@+id/appleMusic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:contentDescription="@string/media1"
         android:src="@drawable/am"
         android:background="@null"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintStart_toStartOf="@id/artist_pro_pic"
-        app:layout_constraintTop_toBottomOf="@id/social1"
+        app:layout_constraintTop_toBottomOf="@id/twitter"
 
         />
 
     <ImageButton
-        android:id="@+id/media2"
+        android:id="@+id/spotify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:contentDescription="@string/media2"
         android:src="@drawable/spotify"
         android:background="@null"
-        app:layout_constraintLeft_toRightOf="@id/media1"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintLeft_toRightOf="@id/appleMusic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/social2"
-
+        app:layout_constraintTop_toBottomOf="@id/instagram"
         />
 
     <CheckBox
@@ -131,7 +135,7 @@
         android:src="@drawable/favorites_icon"
         app:layout_constraintBottom_toTopOf="@+id/artist_shows"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/media1" />
+        app:layout_constraintTop_toBottomOf="@+id/appleMusic" />
 
     <TextView
         android:id="@+id/favorite_prompt"
@@ -142,10 +146,10 @@
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toTopOf="@+id/artist_shows"
-        app:layout_constraintEnd_toEndOf="@+id/media2"
+        app:layout_constraintEnd_toEndOf="@+id/spotify"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/favorite_button"
-        app:layout_constraintTop_toBottomOf="@+id/media1"
+        app:layout_constraintTop_toBottomOf="@+id/appleMusic"
         app:layout_constraintVertical_bias="0.375" />
 
     <androidx.recyclerview.widget.RecyclerView
