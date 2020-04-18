@@ -77,4 +77,6 @@
     <string name="view_artist">View Artist</string>
     <string name="bandname">BandName</string>
     <string name="show_description">show Description</string>
+    <string name="address1">address1</string>
+    <string name="address2">address2</string>
 </resources>

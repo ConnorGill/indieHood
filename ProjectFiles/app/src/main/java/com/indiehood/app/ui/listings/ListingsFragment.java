@@ -23,6 +23,9 @@ import com.indiehood.app.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,36 +50,37 @@ public class ListingsFragment extends Fragment {
     }
 
     private Void setupRecycler() {
-    /*
-        String[] stuff = {"Banana Rays", "Billie Eilish", "Chance the Rapper",  "Foo Fighters", "Four Tet", "Gears", "Journey", "Nine Inch Nails", "Phish", "The Grateful Dead"};
-        String[] venue = {"Alcove", "BR House", "Copper Top",  "Druid City", "Egan's", "Gallettes", "Red Shed", "Wheelhouse"};
-        Double[] prices = {0.0, 0.0, 0.0, 10.00, 5.00};
         CollectionReference ShowListing = db.collection("ShowListingCol");
+       /* String[] stuff = {"Banana Rays", "Billie Eilish", "Chance the Rapper",  "Foo Fighters", "Four Tet", "Gears", "Journey", "Nine Inch Nails", "Phish", "The Grateful Dead"};
+        String[] venue = {"Alcove", "BR House", "Copper Top",  "Druid City", "Egan's", "Gallettes", "Red Shed", "Wheelhouse"};
+        Double[] prices = {0.0, 6.50, 9.0, 10.00, 5.00};
+        String[][] times = { {"18:00", "20:00"}, {"18:30", "20:30"}, {"22:15", "1:30"}};
+        //CollectionReference ShowListing = db.collection("ShowListingCol");
         for (int i = 0;  i < 20; i++) {
             Map<String, Object> data = new HashMap<>();
             data.put("bandName", stuff[ThreadLocalRandom.current().nextInt(stuff.length)]);
             data.put("day", "2020-08-12");
-            data.put("time", "18:00");
+            String[] time = times[ThreadLocalRandom.current().nextInt(times.length)];
+            data.put("startTime", time[0]);
+            data.put("endTime", time[1]);
             data.put("venueName", venue[ThreadLocalRandom.current().nextInt(venue.length)]);
             data.put("numberInterested", ThreadLocalRandom.current().nextInt(4));
             data.put("price", prices[ThreadLocalRandom.current().nextInt(prices.length)]);
-            data.put("address", "4383 Courtney Dr, Tuscaloosa, AL 35405");
+            data.put("address1", "4383 Courtney Dr");
+            data.put("address2", "Tuscaloosa, AL 35405");
+            data.put("addressLat", 33.166504);
+            data.put("addressLong", -87.548277);
             data.put("description", "NOT canceled due to COVID-19 (yet)");
             data.put("userInterested", false);
             ShowListing.add(data);
         } */
-        CollectionReference ShowListing = db.collection("ShowListingCol");
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String currentDate = dateFormat.format(date);
         Query query = ShowListing.whereGreaterThan("day", currentDate).orderBy("day", Query.Direction.ASCENDING);   //change this to a more intelligent retrieval method later
-       // Task<QuerySnapshot> stuff = query.get();
-     //   while(!stuff.isComplete()){}
-      //  System.out.println(stuff.getResult().getDocuments());
         final FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
                 .setQuery(query, ShowListing.class).build();
-
         mAdapter = new ListingAdapter(options, this);
         final RecyclerView allListings = root.findViewById(R.id.listings);
         allListings.setHasFixedSize(true);

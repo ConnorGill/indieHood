@@ -1,5 +1,6 @@
 package com.indiehood.app.ui.show;
 
+import android.annotation.SuppressLint;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -61,16 +62,29 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        double lat = 33.166504;             //grab from show class once lat/log values for venues are integrated in firebase
+        double lat = 33.166504;
         double log = -87.548277;
         LatLng venue = new LatLng(lat, log);
         mMap.addMarker(new MarkerOptions().position(venue).title(show.getVenueName()));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(venue, 15));
     }
 
+    @SuppressLint("SetTextI18n")
     private void injectData() {
         TextView bandName = root.findViewById(R.id.bandName);
+        TextView interestedCount = root.findViewById(R.id.full_interested_count);
+        TextView price = root.findViewById(R.id.full_show_price);
+        TextView date = root.findViewById(R.id.full_date);
+        TextView address1 = root.findViewById(R.id.address1);
+        TextView address2 = root.findViewById(R.id.address2);
+        TextView description = root.findViewById(R.id.show_description);
 
         bandName.setText(show.getBandName());
+        interestedCount.setText(show.getNumberInterested() + " interested");
+        price.setText(show.priceFormatted);
+        date.setText(show.dateMonth + " " + show.dateDay + " " + show.dateYear);
+        address1.setText(show.getAddress1());
+        address2.setText(show.getAddress2());
+        description.setText(show.getDescription());
     }
 }

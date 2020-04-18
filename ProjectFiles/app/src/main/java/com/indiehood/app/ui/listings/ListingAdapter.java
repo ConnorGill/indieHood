@@ -54,13 +54,14 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
 
     @Override
     protected void onBindViewHolder(@NonNull final ListingHolder holder, final int position, @NonNull final ShowListing model) {
+        model.formatValues();
         holder.mTextBandName.setText(model.getBandName());
         holder.mTextVenue.setText(model.getVenueName());
-        holder.mTextTime.setText(model.getAdjustedTime());
-        holder.mTextDate.setText(model.getAdjustedDate());
+        holder.mTextTime.setText(model.startTimeFormatted);
+        holder.mTextDate.setText(model.dateMonth + model.dateDay);
         holder.mInterestedText.setText(model.getInterestedText());
-        holder.mPrice.setText(model.getStringifiedPrice());
-        if (model.getBandFavorite()){
+        holder.mPrice.setText(model.priceFormatted);
+        if (model.getBandFavorite()) {
             holder.mBandFavorited.setImageResource(R.drawable.favorites_icon);
         }
 
