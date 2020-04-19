@@ -226,7 +226,7 @@ public class ShowListing implements Serializable {
     }
 
     public void setAddressLong(Double addressLong) {
-        this.addressLong = addressLat;
+        this.addressLong = addressLong;
     }
 
     public String getDescription() {

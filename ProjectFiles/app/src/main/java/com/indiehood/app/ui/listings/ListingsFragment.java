@@ -59,10 +59,17 @@ public class ListingsFragment extends Fragment {
         for (int i = 0;  i < 20; i++) {
             Map<String, Object> data = new HashMap<>();
             data.put("bandName", stuff[ThreadLocalRandom.current().nextInt(stuff.length)]);
-            data.put("day", "2020-08-12");
             String[] time = times[ThreadLocalRandom.current().nextInt(times.length)];
             data.put("startTime", time[0]);
             data.put("endTime", time[1]);
+            if (time[1] < time[0]) {
+                data.put("startDay", "2020-08-12");
+                data.put("endDay","2020-08-13");
+             }
+             else {
+                data.put("startDay", "2020-08-12");
+                data.put("endDay","2020-08-12");
+             }
             data.put("venueName", venue[ThreadLocalRandom.current().nextInt(venue.length)]);
             data.put("numberInterested", ThreadLocalRandom.current().nextInt(4));
             data.put("price", prices[ThreadLocalRandom.current().nextInt(prices.length)]);

@@ -66,12 +66,10 @@
     <string name="fulladdress">fullAddress</string>
     <string name="show_address">show address</string>
     <string name="show_time">show time</string>
-    <string name="price">Price</string>
     <string name="fulldate">fullDate</string>
     <string name="favorited_artist">favorited artist</string>
     <string name="view_artist_page">View Artist Page</string>
     <string name="_0">0</string>
-    <string name="interested">interested</string>
     <string name="_0_interested">0 interested</string>
     <string name="interested_button">Interested?</string>
     <string name="view_artist">View Artist</string>
@@ -79,4 +77,13 @@
     <string name="show_description">show Description</string>
     <string name="address1">address1</string>
     <string name="address2">address2</string>
+    <string name="calendar_icon">calendar icon</string>
+    <string name="price">Price</string>
+    <string name="fulltime">fullTime</string>
+    <string name="defaultDate">13th</string>
+    <string name="people_interested">People interested</string>
+    <string name="defaultTime">0:00 PM</string>
+    <string name="add_to_calendar">Add To Calendar</string>
+    <string name="i_m_interested">I\'m Interested</string>
+    <string name="interested">interested</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.indiehood.app.ui.listings;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.ObservableSnapshotArray;
+import com.google.android.material.chip.Chip;
+import com.google.firebase.events.Event;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -57,10 +61,10 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
         model.formatValues();
         holder.mTextBandName.setText(model.getBandName());
         holder.mTextVenue.setText(model.getVenueName());
-        holder.mTextTime.setText(model.startTimeFormatted);
-        holder.mTextDate.setText(model.dateMonth + model.dateDay);
+        holder.mTextMonth.setText(model.dateMonth);
+        holder.mTextDay.setText(model.dateDay);
+        holder.mTimeStart.setText(model.startTimeFormatted);
         holder.mInterestedText.setText(model.getInterestedText());
-        holder.mPrice.setText(model.priceFormatted);
         if (model.getBandFavorite()) {
             holder.mBandFavorited.setImageResource(R.drawable.favorites_icon);
         }
@@ -200,23 +204,23 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
     class ListingHolder extends RecyclerView.ViewHolder {
         public TextView mTextBandName;
         public TextView mTextVenue;
-        public TextView mTextTime;
-        public TextView mTextDate;
+        public TextView mTextDay;
+        public TextView mTextMonth;
+        public TextView mTimeStart;
         public TextView mInterestedText;
         public ImageView mBandFavorited;
         public CheckBox mUserInterested;
-        public TextView mPrice;
 
         public ListingHolder(@NonNull final View itemView) {
             super(itemView);
             mTextBandName = itemView.findViewById(R.id.bandName);
             mTextVenue = itemView.findViewById(R.id.venue);
-            mTextTime = itemView.findViewById(R.id.time);
-            mInterestedText = itemView.findViewById(R.id.interested_text);
+            mTextDay = itemView.findViewById(R.id.day);
+            mTextMonth = itemView.findViewById(R.id.month);
             mBandFavorited = itemView.findViewById(R.id.bandFavorited);
             mUserInterested = itemView.findViewById(R.id.interested);
-            mPrice = itemView.findViewById(R.id.price);
-            mTextDate = itemView.findViewById(R.id.day);
+            mInterestedText = itemView.findViewById(R.id.interested_text);
+            mTimeStart = itemView.findViewById(R.id.time);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -224,13 +228,14 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
                     int position = getAdapterPosition();
                     ObservableSnapshotArray<ShowListing> listing = ListingAdapter.super.getSnapshots();
                     ShowListing selected = listing.get(position);
-
+                    String docID = listing.getSnapshot(position).getId();
                     FragmentTransaction ft = fragment.getActivity().getSupportFragmentManager().beginTransaction();
                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     ShowFragment show = new ShowFragment();
 
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("selected", selected);
+                    bundle.putString("docID", docID);
                     show.setArguments(bundle);
                     ft.replace(R.id.listing_fragment, show);
                     ft.addToBackStack(null);
