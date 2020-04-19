@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +29,7 @@ import com.indiehood.app.R;
 import com.indiehood.app.ui.SharedArtistViewModel;
 
 public class ArtistFragment extends Fragment {
-    // to communuicate with FavoritesFragment
+    // to communicate with FavoritesFragment
     private SharedArtistViewModel viewModel;
     private Observer<String> artistObserver;
     // elements of the artist profile
@@ -82,8 +83,13 @@ public class ArtistFragment extends Fragment {
 
     private void twitterButtonClicked() {
         Uri link = Uri.parse(artist.getSocial1());
-        Intent intent = new Intent(Intent.ACTION_VIEW, link);
-        startActivity(intent);
+        if (!artist.getSocial1().equals("")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, link);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(getContext(), "Error: artist does not have a link provided", Toast.LENGTH_SHORT).show();
+        }
     }
 
     class InstaButtonClick implements View.OnClickListener {
@@ -95,8 +101,13 @@ public class ArtistFragment extends Fragment {
 
     private void instaButtonClicked() {
         Uri link = Uri.parse(artist.getSocial2());
-        Intent intent = new Intent(Intent.ACTION_VIEW, link);
-        startActivity(intent);
+        if (!artist.getSocial2().equals("")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, link);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(getContext(), "Error: artist does not have a link provided", Toast.LENGTH_SHORT).show();
+        }
     }
 
     class AMButtonClick implements View.OnClickListener {
@@ -108,8 +119,13 @@ public class ArtistFragment extends Fragment {
 
     private void appleMusicButtonClicked() {
         Uri link = Uri.parse(artist.getMedia1());
-        Intent intent = new Intent(Intent.ACTION_VIEW, link);
-        startActivity(intent);
+        if (!artist.getMedia1().equals("")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, link);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(getContext(), "Error: artist does not have a link provided", Toast.LENGTH_SHORT).show();
+        }
     }
 
     class SpotifyButtonClick implements View.OnClickListener {
@@ -121,8 +137,13 @@ public class ArtistFragment extends Fragment {
 
     private void spotifyButtonClicked() {
         Uri link = Uri.parse(artist.getMedia2());
-        Intent intent = new Intent(Intent.ACTION_VIEW, link);
-        startActivity(intent);
+        if (!artist.getMedia2().equals("")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, link);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(getContext(), "Error: artist does not have a link provided", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public ArtistFragment() {
