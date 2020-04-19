@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/register_bio"
+        android:id="@+id/register_social_one"
         android:layout_width="341dp"
         android:layout_height="57dp"
         android:layout_marginStart="35dp"
@@ -26,26 +26,46 @@
         android:background="@drawable/text_view_border"
         android:ems="10"
         android:fontFamily="@font/nunito_semibold"
-        android:hint="Biography"
+        android:hint="Social Media"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/register_social_one"
+        app:layout_constraintBottom_toTopOf="@+id/register_social_two"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/register_name"
+        android:id="@+id/register_media_two"
         android:layout_width="341dp"
         android:layout_height="57dp"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
-        android:layout_marginBottom="57dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/text_view_border"
         android:ems="10"
         android:fontFamily="@font/nunito_semibold"
-        android:hint="Artist Name"
+        android:gravity="start|top"
+        android:hint="Media - Apple Music/Spotify/etc."
+        android:inputType="textMultiLine"
         android:padding="15dp"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/register_bio"
+        app:layout_constraintBottom_toTopOf="@+id/btn_submit_registration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/register_media_one"
+        android:layout_width="341dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:background="@drawable/text_view_border"
+        android:ems="10"
+        android:fontFamily="@font/nunito_semibold"
+        android:gravity="start|top"
+        android:hint="Media - Apple Music/Spotify/etc."
+        android:inputType="textMultiLine"
+        android:padding="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/register_media_two"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -64,10 +84,11 @@
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/register_media_one"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/register_media_one"
+        android:id="@+id/register_bio"
         android:layout_width="341dp"
         android:layout_height="57dp"
         android:layout_marginStart="35dp"
@@ -75,47 +96,46 @@
         android:background="@drawable/text_view_border"
         android:ems="10"
         android:fontFamily="@font/nunito_semibold"
-        android:gravity="start|top"
-        android:hint="Media - Apple Music/Spotify/etc."
-        android:inputType="textMultiLine"
+        android:hint="Biography"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/register_social_one"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <EditText
+        android:id="@+id/register_name"
+        android:layout_width="341dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:background="@drawable/text_view_border"
+        android:ems="10"
+        android:fontFamily="@font/nunito_semibold"
+        android:hint="Artist Name"
         android:padding="15dp"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/register_media_two"
+        app:layout_constraintBottom_toTopOf="@+id/register_email"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/register_media_two"
+        android:id="@+id/register_password"
         android:layout_width="341dp"
         android:layout_height="57dp"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
-        android:layout_marginBottom="30dp"
         android:background="@drawable/text_view_border"
         android:ems="10"
         android:fontFamily="@font/nunito_semibold"
-        android:gravity="start|top"
-        android:hint="Media - Apple Music/Spotify/etc."
-        android:inputType="textMultiLine"
+        android:hint="Create Password"
         android:padding="15dp"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/btn_submit_registration"
+        app:layout_constraintBottom_toTopOf="@+id/register_bio"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/register_social_one"
-        android:layout_width="341dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="35dp"
-        android:background="@drawable/text_view_border"
-        android:ems="10"
-        android:fontFamily="@font/nunito_semibold"
-        android:hint="Social Media"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/register_social_two"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -142,15 +162,32 @@
         android:layout_height="52dp"
         android:layout_marginStart="39dp"
         android:layout_marginEnd="38dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/button_background"
         android:fontFamily="@font/nunito_semibold"
         android:padding="15dp"
-        android:text="Register"
+        android:text="Submit Registration"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/register_email"
+        android:layout_width="330dp"
+        android:layout_height="54dp"
+        android:ems="10"
+        android:fontFamily="@font/nunito_semibold"
+        android:background="@drawable/text_view_border"
+        android:inputType="textEmailAddress"
+        android:text="Artist Email"
+        android:textAlignment="center"
+        android:textColor="#8A8A8A"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/register_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

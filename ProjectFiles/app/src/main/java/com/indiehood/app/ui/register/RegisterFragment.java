@@ -37,6 +37,8 @@ public class RegisterFragment extends Fragment {
     private EditText mregister_media_one;
     private EditText mregister_media_two;
     private EditText mregister_social_one;
+    private EditText mregister_password;
+    private EditText mregister_email;
 
     private FirebaseFirestore mFireStore;
 
@@ -61,16 +63,20 @@ public class RegisterFragment extends Fragment {
         mregister_media_one = (EditText) root.findViewById(R.id.register_media_one);
         mregister_media_two = (EditText) root.findViewById(R.id.register_media_two);
         mregister_social_one = (EditText) root.findViewById(R.id.register_social_one);
+        mregister_password = (EditText) root.findViewById(R.id.register_password);
+        mregister_email = (EditText) root.findViewById(R.id.register_email);
 
         mbtn_submit_registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String registerName = mregister_name.getText().toString();
+                final String registerName = mregister_name.getText().toString();
                 String registerBio = mregister_bio.getText().toString();
                 String registerSoc1 = mregister_social_one.getText().toString();
                 String registerSoc2 = mregister_social_two.getText().toString();
                 String registerMed1 = mregister_media_one.getText().toString();
                 String registerMed2 = mregister_media_two.getText().toString();
+                String registerPass = mregister_password.getText().toString();
+                String registerEmail = mregister_email.getText().toString();
 
 
                 HashMap<String, Object> regMap = new HashMap<>();
@@ -83,6 +89,8 @@ public class RegisterFragment extends Fragment {
                 regMap.put("social2", registerSoc2);
                 regMap.put("rating", "5");
                 regMap.put("favorited", false);
+                regMap.put("password", registerPass);
+                regMap.put("email", registerEmail);
 
 
                 mFireStore.collection("ArtistCollection").add(regMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -90,7 +98,19 @@ public class RegisterFragment extends Fragment {
                     public void onSuccess(DocumentReference documentReference) {
                         Toast regToast = Toast.makeText(getActivity(), "Artist Registration Complete", Toast.LENGTH_SHORT);
                         regToast.show();
-                        Navigation.findNavController(textView).navigate(R.id.nav_listings);
+
+
+                        mregister_name.setText("");
+                        mregister_bio.setText("");
+                        mregister_password.setText("");
+                        mregister_social_one.setText("");
+                        mregister_social_two.setText("");
+                        mregister_media_one.setText("");
+                        mregister_media_two.setText("");
+
+
+                        //FIX NAVIGATE TO LOGIN PAGE
+                        //Navigation.findNavController(textView).navigate(R.id.nav_login);
                     }
                 });
 
