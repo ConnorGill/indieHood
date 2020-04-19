@@ -1,9 +1,13 @@
 package com.indiehood.app.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -15,12 +19,21 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+
+import com.indiehood.app.MainActivity;
 import com.indiehood.app.R;
+
+import com.indiehood.app.ui.register.RegisterFragment;
+
 
 public class LoginFragment extends Fragment {
 
-    private LoginViewModel loginViewModel;
+     private EditText inputEmail, inputPassword;
+     //private FirebaseAuth auth;
+     private Button btnLogin2;
 
+
+    private LoginViewModel loginViewModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         loginViewModel =
@@ -35,13 +48,13 @@ public class LoginFragment extends Fragment {
         });
 
         //Login Code
-            final Button btnLogin = (Button) root.findViewById(R.id.btnLogin);
+            final Button btnLogin2 = (Button) root.findViewById(R.id.btnLogin2);
             // Chance added this and created register view and registerFragment. not sure how to auth
             final Button btnRegister = (Button) root.findViewById(R.id.btnRegister);
             final TextView txtArtistUsername = (TextView) root.findViewById(R.id.txtArtistUsername);
             final TextView txtPassword = (TextView) root.findViewById(R.id.txtPassword);
 
-            btnLogin.setOnClickListener(new View.OnClickListener() {
+            btnLogin2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View textView){
                     String password = txtPassword.getText().toString();

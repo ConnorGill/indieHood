@@ -18,6 +18,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.indiehood.app.R;
@@ -107,6 +109,8 @@ public class RegisterFragment extends Fragment {
                         mregister_social_two.setText("");
                         mregister_media_one.setText("");
                         mregister_media_two.setText("");
+
+
 
 
                         //FIX NAVIGATE TO LOGIN PAGE

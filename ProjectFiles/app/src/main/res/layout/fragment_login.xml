@@ -58,7 +58,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnLogin2"
         android:layout_width="165dp"
         android:layout_height="42dp"
         android:layout_marginStart="156dp"
@@ -66,7 +66,7 @@
         android:layout_marginEnd="167dp"
         android:layout_marginBottom="148dp"
         android:background="#696969"
-        android:text="Login"
+        android:text="Artist Login"
         android:textColor="#E0F7FA"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -81,9 +81,8 @@
         android:layout_width="165dp"
         android:layout_height="44dp"
         android:layout_below="@+id/btnLogin"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="167dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginBottom="40dp"
         android:background="#696969"
         android:text="@string/register"
@@ -91,10 +90,7 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin2" />
 
     <FrameLayout
         android:layout_width="409dp"
@@ -116,6 +112,36 @@
             android:layout_height="match_parent"
             android:background="#E0F2F1"
             app:srcCompat="@mipmap/ic_logo_foreground" />
+
     </FrameLayout>
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="165dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="70dp"
+        android:background="#696969"
+        android:text="Standard User"
+        android:textColor="#E0F7FA"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin2" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="377dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:text="Artist Sign Up: click REGISTER.
+
+        Standard User Login, click STANDARD USER."
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
