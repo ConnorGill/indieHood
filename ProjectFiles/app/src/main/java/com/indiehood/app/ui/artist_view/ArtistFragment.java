@@ -1,5 +1,7 @@
 package com.indiehood.app.ui.artist_view;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +29,7 @@ import com.indiehood.app.R;
 import com.indiehood.app.ui.SharedArtistViewModel;
 
 public class ArtistFragment extends Fragment {
+    // to communicate with FavoritesFragment
     private SharedArtistViewModel viewModel;
     private Observer<String> artistObserver;
     // elements of the artist profile
@@ -38,6 +42,7 @@ public class ArtistFragment extends Fragment {
     private ImageButton instagram;
     private ImageButton appleMusic;
     private ImageButton spotify;
+    // for Firestore read/writes
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference artistRef;
     private Artist artist;
@@ -69,6 +74,78 @@ public class ArtistFragment extends Fragment {
         favorited.setEnabled(artist.getFavorited());
     }
 
+    class TwitterButtonClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            twitterButtonClicked();
+        }
+    }
+
+    private void twitterButtonClicked() {
+        Uri link = Uri.parse(artist.getSocial1());
+        if (!artist.getSocial1().equals("")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, link);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(getContext(), "Error: artist does not have a link provided", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    class InstaButtonClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            instaButtonClicked();
+        }
+    }
+
+    private void instaButtonClicked() {
+        Uri link = Uri.parse(artist.getSocial2());
+        if (!artist.getSocial2().equals("")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, link);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(getContext(), "Error: artist does not have a link provided", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    class AMButtonClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            appleMusicButtonClicked();
+        }
+    }
+
+    private void appleMusicButtonClicked() {
+        Uri link = Uri.parse(artist.getMedia1());
+        if (!artist.getMedia1().equals("")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, link);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(getContext(), "Error: artist does not have a link provided", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    class SpotifyButtonClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            spotifyButtonClicked();
+        }
+    }
+
+    private void spotifyButtonClicked() {
+        Uri link = Uri.parse(artist.getMedia2());
+        if (!artist.getMedia2().equals("")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, link);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(getContext(), "Error: artist does not have a link provided", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public ArtistFragment() {
         // Required empty public constructor
     }
@@ -84,6 +161,10 @@ public class ArtistFragment extends Fragment {
         appleMusic = root.findViewById(R.id.appleMusic);
         spotify = root.findViewById(R.id.spotify);
         favorited.setOnClickListener(new FavoriteButtonClick());
+        twitter.setOnClickListener(new TwitterButtonClick());
+        instagram.setOnClickListener(new InstaButtonClick());
+        appleMusic.setOnClickListener(new AMButtonClick());
+        spotify.setOnClickListener(new SpotifyButtonClick());
         // TODO set up artist listing recycler view
 
         return root;

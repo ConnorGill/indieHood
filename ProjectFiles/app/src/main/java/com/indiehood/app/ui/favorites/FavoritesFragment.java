@@ -30,8 +30,6 @@ import com.indiehood.app.R;
 import com.indiehood.app.ui.SharedArtistViewModel;
 import com.indiehood.app.ui.artist_view.Artist;
 
-import java.util.Objects;
-
 public class FavoritesFragment extends Fragment {
     // to communicate with artist view
     private SharedArtistViewModel viewModel;
@@ -103,14 +101,12 @@ public class FavoritesFragment extends Fragment {
 
         // for when the user clicks an artist entirely
          adapter.setOnArtistClickListener(new FavoritesAdapter.OnArtistClickListener() {
-            final String TAG = "onArtistClick";
             @Override
             public void onArtistClick(DocumentSnapshot snapshot, int position) {
                 assert snapshot != null;
                 String path = snapshot.getReference().getPath();
                 viewModel.setArtistPath(path);
-                // TODO send user to ArtistFragment
-                Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.nav_artist_view);
+                Navigation.findNavController(requireView()).navigate(R.id.nav_artist_view);
             }
         });
     }
