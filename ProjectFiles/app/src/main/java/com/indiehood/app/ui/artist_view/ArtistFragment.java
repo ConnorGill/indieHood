@@ -43,20 +43,11 @@ public class ArtistFragment extends Fragment {
     private Artist artist;
     // private ArtistAdapter adapter;
 
-    public ArtistFragment() {
-        // Required empty public constructor
-    }
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        View root = inflater.inflate(R.layout.fragment_artist_view, container, false);
-        bandName = root.findViewById(R.id.band_name);
-        bandBio = root.findViewById(R.id.band_bio);
-        favorited = root.findViewById(R.id.favorite_button);
-        favorited.setOnClickListener(new FavoriteButtonClick());
-        // TODO set up artist listing recycler view
-
-        return root;
+    class FavoriteButtonClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            favoriteButtonClicked();
+        }
     }
 
     private void favoriteButtonClicked() {
@@ -78,11 +69,24 @@ public class ArtistFragment extends Fragment {
         favorited.setEnabled(artist.getFavorited());
     }
 
-    class FavoriteButtonClick implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            favoriteButtonClicked();
-        }
+    public ArtistFragment() {
+        // Required empty public constructor
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        View root = inflater.inflate(R.layout.fragment_artist_view, container, false);
+        bandName = root.findViewById(R.id.band_name);
+        bandBio = root.findViewById(R.id.band_bio);
+        favorited = root.findViewById(R.id.favorite_button);
+        twitter = root.findViewById(R.id.twitter);
+        instagram = root.findViewById(R.id.instagram);
+        appleMusic = root.findViewById(R.id.appleMusic);
+        spotify = root.findViewById(R.id.spotify);
+        favorited.setOnClickListener(new FavoriteButtonClick());
+        // TODO set up artist listing recycler view
+
+        return root;
     }
 
     @Override
