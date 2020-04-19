@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/cover_photo"
+        android:layout_width="414dp"
+        android:layout_height="272dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimaryDark"
+        android:src="@drawable/abbey_road_2"
+        app:layout_constraintBottom_toTopOf="@+id/band_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/artist_pro_pic"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="0dp"
+        android:contentDescription="@string/artist_profile_picture"
+        android:src="@drawable/temp_pro_pic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cover_photo"
+        />
+
+    <TextView
+        android:id="@+id/band_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="@string/dummy_band_name"
+        android:textColor="@color/colorAccent"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintStart_toEndOf="@id/artist_pro_pic"
+        app:layout_constraintTop_toBottomOf="@id/cover_photo" />
+
+    <TextView
+        android:id="@+id/band_bio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="8"
+        android:text="@string/dummy_bio"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@id/band_name"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/band_name"
+        app:layout_constraintTop_toBottomOf="@id/band_name"
+        />
+
+    <!-- TODO add links to image buttons -->
+    <ImageButton
+        android:id="@+id/twitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:contentDescription="@string/social1"
+        android:src="@drawable/twitter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/instagram"
+        app:layout_constraintTop_toBottomOf="@id/artist_pro_pic"
+        app:layout_constraintBottom_toTopOf="@id/appleMusic"
+        android:background="@null"
+        android:clickable="true"
+        android:focusable="true"
+
+        />
+
+    <ImageButton
+        android:id="@+id/instagram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:contentDescription="@string/social2"
+        android:src="@drawable/ig"
+        android:background="@null"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintLeft_toRightOf="@id/twitter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/artist_pro_pic"
+
+        />
+
+    <ImageButton
+        android:id="@+id/appleMusic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:contentDescription="@string/media1"
+        android:src="@drawable/am"
+        android:background="@null"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="@id/artist_pro_pic"
+        app:layout_constraintTop_toBottomOf="@id/twitter"
+
+        />
+
+    <ImageButton
+        android:id="@+id/spotify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:contentDescription="@string/media2"
+        android:src="@drawable/spotify"
+        android:background="@null"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintLeft_toRightOf="@id/appleMusic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/instagram"
+        />
+
+    <CheckBox
+        android:id="@+id/favorite_button"
+        style="?android:attr/starStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:buttonTint="@color/favorite_button_filled"
+        android:clickable="true"
+        android:contentDescription="@string/favorite_button_card"
+        android:focusable="true"
+        android:src="@drawable/favorites_icon"
+        app:layout_constraintBottom_toTopOf="@+id/artist_shows"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appleMusic" />
+
+    <TextView
+        android:id="@+id/favorite_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/favorite_prompt"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/artist_shows"
+        app:layout_constraintEnd_toEndOf="@+id/spotify"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/favorite_button"
+        app:layout_constraintTop_toBottomOf="@+id/appleMusic"
+        app:layout_constraintVertical_bias="0.375" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/artist_shows"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/favorite_prompt" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
