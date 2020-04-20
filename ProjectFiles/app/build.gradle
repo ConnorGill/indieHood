@@ -70,7 +70,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.2.1'
     // images
     implementation 'com.squareup.picasso:picasso:2.71828'
+<<<<<<< Updated upstream
 =======
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
+>>>>>>> Stashed changes
+=======
+    //auth
     implementation 'com.google.firebase:firebase-auth:19.3.0'
 >>>>>>> Stashed changes
 }

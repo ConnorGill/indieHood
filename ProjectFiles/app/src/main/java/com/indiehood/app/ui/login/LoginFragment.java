@@ -1,9 +1,9 @@
 package com.indiehood.app.ui.login;
 
-import android.content.Intent;
+
+import android.app.Activity;
+import android.view.View;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,74 +15,96 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-
-import com.indiehood.app.MainActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.indiehood.app.R;
 
-import com.indiehood.app.ui.register.RegisterFragment;
+public class LoginFragment extends Fragment implements View.OnClickListener {
+
+View v;
+TextView btnRegister, btnLogin;
+EditText txMail,txPass;
 
 
-public class LoginFragment extends Fragment {
+private FirebaseAuth mAuth;
+private FirebaseUser mUser;
 
-     private EditText inputEmail, inputPassword;
-     //private FirebaseAuth auth;
-     private Button btnLogin2;
+public LoginFragment() {
+        // Required empty public constructor
+        }
 
+@Override
+public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        }
 
-    private LoginViewModel loginViewModel;
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        loginViewModel =
-                ViewModelProviders.of(this).get(LoginViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_login, container, false);
-        final TextView textView = root.findViewById(R.id.text_tools);
-        loginViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+@Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        Bundle savedInstanceState) {
+        // Inflate the layout for this
+        v = inflater.inflate(R.layout.fragment_login, container, false);
 
-        //Login Code
-            final Button btnLogin2 = (Button) root.findViewById(R.id.btnLogin2);
-            // Chance added this and created register view and registerFragment. not sure how to auth
-            final Button btnRegister = (Button) root.findViewById(R.id.btnRegister);
-            final TextView txtArtistUsername = (TextView) root.findViewById(R.id.txtArtistUsername);
-            final TextView txtPassword = (TextView) root.findViewById(R.id.txtPassword);
+        btnLogin = (Button) v.findViewById(R.id.btnLogin);
+        btnRegister=(TextView) v.findViewById(R.id.btnRegister);
+        txMail=(EditText)v.findViewById(R.id.txtArtistUsername);
+        txPass=(EditText)v.findViewById(R.id.txtPassword);
 
-            btnLogin2.setOnClickListener(new View.OnClickListener() {
+        btnRegister.setOnClickListener(this);
+        btnLogin.setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        return v;
+        }
+
+@Override
+public void onClick(View v) {
+
+        if(v.getId() == R.id.btnRegister)
+        {
+            Toast.makeText(v.getContext(), "Go to registration page", Toast.LENGTH_LONG).show();
+            Navigation.findNavController(v).navigate(R.id.nav_register);
+        }
+        else if(v.getId() == R.id.btnLogin)
+        {
+        LoginUser(txMail.getText().toString(),txPass.getText().toString());
+        }
+        }
+
+private void LoginUser(String mail, final String password) {
+
+        try {
+            mAuth.signInWithEmailAndPassword(mail, password).addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
                 @Override
-                public void onClick(View textView){
-                    String password = txtPassword.getText().toString();
-                    String username = txtArtistUsername.getText().toString();
-
-                    //implement Firebase here to check dummy data when created
-                    if(username.equals("band") && password.equals("pass")) {
-                        Toast.makeText(textView.getContext(), "Go To Account", Toast.LENGTH_LONG).show();
-                        Navigation.findNavController(textView).navigate(R.id.nav_listings);
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful())
+                    {
+                        Toast.makeText(v.getContext(), "Success!", Toast.LENGTH_LONG).show();
+                        Navigation.findNavController(v).navigate(R.id.nav_artist_view);
                     }
-                    //change destination to account profile from listings after created
-                    else
-                        Toast.makeText(textView.getContext(), "Login Failed", Toast.LENGTH_LONG).show();
+                    else {
+                        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                task.getException().getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+                    }
 
-                    txtArtistUsername.setText("");
-                    txtPassword.setText("");
                 }
             });
 
-            btnRegister.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(textView.getContext(), "Go to registration page", Toast.LENGTH_LONG).show();
-                    Navigation.findNavController(textView).navigate(R.id.nav_register);
-                }
-            });
+        }
+        catch (Exception ex)
+        {
+        Snackbar.make(getActivity().findViewById(android.R.id.content),
+        ex.getLocalizedMessage().toString(), Snackbar.LENGTH_LONG).show();
+        }
 
-
-        return root;
-    }
-}
+        }}
