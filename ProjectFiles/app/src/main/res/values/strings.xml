@@ -101,5 +101,7 @@
     <string name="favorite_prompt">Favorite</string>
     <string name="dummy_band_name">Band Name</string>
     <string name="dummy_bio">This is a test band biography. Preferably, it will be about three lines long. This ensures that the recycler view below is not obscured.</string>
+    <string name="connect_prompt">Connect with the artist</string>
+    <string name="favorite_tip">Favorite this artist for easy access!</string>
 
 </resources>

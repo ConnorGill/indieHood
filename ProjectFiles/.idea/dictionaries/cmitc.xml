@@ -3,6 +3,7 @@
     <words>
       <w>favorited</w>
       <w>unfavorite</w>
+      <w>unfavorited</w>
     </words>
   </dictionary>
 </component>

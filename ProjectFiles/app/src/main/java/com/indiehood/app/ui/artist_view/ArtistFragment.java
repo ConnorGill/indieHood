@@ -58,6 +58,8 @@ public class ArtistFragment extends Fragment {
     private void favoriteButtonClicked() {
         final String TAG = "favButtonClicked";
         artist.setFavorited(!artist.getFavorited());
+        if (artist.getFavorited()) Toast.makeText(getContext(), "Artist favorited", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(getContext(), "Artist unfavorited", Toast.LENGTH_SHORT).show();
         db.runTransaction(new Transaction.Function<Void>() {
             @Nullable
             @Override
