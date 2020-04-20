@@ -2,13 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ScrollView01"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <RelativeLayout
+        android:id="@+id/full_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff">
+
 
         <LinearLayout
             android:id="@+id/top_bar"
@@ -42,7 +43,7 @@
                 <!-- app:srcCompat="@drawable/favorites_icon" -->
         </LinearLayout>
 
-        <fragment
+        <FrameLayout
             android:id="@+id/map"
             tools:context=".ShowFragment"
             android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -221,8 +222,6 @@
                 android:text="@string/show_description"
                 android:textSize="15sp"/>
         </RelativeLayout>
-
-
 
     </RelativeLayout>
 </ScrollView>

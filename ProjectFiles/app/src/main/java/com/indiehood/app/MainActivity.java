@@ -1,5 +1,6 @@
 package com.indiehood.app;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 
 import androidx.navigation.NavController;
@@ -55,5 +56,17 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // note: you can also use 'getSupportFragmentManager()'
+        FragmentManager mgr = getFragmentManager();
+        if (mgr.getBackStackEntryCount() == 0) {
+            // No backstack to pop, so calling super
+            super.onBackPressed();
+        } else {
+            mgr.popBackStack();
+        }
     }
 }

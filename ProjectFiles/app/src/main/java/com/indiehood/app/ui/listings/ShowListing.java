@@ -9,7 +9,8 @@ import java.text.NumberFormat;
 public class ShowListing implements Serializable {
     private String bandName;
     private String venueName;
-    private String day;
+    private String startDay;
+    private String endDay;
     private String startTime;
     private String endTime;
     private Double addressLat;
@@ -28,6 +29,9 @@ public class ShowListing implements Serializable {
     public String dateYear;
     public String dateMonth;
     public String dateDay;
+    public String dateEndYear;
+    public String dateEndMonth;
+    public String dateEndDay;
 
   //  private Boolean mUserFavoritedBand;
   //  private Boolean mUserFavoritedVenue;
@@ -37,10 +41,14 @@ public class ShowListing implements Serializable {
         this.startTimeFormatted = formatTime(this.getStartTime()); //format HH:MM PM/AM 12 hr
         this.endTimeFormatted = formatTime(this.getEndTime());
         this.priceFormatted = formatPrice();
-        String[] timeIntervals = getDay().split("-");
+        String[] timeIntervals = getStartDay().split("-");
         this.dateYear = timeIntervals[0];
         this.dateMonth = formatMonth(timeIntervals[1]);
         this.dateDay = formatDay(Integer.parseInt(timeIntervals[2]));
+        String[] timeIntervals2 = getEndDay().split("-");
+        this.dateEndYear = timeIntervals[0];
+        this.dateEndMonth = formatMonth(timeIntervals2[1]);
+        this.dateEndDay = formatDay(Integer.parseInt(timeIntervals2[2]));
     }
 
     /*
@@ -165,12 +173,20 @@ public class ShowListing implements Serializable {
         this.venueName = venueName;
     }
 
-    public String getDay() {
-        return day;
+    public String getEndDay() {
+        return endDay;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setEndDay(String endDay) {
+        this.endDay = endDay;
+    }
+
+    public String getStartDay() {
+        return startDay;
+    }
+
+    public void setStartDay(String startDay) {
+        this.startDay = startDay;
     }
 
     public String getStartTime() {

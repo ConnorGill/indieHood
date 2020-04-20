@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,15 +32,24 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.indiehood.app.R;
+import com.indiehood.app.ui.SharedArtistViewModel;
+import com.indiehood.app.ui.artist_view.ArtistFragment;
 import com.indiehood.app.ui.listings.ListingAdapter;
 import com.indiehood.app.ui.listings.ShowListing;
 
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class ShowFragment extends Fragment implements OnMapReadyCallback {
     private ShowListing show;
@@ -46,7 +58,7 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
     private View root;
     private String docID;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private CollectionReference ArtistCollection = db.collection("ArtistCollection");
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle bundle = getArguments();
@@ -56,6 +68,7 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
         setupAdapter();
         injectData();
         setupCalendar();
+        setupArtistLink();
         setupInterested();
         setupMapIntegration();
         return root;
@@ -114,16 +127,20 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
                 String[] start = show.startTimeFormatted.split(":");
                 String starthour = start[0];
                 String startminute = start[1].split(" ")[0];
-                String month = show.getDay().split("-")[1];
-                String day = show.getDay().split("-")[2];
+                String month = show.getStartDay().split("-")[1];
+                String day = show.getStartDay().split("-")[2];
                 beginTime.set(Integer.parseInt(show.dateYear), Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(starthour), Integer.parseInt(startminute));
                 String[] end = show.endTimeFormatted.split(":");
                 String endhour = end[0];
                 String endminute = end[1].split(" ")[0];
                 Calendar endTime = Calendar.getInstance();
+                if (!show.getStartDay().equals(show.getEndDay())) {
+                    month = show.getEndDay().split("-")[1];
+                    day = show.getEndDay().split("-")[2];
+                }
                 endTime.set(Integer.parseInt(show.dateYear), Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(endhour), Integer.parseInt(endminute));
                 Button interested = root.findViewById(R.id.interested);
-                if (!"I'm Interested".contains(interested.getText())) {
+                if ("I'm Interested".contains(interested.getText())) {
                     interested.performClick();
                 }
                 Intent intent = new Intent(Intent.ACTION_INSERT)
@@ -190,5 +207,23 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
         TextView interested = root.findViewById(R.id.full_interested_count);
         show.setNumberInterested(newInterested);
         interested.setText(Integer.toString(newInterested));
+    }
+
+    private void setupArtistLink() {
+        LinearLayout topBar = root.findViewById(R.id.top_bar);
+        final String artistPath = "ArtistCollection/" + show.getBandName();
+        final SharedArtistViewModel viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
+                topBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.setArtistPath(artistPath);
+                FragmentTransaction ft = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
+              //  ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+               // ft.replace(R.id.full_show, artistFragment);
+                ft.addToBackStack(null);
+               // ft.commit();
+                Navigation.findNavController(requireView()).navigate(R.id.nav_artist_view);
+            }
+        });
     }
 }

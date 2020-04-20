@@ -1,5 +1,6 @@
 package com.indiehood.app.ui.listings;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,10 +52,12 @@ public class ListingsFragment extends Fragment {
 
     private Void setupRecycler() {
         CollectionReference ShowListing = db.collection("ShowListingCol");
-       /* String[] stuff = {"Banana Rays", "Billie Eilish", "Chance the Rapper",  "Foo Fighters", "Four Tet", "Gears", "Journey", "Nine Inch Nails", "Phish", "The Grateful Dead"};
+        /*
+       String[] stuff = {"Banana Rays", "Bonnie Prince Billy", "Four Tet",  "Gears", "Hollow Hand", "Julia Jacklin", "Mapache", "Prince Fatty"};
         String[] venue = {"Alcove", "BR House", "Copper Top",  "Druid City", "Egan's", "Gallettes", "Red Shed", "Wheelhouse"};
         Double[] prices = {0.0, 6.50, 9.0, 10.00, 5.00};
         String[][] times = { {"18:00", "20:00"}, {"18:30", "20:30"}, {"22:15", "1:30"}};
+        String[][] dates = { {"2020-08-12", "2020-08-13"}, {"2020-10-02", "2020-10-03"}, {"2020-07-01", "2020-07-02"}};
         //CollectionReference ShowListing = db.collection("ShowListingCol");
         for (int i = 0;  i < 20; i++) {
             Map<String, Object> data = new HashMap<>();
@@ -62,13 +65,14 @@ public class ListingsFragment extends Fragment {
             String[] time = times[ThreadLocalRandom.current().nextInt(times.length)];
             data.put("startTime", time[0]);
             data.put("endTime", time[1]);
-            if (time[1] < time[0]) {
-                data.put("startDay", "2020-08-12");
-                data.put("endDay","2020-08-13");
+            String[] date = dates[ThreadLocalRandom.current().nextInt(dates.length)];
+            if (Integer.parseInt(time[1].split(":")[0]) < Integer.parseInt(time[0].split(":")[0])) {
+                data.put("startDay", date[0]);
+                data.put("endDay", date[1]);
              }
              else {
-                data.put("startDay", "2020-08-12");
-                data.put("endDay","2020-08-12");
+                data.put("startDay", date[0]);
+                data.put("endDay", date[0]);
              }
             data.put("venueName", venue[ThreadLocalRandom.current().nextInt(venue.length)]);
             data.put("numberInterested", ThreadLocalRandom.current().nextInt(4));
@@ -82,10 +86,10 @@ public class ListingsFragment extends Fragment {
             ShowListing.add(data);
         } */
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String currentDate = dateFormat.format(date);
-        Query query = ShowListing.whereGreaterThan("day", currentDate).orderBy("day", Query.Direction.ASCENDING);   //change this to a more intelligent retrieval method later
+        Query query = ShowListing.whereGreaterThan("startDay", currentDate).orderBy("startDay", Query.Direction.ASCENDING);   //change this to a more intelligent retrieval method later
         final FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
                 .setQuery(query, ShowListing.class).build();
         mAdapter = new ListingAdapter(options, this);

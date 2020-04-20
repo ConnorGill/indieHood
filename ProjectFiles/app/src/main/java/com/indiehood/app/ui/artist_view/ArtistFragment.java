@@ -165,6 +165,7 @@ public class ArtistFragment extends Fragment {
         instagram.setOnClickListener(new InstaButtonClick());
         appleMusic.setOnClickListener(new AMButtonClick());
         spotify.setOnClickListener(new SpotifyButtonClick());
+        System.out.println("All setup");
         // TODO set up artist listing recycler view
 
         return root;
@@ -173,6 +174,7 @@ public class ArtistFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        System.out.println("STARTING THIS");
         // to communicate with favorites view
         viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
         artist = new Artist();
@@ -180,6 +182,7 @@ public class ArtistFragment extends Fragment {
             @Override
             public void onChanged(@Nullable final String s) {
                 assert s != null;
+                System.out.println(s);
                 artistRef = db.document(s);
                 // get data from artist document reference
                 artistRef.get()
@@ -188,8 +191,9 @@ public class ArtistFragment extends Fragment {
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 assert documentSnapshot != null;
                                 artist = documentSnapshot.toObject(Artist.class);
+                                System.out.println(artist.getArtistName());
                                 assert artist != null;
-                                Log.d("onSuccess", artist.getArtistName());
+                             //   Log.d("onSuccess", artist.getArtistName());
                                 bandName.setText(artist.getArtistName());
                                 bandBio.setText(artist.getBio());
                             }

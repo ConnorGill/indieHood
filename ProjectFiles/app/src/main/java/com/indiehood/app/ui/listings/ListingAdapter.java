@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -143,10 +144,10 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
             Date currentDatePlusWeek = c.getTime();
             String formattedWeek = dateFormat.format(currentDatePlusWeek);
             if (result != null){
-                result = result.whereLessThan("day", formattedWeek);
+                result = result.whereLessThan("startDay", formattedWeek);
             }
             else {
-                result = ShowListing.whereLessThan("day", formattedWeek);
+                result = ShowListing.whereLessThan("startDay", formattedWeek);
             }
         }
         if (this.filters.contains("Date: Within 1 Day")) {
@@ -156,10 +157,10 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
             Date currentDatePlusDay = d.getTime();
             String formattedDay = dateFormat.format(currentDatePlusDay);
             if (result != null){
-                result = result.whereLessThan("day", formattedDay);
+                result = result.whereLessThan("startDay", formattedDay);
             }
             else {
-                result = ShowListing.whereLessThan("day", formattedDay);
+                result = ShowListing.whereLessThan("startDay", formattedDay);
             }
         }
         if (this.filters.contains("Price: Free")) {
@@ -178,10 +179,10 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
                 result = ShowListing.whereGreaterThan("price", -1).orderBy("price", Query.Direction.ASCENDING);
             }
             else if ("Date: Soonest First".contains(sort)) {
-                result = ShowListing.whereGreaterThan("day", formattedCurrent).orderBy("day", Query.Direction.ASCENDING);
+                result = ShowListing.whereGreaterThan("startDay", formattedCurrent).orderBy("startDay", Query.Direction.ASCENDING);
             }
             else {
-                result = ShowListing.whereGreaterThan("day", formattedCurrent);
+                result = ShowListing.whereGreaterThan("startDay", formattedCurrent);
             }
         }
         FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
@@ -229,17 +230,11 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
                     ObservableSnapshotArray<ShowListing> listing = ListingAdapter.super.getSnapshots();
                     ShowListing selected = listing.get(position);
                     String docID = listing.getSnapshot(position).getId();
-                    FragmentTransaction ft = fragment.getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     ShowFragment show = new ShowFragment();
-
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("selected", selected);
                     bundle.putString("docID", docID);
-                    show.setArguments(bundle);
-                    ft.replace(R.id.listing_fragment, show);
-                    ft.addToBackStack(null);
-                    ft.commit();
+                    Navigation.findNavController(v).navigate(R.id.nav_full_show, bundle);
                 }
             });
         }

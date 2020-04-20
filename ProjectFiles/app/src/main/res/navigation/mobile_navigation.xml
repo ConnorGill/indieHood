@@ -4,7 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_listings">
-
+    <fragment
+        android:id="@+id/nav_full_show"
+        android:name="com.indiehood.app.ui.show.ShowFragment"
+        android:label="Full Show"
+        tools:layout="@layout/fragment_full_show"
+        />
     <fragment
         android:id="@+id/nav_listings"
         android:name="com.indiehood.app.ui.listings.ListingsFragment"
