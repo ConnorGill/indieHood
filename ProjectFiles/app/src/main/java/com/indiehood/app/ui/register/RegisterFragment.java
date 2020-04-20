@@ -46,8 +46,6 @@ public class RegisterFragment extends Fragment {
     private EditText mregister_email;
 
     private FirebaseFirestore mFireStore;
-    private FirebaseAuth mAuth;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         registerViewModel = ViewModelProviders.of(this).get(com.indiehood.app.ui.register.RegisterViewModel.class);
@@ -99,7 +97,7 @@ public class RegisterFragment extends Fragment {
                 regMap.put("email", registerEmail);
 
 
-   //             mAuth.createUserWithEmailAndPassword(registerEmail,registerPass);
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(registerEmail, registerPass);
 
                 mFireStore.collection("ArtistCollection").add(regMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -113,8 +111,8 @@ public class RegisterFragment extends Fragment {
                     mregister_media_two.setText("");
                     mregister_email.setText("");
 
-                        Navigation.findNavController(v).navigate(R.id.nav_login);
-  //                      Toast regToast = Toast.makeText(getActivity(), "Artist Registration Complete", Toast.LENGTH_SHORT);
+                       Navigation.findNavController(v).navigate(R.id.nav_login);
+                       Toast.makeText(getActivity(), "Artist Registration Complete", Toast.LENGTH_SHORT).show();
 
                     }
                 });
