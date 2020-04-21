@@ -12,79 +12,111 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.indiehood.app.R;
-import com.indiehood.app.ui.favorites.FavoritesAdapter;
+import com.indiehood.app.ui.listings.ListingAdapter;
+import com.indiehood.app.ui.listings.ShowListing;
 
 // implements a recycler view using data pulled directly from firestore
-/*public class ArtistAdapter extends FirestoreRecyclerAdapter<Artist, ArtistAdapter.FavoritesHolder> {
+public class ArtistAdapter extends FirestoreRecyclerAdapter<ShowListing, ArtistAdapter.ShowHolder> {
+    private ArtistFragment fragment;
 
-    ArtistAdapter(@NonNull FirestoreRecyclerOptions<Artist> options) {
+    ArtistAdapter(@NonNull FirestoreRecyclerOptions<ShowListing> options, ArtistFragment artistFragment) {
         super(options);
     }
 
-    class FavoritesHolder extends RecyclerView.ViewHolder {
-        TextView artistName;
-        TextView artistBio;
-        ImageView artistIcon;
-        CheckBox favorite;
+    class ShowHolder extends RecyclerView.ViewHolder {
+        TextView mTextBandName;
+        TextView mTextVenue;
+        TextView mTextDay;
+        TextView mTextMonth;
+        TextView mTimeStart;
+        TextView mInterestedText;
+        //ImageView mBandFavorited;
+        CheckBox mUserInterested;
 
-        FavoritesHolder(View itemView) {
+        ShowHolder(View itemView) {
             super(itemView);
-            // initialize the items to appear in each card in recycler view
-            artistIcon = itemView.findViewById(R.id.band_venue_icon);
-            artistName = itemView.findViewById(R.id.band_venue_name);
-            artistBio = itemView.findViewById(R.id.band_venue_description);
-            favorite = itemView.findViewById(R.id.favorite_button);
-            // sets on click listener for the favorite button
-            // if clicked, pass document snapshot & its position to function in FavoritesFragment
-            favorite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onFavoriteClick(getSnapshots().getSnapshot(position), position);
-                    }
-                }
-            });
+            mTextBandName = itemView.findViewById(R.id.bandName);
+            mTextVenue = itemView.findViewById(R.id.venue);
+            mTextDay = itemView.findViewById(R.id.day);
+            mTextMonth = itemView.findViewById(R.id.month);
+            //mBandFavorited = itemView.findViewById(R.id.bandFavorited);
+            mUserInterested = itemView.findViewById(R.id.interested);
+            mInterestedText = itemView.findViewById(R.id.interested_text);
+            mTimeStart = itemView.findViewById(R.id.time);
         }
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull FavoritesHolder viewHolder, int position,
-                                    @NonNull Artist currArtist) {
-        if (currArtist.getArtistName() != null) {
-            viewHolder.artistName.setText(currArtist.getArtistName());
+    protected void onBindViewHolder(@NonNull final ShowHolder viewHolder, int position,
+                                    @NonNull ShowListing model) {
+        model.formatValues();
+        viewHolder.mTextBandName.setText(model.getBandName());
+        viewHolder.mTextVenue.setText(model.getVenueName());
+        viewHolder.mTextMonth.setText(model.dateMonth);
+        viewHolder.mTextDay.setText(model.dateDay);
+        viewHolder.mTimeStart.setText(model.startTimeFormatted);
+        viewHolder.mInterestedText.setText(model.getInterestedText());
+        /*if (model.getBandFavorite()) {
+            viewHolder.mBandFavorited.setImageResource(R.drawable.favorites_icon);
         }
-        if (currArtist.getBio() != null) {
-            viewHolder.artistBio.setText(currArtist.getBio());
+
+        if (model.getUserInterested()) {
+            viewHolder.mUserInterested.setChecked(true);
         }
-        // icon.setImageIcon(); TODO implement firebase storage
-        if (currArtist.getFavorited()) {
-            viewHolder.favorite.setEnabled(currArtist.getFavorited());
+        else {
+            viewHolder.mUserInterested.setChecked(false);
         }
+
+        viewHolder.mUserInterested.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (viewHolder.mUserInterested.isChecked()) {       //chose to be interested
+                    System.out.println("CHECKED NOW");
+
+                    //remove this and the associated fields when user created
+                    String docID = ListingAdapter.super.getSnapshots().getSnapshot(position).getId();
+                    db.collection("ShowListingCol").document(docID).update("userInterested", true);
+
+                    //you should update the current user to show that they are interested too, referencing local var instead
+                    //but also do this...
+                    int newInterested = model.getNumberInterested() + 1;
+                    updateInterested(position, newInterested);
+                }
+                else {  //chose not to be interested
+
+                    //remove this and the associated fields when user created
+                    String docID = ListingAdapter.super.getSnapshots().getSnapshot(position).getId();
+                    db.collection("ShowListingCol").document(docID).update("userInterested", false);
+
+                    //you should update the current user to show that they are not interested, referencing local var instead
+                    //but also do this...
+                    int newInterested = model.getNumberInterested() - 1;
+                    updateInterested(position, newInterested);
+                    System.out.println("NOT CHECKED");
+
+                }
+            }
+
+            void updateInterested(int position, int newInterested) {
+                String docID = ListingAdapter.super.getSnapshots().getSnapshot(position).getId();
+                db.collection("ShowListingCol").document(docID).update("numberInterested", newInterested);
+                ListingAdapter.super.bindViewHolder(viewHolder, position);
+            }
+        });*/
     }
 
     @NonNull
     @Override
-    public FavoritesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ShowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View favoriteView = inflater.inflate(R.layout.favorited_band_row, parent, false);
+        View artistView = inflater.inflate(R.layout.show_listing, parent, false);
 
-        return new FavoritesHolder(favoriteView);
+        return new ShowHolder(artistView);
     }
 
-    @Override
+    /*@Override
     public void onDataChanged() {
         emptyList.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
-    }
-
-    // this interface and its public function are callbacks for the on click listener
-    public interface OnFavoriteClickListener {
-        void onFavoriteClick(DocumentSnapshot snapshot, int position);
-    }
-
-    void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
-        this.listener = listener;
-    }
-}*/
+    }*/
+}

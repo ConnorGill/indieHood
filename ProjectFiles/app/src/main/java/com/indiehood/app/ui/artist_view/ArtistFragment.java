@@ -3,6 +3,7 @@ package com.indiehood.app.ui.artist_view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +19,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
 import com.indiehood.app.R;
 import com.indiehood.app.ui.SharedArtistViewModel;
+import com.indiehood.app.ui.listings.ShowListing;
 
 public class ArtistFragment extends Fragment {
     // to communicate with FavoritesFragment
@@ -44,9 +51,10 @@ public class ArtistFragment extends Fragment {
     private ImageButton spotify;
     // for Firestore read/writes
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference ShowListings = db.collection("ShowListingCol");
     private DocumentReference artistRef;
     private Artist artist;
-    // private ArtistAdapter adapter;
+    private ArtistAdapter adapter;
 
     class FavoriteButtonClick implements View.OnClickListener {
         @Override
@@ -58,8 +66,12 @@ public class ArtistFragment extends Fragment {
     private void favoriteButtonClicked() {
         final String TAG = "favButtonClicked";
         artist.setFavorited(!artist.getFavorited());
-        if (artist.getFavorited()) Toast.makeText(getContext(), "Artist favorited", Toast.LENGTH_SHORT).show();
-        else Toast.makeText(getContext(), "Artist unfavorited", Toast.LENGTH_SHORT).show();
+        if (artist.getFavorited()) {
+            Toast.makeText(getContext(), "Artist favorited", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getContext(), "Artist unfavorited", Toast.LENGTH_SHORT).show();
+        }
         db.runTransaction(new Transaction.Function<Void>() {
             @Nullable
             @Override
@@ -73,7 +85,6 @@ public class ArtistFragment extends Fragment {
                 Log.w(TAG, "Transaction failure.", e);
             }
         });
-        favorited.setEnabled(artist.getFavorited());
     }
 
     class TwitterButtonClick implements View.OnClickListener {
@@ -167,16 +178,28 @@ public class ArtistFragment extends Fragment {
         instagram.setOnClickListener(new InstaButtonClick());
         appleMusic.setOnClickListener(new AMButtonClick());
         spotify.setOnClickListener(new SpotifyButtonClick());
-        System.out.println("All setup");
         // TODO set up artist listing recycler view
+        setUpRecyclerView(root);
 
         return root;
+    }
+
+    private void setUpRecyclerView(View r) {
+        final Query query = ShowListings.whereEqualTo("bandName", artist.getArtistName())
+                .orderBy("startDay", Query.Direction.ASCENDING);
+        FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
+                .setQuery(query, ShowListing.class)
+                .build();
+        adapter = new ArtistAdapter(options, this);
+        final RecyclerView artist_shows_rv = r.findViewById(R.id.artist_shows);
+        artist_shows_rv.setHasFixedSize(true);
+        artist_shows_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        artist_shows_rv.setAdapter(adapter);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        System.out.println("STARTING THIS");
         // to communicate with favorites view
         viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
         artist = new Artist();
@@ -193,9 +216,8 @@ public class ArtistFragment extends Fragment {
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 assert documentSnapshot != null;
                                 artist = documentSnapshot.toObject(Artist.class);
-                                System.out.println(artist.getArtistName());
                                 assert artist != null;
-                             //   Log.d("onSuccess", artist.getArtistName());
+                                System.out.println(artist.getArtistName());
                                 bandName.setText(artist.getArtistName());
                                 bandBio.setText(artist.getBio());
                             }

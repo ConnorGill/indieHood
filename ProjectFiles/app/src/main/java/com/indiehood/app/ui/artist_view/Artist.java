@@ -60,15 +60,6 @@ public class Artist {
                 });
     }
 
-    // TODO may or may not need this... all reading capabilities are in FavoritesFragment
-    /*public ArrayList<Artist> readArtists() {
-        // for logging purposes
-        final String TAG = "readArtists";
-        final ArrayList<Artist> artists = new ArrayList<>();
-
-        return artists;
-    }*/
-
     public void setArtistName(String artistName) {
         this.artistName = artistName;
     }
