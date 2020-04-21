@@ -12,14 +12,14 @@ package com.indiehood.app;
 public class MoreShowListingTests {
     @Test
     public void defaultConstructor_works() {
-            ShowListing testListing = new ShowListing();
+            ShowListing testListing = new ShowListing(showID);
             assertThat(testListing).isNotNull();
         }
 
     //Add a band named "testBand" and check that it was added correctly
     @Test
     public void addBandName_works() {
-        ShowListing testListing = new ShowListing();
+        ShowListing testListing = new ShowListing(showID);
         String showBand = "testBand";
         testListing.setBandName("testBand");
         assertThat(testListing.getBandName()).isEqualTo(showBand);
@@ -30,7 +30,7 @@ public class MoreShowListingTests {
     //This function should refer to the getStringifiedPrice and change the double value into "FREE"
     @Test
     public void getFreePrice(){
-        ShowListing testListing = new ShowListing();
+        ShowListing testListing = new ShowListing(showID);
         String freePrice = "0.0";
         testListing.setPrice(0.0);
         assertThat(testListing.getStringifiedPrice()).isNotEqualTo(freePrice);
@@ -40,7 +40,7 @@ public class MoreShowListingTests {
     @Test
     public void addInterested_isFalse(){
         //should be false
-        ShowListing testListing = new ShowListing();
+        ShowListing testListing = new ShowListing(showID);
         testListing.setUserInterested(false);
         assertThat(testListing.getUserInterested()).isFalse();
     }
@@ -49,7 +49,7 @@ public class MoreShowListingTests {
     //show that getPrice should return a double and not an integer
     //Two cases -> one Equal to and one Not Equal to
     public void getPriceDouble_works(){
-        ShowListing testListing = new ShowListing();
+        ShowListing testListing = new ShowListing(showID);
         testListing.setPrice(10.0);
         Double price = 10.0;
         //Integer wrong = 10 ;
@@ -60,7 +60,7 @@ public class MoreShowListingTests {
     //Show that when a band name is "" then it is empty.
     @Test
     public void emptyBandName_works(){
-        ShowListing testListing = new ShowListing();
+        ShowListing testListing = new ShowListing(showID);
         String emptyName = "";
         testListing.setBandName(emptyName);
         assertThat(testListing.getBandName()).isEmpty();

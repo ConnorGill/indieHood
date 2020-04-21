@@ -1,7 +1,5 @@
 package com.indiehood.app.ui.listings;
 
-import com.google.type.Date;
-
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -21,6 +19,7 @@ public class ShowListing implements Serializable {
     private String description;
     private Boolean userInterested;
     private Integer numberInterested;
+    private String showID;
 
 
     public String startTimeFormatted;
@@ -152,11 +151,21 @@ public class ShowListing implements Serializable {
      */
     public ShowListing() {
         //emptyConstructor needed
+
     }
 
+
+
     /*
-    Getters and Setters
-     */
+        Getters and Setters
+         */
+    public String getShowID() {
+        return showID;
+    }
+
+    public void setShowID(String showID) {
+        this.showID = showID;
+    }
     public String getBandName() {
         return bandName;
     }
@@ -282,13 +291,6 @@ public class ShowListing implements Serializable {
         else {
             return getNumberInterested() + " people are interested";
         }
-    }
-
-
-    public Boolean getBandFavorite() {
-        //call overarching user class and pass getBandName() into checkFavorited() method
-        //for now...
-        return false;
     }
 
 }

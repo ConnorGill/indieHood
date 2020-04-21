@@ -40,7 +40,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.indiehood.app.MainActivity;
 import com.indiehood.app.R;
+import com.indiehood.app.User;
 import com.indiehood.app.ui.SharedArtistViewModel;
 import com.indiehood.app.ui.artist_view.ArtistFragment;
 import com.indiehood.app.ui.listings.ListingAdapter;
@@ -59,9 +61,12 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
     private String docID;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ArtistCollection = db.collection("ArtistCollection");
+    private User currentUser;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle bundle = getArguments();
+        this.currentUser = ((MainActivity) requireActivity()).currentUser;
+        assert bundle != null;
         show = (ShowListing) bundle.getSerializable("selected");
         docID = (String) bundle.get("docID");
         root = inflater.inflate(R.layout.fragment_full_show, container, false);
@@ -124,13 +129,13 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 Calendar beginTime = Calendar.getInstance();
-                String[] start = show.startTimeFormatted.split(":");
+                String[] start = show.getStartTime().split(":");
                 String starthour = start[0];
                 String startminute = start[1].split(" ")[0];
                 String month = show.getStartDay().split("-")[1];
                 String day = show.getStartDay().split("-")[2];
                 beginTime.set(Integer.parseInt(show.dateYear), Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(starthour), Integer.parseInt(startminute));
-                String[] end = show.endTimeFormatted.split(":");
+                String[] end = show.getEndTime().split(":");
                 String endhour = end[0];
                 String endminute = end[1].split(" ")[0];
                 Calendar endTime = Calendar.getInstance();
@@ -158,7 +163,7 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
 
     private void setupInterested() {
         final Button interested = root.findViewById(R.id.interested);
-        if (show.getUserInterested()) {
+        if (currentUser.getInterestedShows().contains(show.getShowID())) {
             interested.setText("Not Interested");
         }
         else {
@@ -168,32 +173,25 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-                System.out.println(interested.getText().length());
-                System.out.println("I'm Interested".length());
+
                 if ("I'm Interested".contains(interested.getText())) {       //chose to be interested
                     System.out.println("CHECKED NOW");
 
-                    //remove this and the associated fields when user created
-                    show.setUserInterested(true);
-                    db.collection("ShowListingCol").document(docID).update("userInterested", true);
-                    interested.setText("Not Interested");
-                    //you should update the current user to show that they are interested too, referencing local var instead
-                    //but also do this...
+                    String docID = currentUser.getUID();
+                    currentUser.getInterestedShows().add(show.getShowID());
+                    db.collection("UserCol").document(docID).update("interestedShows", currentUser.getInterestedShows());
                     int newInterested = show.getNumberInterested() + 1;
                     updateInterested(newInterested);
+                    interested.setText("Not Interested");
                 }
                 else {  //chose not to be interested
                     System.out.println("NOT CHECKED");
-
-                    //remove this and the associated fields when user created
-                    show.setUserInterested(false);
-                    db.collection("ShowListingCol").document(docID).update("userInterested", false);
-
-                    interested.setText("I'm Interested");
-                    //you should update the current user to show that they are not interested, referencing local var instead
-                    //but also do this...
+                    String docID = currentUser.getUID();
+                    currentUser.getInterestedShows().remove(show.getShowID());
+                    db.collection("UserCol").document(docID).update("interestedShows", currentUser.getInterestedShows());
                     int newInterested = show.getNumberInterested() - 1;
                     updateInterested(newInterested);
+                    interested.setText("I'm Interested");
 
                 }
             }

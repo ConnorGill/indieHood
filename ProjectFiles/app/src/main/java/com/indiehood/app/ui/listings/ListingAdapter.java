@@ -23,6 +23,7 @@ import com.google.firebase.events.Event;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.indiehood.app.MainActivity;
 import com.indiehood.app.R;
 
 import java.text.DateFormat;
@@ -31,8 +32,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.indiehood.app.User;
 import com.indiehood.app.ui.show.ShowFragment;
 
 public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, ListingAdapter.ListingHolder> {
@@ -41,6 +44,7 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
     private String sort;
     private OnItemClickListener mListener;
     private ListingsFragment fragment;
+    private User currentUser;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -55,6 +59,7 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
         this.filters = new ArrayList<>();
         this.sort = "Date: Soonest First";
         this.fragment = fragment;
+        this.currentUser = ((MainActivity) fragment.requireActivity()).currentUser;
     }
 
     @Override
@@ -66,11 +71,10 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
         holder.mTextDay.setText(model.dateDay);
         holder.mTimeStart.setText(model.startTimeFormatted);
         holder.mInterestedText.setText(model.getInterestedText());
-        if (model.getBandFavorite()) {
+        if (currentUser.getFavoritedBands().contains(model.getBandName())) {
             holder.mBandFavorited.setImageResource(R.drawable.favorites_icon);
         }
-
-        if (model.getUserInterested()) {
+        if (currentUser.getInterestedShows().contains(model.getShowID())) {
             holder.mUserInterested.setChecked(true);
         }
         else {
@@ -82,28 +86,19 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
             public void onClick(View view) {
                 if (holder.mUserInterested.isChecked()) {       //chose to be interested
                     System.out.println("CHECKED NOW");
-
-                    //remove this and the associated fields when user created
-                    String docID = ListingAdapter.super.getSnapshots().getSnapshot(position).getId();
-                    db.collection("ShowListingCol").document(docID).update("userInterested", true);
-
-                    //you should update the current user to show that they are interested too, referencing local var instead
-                    //but also do this...
+                    String docID = currentUser.getUID();
+                    currentUser.getInterestedShows().add(model.getShowID());
+                    db.collection("UserCol").document(docID).update("interestedShows", currentUser.getInterestedShows());
                     int newInterested = model.getNumberInterested() + 1;
                     updateInterested(position, newInterested);
                 }
                 else {  //chose not to be interested
-
-                    //remove this and the associated fields when user created
-                    String docID = ListingAdapter.super.getSnapshots().getSnapshot(position).getId();
-                    db.collection("ShowListingCol").document(docID).update("userInterested", false);
-
-                    //you should update the current user to show that they are not interested, referencing local var instead
-                    //but also do this...
+                    String docID = currentUser.getUID();
+                    currentUser.getInterestedShows().remove(model.getShowID());
+                    db.collection("UserCol").document(docID).update("interestedShows", currentUser.getInterestedShows());
                     int newInterested = model.getNumberInterested() - 1;
                     updateInterested(position, newInterested);
                     System.out.println("NOT CHECKED");
-
                 }
             }
             public void updateInterested(int position, int newInterested) {
