@@ -180,8 +180,6 @@ public class ArtistFragment extends Fragment {
         spotify.setOnClickListener(new SpotifyButtonClick());
 
        pullLiveData(root, savedInstanceState);
-
-        // TODO set up artist listing recycler view
        setUpRecyclerView(root);
 
         return root;
@@ -193,7 +191,7 @@ public class ArtistFragment extends Fragment {
         FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
                 .setQuery(query, ShowListing.class)
                 .build();
-        adapter = new ArtistAdapter(options, this);
+        adapter = new ArtistAdapter(options);
         final RecyclerView artist_shows_rv = r.findViewById(R.id.artist_shows);
         artist_shows_rv.setHasFixedSize(true);
         artist_shows_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));

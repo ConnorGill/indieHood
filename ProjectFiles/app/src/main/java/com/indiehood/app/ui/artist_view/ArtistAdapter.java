@@ -18,9 +18,7 @@ import com.indiehood.app.ui.listings.ShowListing;
 
 // implements a recycler view using data pulled directly from firestore
 public class ArtistAdapter extends FirestoreRecyclerAdapter<ShowListing, ArtistAdapter.ShowHolder> {
-    private ArtistFragment fragment;
-
-    ArtistAdapter(@NonNull FirestoreRecyclerOptions<ShowListing> options, ArtistFragment artistFragment) {
+    ArtistAdapter(@NonNull FirestoreRecyclerOptions<ShowListing> options) {
         super(options);
     }
 
@@ -49,7 +47,7 @@ public class ArtistAdapter extends FirestoreRecyclerAdapter<ShowListing, ArtistA
 
     @Override
     protected void onBindViewHolder(@NonNull final ShowHolder viewHolder, int position,
-                                    @NonNull ShowListing model) {
+                                    @NonNull final ShowListing model) {
         model.formatValues();
         viewHolder.mTextBandName.setText(model.getBandName());
         viewHolder.mTextVenue.setText(model.getVenueName());
@@ -110,6 +108,9 @@ public class ArtistAdapter extends FirestoreRecyclerAdapter<ShowListing, ArtistA
     @Override
     public ShowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        // TODO i'd prefer to use a slimmer show listing, like artist_show_listing.xml
+        // but android studio doesn't recognize R.layout.artist_show_listing even though it
+        // is contained in layout and contains no syntax errors
         View artistView = inflater.inflate(R.layout.show_listing, parent, false);
 
         return new ShowHolder(artistView);

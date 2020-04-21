@@ -30,7 +30,6 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
     public interface OnFavoriteClickListener {
         void onFavoriteClick(DocumentSnapshot snapshot, int position);
     }
-
     void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
         this.favoriteClickListener = listener;
     }
@@ -38,7 +37,6 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
     public interface OnArtistClickListener {
         void onArtistClick(DocumentSnapshot snapshot, int position);
     }
-
     void setOnArtistClickListener(OnArtistClickListener listener) {
         this.artistClickListener = listener;
     }
@@ -55,7 +53,7 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
         CheckBox favorite;
         RelativeLayout artistCard;
 
-        public FavoritesHolder(final View itemView) {
+        FavoritesHolder(final View itemView) {
             super(itemView);
             // initialize the items to appear in each card in recycler view
             artistCard = itemView.findViewById(R.id.fav_card);
