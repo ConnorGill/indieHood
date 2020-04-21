@@ -31,7 +31,7 @@ public class ArtistAdapter extends FirestoreRecyclerAdapter<ShowListing, ArtistA
         TextView mTextMonth;
         TextView mTimeStart;
         TextView mInterestedText;
-        //ImageView mBandFavorited;
+        ImageView mBandFavorited;
         CheckBox mUserInterested;
 
         ShowHolder(View itemView) {
@@ -40,7 +40,7 @@ public class ArtistAdapter extends FirestoreRecyclerAdapter<ShowListing, ArtistA
             mTextVenue = itemView.findViewById(R.id.venue);
             mTextDay = itemView.findViewById(R.id.day);
             mTextMonth = itemView.findViewById(R.id.month);
-            //mBandFavorited = itemView.findViewById(R.id.bandFavorited);
+            mBandFavorited = itemView.findViewById(R.id.bandFavorited);
             mUserInterested = itemView.findViewById(R.id.interested);
             mInterestedText = itemView.findViewById(R.id.interested_text);
             mTimeStart = itemView.findViewById(R.id.time);
@@ -57,7 +57,7 @@ public class ArtistAdapter extends FirestoreRecyclerAdapter<ShowListing, ArtistA
         viewHolder.mTextDay.setText(model.dateDay);
         viewHolder.mTimeStart.setText(model.startTimeFormatted);
         viewHolder.mInterestedText.setText(model.getInterestedText());
-        /*if (model.getBandFavorite()) {
+        if (model.getBandFavorite()) {
             viewHolder.mBandFavorited.setImageResource(R.drawable.favorites_icon);
         }
 
@@ -68,7 +68,7 @@ public class ArtistAdapter extends FirestoreRecyclerAdapter<ShowListing, ArtistA
             viewHolder.mUserInterested.setChecked(false);
         }
 
-        viewHolder.mUserInterested.setOnClickListener(new View.OnClickListener() {
+        /*viewHolder.mUserInterested.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (viewHolder.mUserInterested.isChecked()) {       //chose to be interested
