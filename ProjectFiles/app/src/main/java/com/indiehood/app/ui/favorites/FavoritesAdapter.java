@@ -1,6 +1,6 @@
 package com.indiehood.app.ui.favorites;
 
-import android.util.Log;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,16 +8,17 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
-
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.indiehood.app.R;
 import com.indiehood.app.ui.artist_view.Artist;
 
@@ -26,6 +27,8 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
     private OnFavoriteClickListener favoriteClickListener;
     private OnArtistClickListener artistClickListener;
     private TextView emptyList;
+    private Context context;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
     // this interface and its public function are callbacks for favorite click listener
     public interface OnFavoriteClickListener {
         void onFavoriteClick(DocumentSnapshot snapshot, int position);
@@ -90,6 +93,7 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
     public FavoritesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View favoriteView = inflater.inflate(R.layout.favorited_band_row, parent, false);
+        context = parent.getContext();
 
         return new FavoritesHolder(favoriteView);
     }
@@ -97,11 +101,17 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
     @Override
     protected void onBindViewHolder(@NonNull FavoritesHolder viewHolder, final int position,
                                     @NonNull Artist currArtist) {
+        String fileName = "/currArtist.getArtistName()" + ".jpg";
+        StorageReference proPicRef = storage.getReference().child("bandProfilePictures" + fileName);
         if (currArtist.getArtistName() != null) {
             viewHolder.artistName.setText(currArtist.getArtistName());
         }
         if (currArtist.getBio() != null) { viewHolder.artistBio.setText(currArtist.getBio()); }
-        // icon.setImageIcon(); TODO implement firebase storage
+        // set artist icon
+        Glide.with(context)
+                .load(proPicRef)
+                .apply(new RequestOptions().placeholder(R.drawable.band_venue_icon).error(R.drawable.band_venue_icon).fallback(R.drawable.band_venue_icon))
+                .into(viewHolder.artistIcon);
         if (currArtist.getFavorited()) {
             viewHolder.favorite.setEnabled(currArtist.getFavorited());
         }
