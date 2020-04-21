@@ -55,9 +55,9 @@ public class ArtistAdapter extends FirestoreRecyclerAdapter<ShowListing, ArtistA
         viewHolder.mTextDay.setText(model.dateDay);
         viewHolder.mTimeStart.setText(model.startTimeFormatted);
         viewHolder.mInterestedText.setText(model.getInterestedText());
-        if (model.getBandFavorite()) {
+       /* if (model.getBandFavorite()) {            update this with currentUser stuff
             viewHolder.mBandFavorited.setImageResource(R.drawable.favorites_icon);
-        }
+        } */
 
         if (model.getUserInterested()) {
             viewHolder.mUserInterested.setChecked(true);
