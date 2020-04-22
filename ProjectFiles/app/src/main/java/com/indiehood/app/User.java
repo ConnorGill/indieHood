@@ -32,8 +32,20 @@ public class User {
         return favoritedBands;
     }
 
+    public boolean isArtistFavorited(String artist) {
+        return favoritedBands.contains(artist);
+    }
+
     public void setFavoritedBands(List<String> favoritedBands) {
         this.favoritedBands = favoritedBands;
+    }
+
+    public void addFavoritedBand(String artist) {
+        favoritedBands.add(artist);
+    }
+
+    public void removeFavoritedBand(String artist) {
+        if (isArtistFavorited(artist)) favoritedBands.remove(artist);
     }
 
     public List<String> getInterestedShows() {
