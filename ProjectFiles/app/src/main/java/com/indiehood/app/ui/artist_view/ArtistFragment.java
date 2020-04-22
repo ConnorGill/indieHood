@@ -45,6 +45,8 @@ public class ArtistFragment extends Fragment {
     private SharedArtistViewModel viewModel;
     private Observer<String> artistPathObserver;
     private Observer<String> artistNameObserver;
+    private Artist artist;
+    private String artistName;
     // elements of the artist profile
     private ImageView coverPhoto;
     private TextView bandName;
@@ -52,10 +54,9 @@ public class ArtistFragment extends Fragment {
     // for Firestore read/writes
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ShowListings = db.collection("ShowListingCol");
-    private DocumentReference artistRef;
     private CollectionReference UserCollection = db.collection("UserCol");
-    private Artist artist;
-    private String artistName;
+    private DocumentReference artistRef;
+    private ArtistAdapter adapter;
 
     class FavoriteButtonClick implements View.OnClickListener {
         @Override
@@ -201,6 +202,7 @@ public class ArtistFragment extends Fragment {
                 String fileName = artistName.toLowerCase() + ".jpg";
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference coverPhotoRef = storage.getReference().child("bandCoverPhotos/" + fileName);
+                assert getParentFragment() != null;
                 GlideApp.with(getParentFragment())
                         .load(coverPhotoRef)
                         .apply(new RequestOptions()
@@ -213,19 +215,26 @@ public class ArtistFragment extends Fragment {
         };
     }
 
-    private void setUpRecyclerView(View r) {
-        // TODO this query might not be correct
-        final Query query = ShowListings
-                .whereEqualTo("bandName", artist.getArtistName())
-                .orderBy("startDay", Query.Direction.ASCENDING);
-        FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
-                .setQuery(query, ShowListing.class)
-                .build();
-        ArtistAdapter adapter = new ArtistAdapter(options);
-        final RecyclerView artist_shows_rv = r.findViewById(R.id.artist_shows);
-        artist_shows_rv.setHasFixedSize(true);
-        artist_shows_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        artist_shows_rv.setAdapter(adapter);
+    private void setUpRecyclerView(final View r) {
+        viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
+        artistNameObserver = new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                assert s != null;
+                artistName = s;
+                final Query query = ShowListings
+                        .whereEqualTo("bandName", artistName)
+                        .orderBy("startDay", Query.Direction.ASCENDING);
+                FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
+                        .setQuery(query, ShowListing.class)
+                        .build();
+                adapter = new ArtistAdapter(options);
+                final RecyclerView artist_shows_rv = r.findViewById(R.id.artist_shows);
+                artist_shows_rv.setHasFixedSize(true);
+                artist_shows_rv.setLayoutManager(new LinearLayoutManager(getContext()));
+                artist_shows_rv.setAdapter(adapter);
+            }
+        };
     }
 
     private void pullArtistPath() {
