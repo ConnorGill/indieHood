@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-
+        android:background="@color/colorPrimary"
         android:src="@drawable/abbey_road_2"
         app:layout_constraintBottom_toTopOf="@+id/band_name"
         app:layout_constraintTop_toTopOf="parent" />

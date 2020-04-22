@@ -118,7 +118,9 @@ public class FavoritesFragment extends Fragment {
                 public void onArtistClick(DocumentSnapshot snapshot, int position) {
                     assert snapshot != null;
                     String path = snapshot.getReference().getPath();
+                    String name = snapshot.getId();
                     viewModel.setArtistPath(path);
+                    viewModel.setArtistName(name);
                     Navigation.findNavController(requireView()).navigate(R.id.nav_artist_view);
                 }
             });

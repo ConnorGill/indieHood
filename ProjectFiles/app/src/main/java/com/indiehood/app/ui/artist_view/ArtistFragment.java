@@ -1,10 +1,8 @@
 package com.indiehood.app.ui.artist_view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +21,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Registry;
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -47,12 +40,11 @@ import com.indiehood.app.ui.GlideApp;
 import com.indiehood.app.ui.SharedArtistViewModel;
 import com.indiehood.app.ui.listings.ShowListing;
 
-import java.io.InputStream;
-
 public class ArtistFragment extends Fragment {
     // to communicate with FavoritesFragment
     private SharedArtistViewModel viewModel;
-    private Observer<String> artistObserver;
+    private Observer<String> artistPathObserver;
+    private Observer<String> artistNameObserver;
     // elements of the artist profile
     private ImageView coverPhoto;
     private TextView bandName;
@@ -62,7 +54,7 @@ public class ArtistFragment extends Fragment {
     private CollectionReference ShowListings = db.collection("ShowListingCol");
     private DocumentReference artistRef;
     private CollectionReference UserCollection = db.collection("UserCol");
-    private Artist artist = new Artist();
+    private Artist artist;
     private String artistName;
 
     class FavoriteButtonClick implements View.OnClickListener {
@@ -192,7 +184,7 @@ public class ArtistFragment extends Fragment {
         instagram.setOnClickListener(new InstaButtonClick());
         appleMusic.setOnClickListener(new AMButtonClick());
         spotify.setOnClickListener(new SpotifyButtonClick());
-        pullLiveData(root, savedInstanceState);
+        pullArtistPath();
         setUpRecyclerView(root);
         setCoverPhoto();
 
@@ -200,17 +192,25 @@ public class ArtistFragment extends Fragment {
     }
 
     private void setCoverPhoto() {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        String fileName = artistName + ".jpg";
-        StorageReference coverPhotoRef = storage.getReference().child("bandCoverPhotos/" + fileName);
-        GlideApp.with(this)
-                .load(coverPhotoRef)
-                .apply(new RequestOptions()
-                        .placeholder(R.drawable.abbey_road_2)
-                        .error(R.drawable.abbey_road_2)
-                        .fallback(R.drawable.abbey_road_2)
-                        .fitCenter())
-                .into(coverPhoto);
+        viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
+        artistNameObserver = new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                assert s != null;
+                artistName = s;
+                String fileName = artistName.toLowerCase() + ".jpg";
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference coverPhotoRef = storage.getReference().child("bandCoverPhotos/" + fileName);
+                GlideApp.with(getParentFragment())
+                        .load(coverPhotoRef)
+                        .apply(new RequestOptions()
+                                .placeholder(R.drawable.abbey_road_2)
+                                .error(R.drawable.abbey_road_2)
+                                .fallback(R.drawable.abbey_road_2)
+                                .fitCenter())
+                        .into(coverPhoto);
+            }
+        };
     }
 
     private void setUpRecyclerView(View r) {
@@ -228,11 +228,11 @@ public class ArtistFragment extends Fragment {
         artist_shows_rv.setAdapter(adapter);
     }
 
-    private void pullLiveData(View root, Bundle savedInstanceState) {
-        super.onViewCreated(root, savedInstanceState);
+    private void pullArtistPath() {
+        artist = new Artist();
         // to communicate with favorites view
         viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
-        artistObserver = new Observer<String>() {
+        artistPathObserver = new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String s) {
                 assert s != null;
@@ -247,7 +247,8 @@ public class ArtistFragment extends Fragment {
                                 assert artist != null;
                                 bandName.setText(artist.getArtistName());
                                 bandBio.setText(artist.getBio());
-                                artistName = artist.getArtistName().toLowerCase();
+                                artistName = artist.getArtistName();
+                                Log.d("Artist Fragment", artistName);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -264,6 +265,7 @@ public class ArtistFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        viewModel.getArtistPath().observe(getViewLifecycleOwner(), artistObserver);
+        viewModel.getArtistPath().observe(getViewLifecycleOwner(), artistPathObserver);
+        viewModel.getArtistName().observe(getViewLifecycleOwner(), artistNameObserver);
     }
 }

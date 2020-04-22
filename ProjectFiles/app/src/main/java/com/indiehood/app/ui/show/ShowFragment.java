@@ -2,29 +2,20 @@ package com.indiehood.app.ui.show;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.icu.text.SymbolTable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,26 +23,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.chip.Chip;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.indiehood.app.MainActivity;
 import com.indiehood.app.R;
 import com.indiehood.app.User;
 import com.indiehood.app.ui.SharedArtistViewModel;
-import com.indiehood.app.ui.artist_view.ArtistFragment;
-import com.indiehood.app.ui.listings.ListingAdapter;
 import com.indiehood.app.ui.listings.ShowListing;
 
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Objects;
 
 public class ShowFragment extends Fragment implements OnMapReadyCallback {
     private ShowListing show;
@@ -215,7 +195,8 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 viewModel.setArtistPath(artistPath);
-                FragmentTransaction ft = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
+                viewModel.setArtistName(show.getBandName());
+                FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
               //  ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                // ft.replace(R.id.full_show, artistFragment);
                 ft.addToBackStack(null);
