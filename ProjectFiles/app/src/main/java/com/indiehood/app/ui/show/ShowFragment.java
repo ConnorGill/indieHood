@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -65,12 +66,10 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
         getChildFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit();
         System.out.println("DONE");
-        return;
     }
 
     private void setupAdapter() {
         mAdapter = new ShowAdapter(this.getContext(), show);
-        return;
     }
 
     @Override
@@ -101,6 +100,13 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
         address1.setText(show.getAddress1());
         address2.setText(show.getAddress2());
         description.setText(show.getDescription());
+        ImageView favorites = root.findViewById(R.id.bandFavorited);
+        if (currentUser.getFavoritedBands().contains(show.getBandName())) {
+            favorites.setVisibility(View.VISIBLE);
+        }
+        else {
+            favorites.setVisibility(View.GONE);
+        }
     }
 
     private void setupCalendar() {

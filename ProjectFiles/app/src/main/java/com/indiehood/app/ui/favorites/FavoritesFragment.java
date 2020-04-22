@@ -41,13 +41,15 @@ public class FavoritesFragment extends Fragment {
     private CollectionReference UserCollection = db.collection("UserCol");
     private FavoritesAdapter adapter;
     private User currUser;
-    private TextView emptyList;
+    public TextView emptyList;
+    public RecyclerView favoritesList;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View root = inflater.inflate(R.layout.fragment_favorites, container, false);
         this.currUser = ((MainActivity) requireActivity()).currentUser;
         emptyList = root.findViewById(R.id.empty_rv);
+        favoritesList = root.findViewById(R.id.favorites_rv);
         viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
         setUpRecyclerView(root);
 
@@ -58,7 +60,6 @@ public class FavoritesFragment extends Fragment {
     private void setUpRecyclerView(View r) {
         if (currUser.getFavoritedBands().size() == 0) {
             emptyList.setVisibility(View.VISIBLE);
-            return;
         }
         else {
             final Query query = ArtistCollection.whereIn("artistName", currUser.getFavoritedBands());
@@ -77,14 +78,14 @@ public class FavoritesFragment extends Fragment {
                     .setQuery(query, Artist.class)
                     .build();
             // pass empty list for OnDataChanged() method to use if no favorites populated
-            adapter = new FavoritesAdapter(options, emptyList);
-
+            adapter = new FavoritesAdapter(options, this);
             final RecyclerView favorites_rv = r.findViewById(R.id.favorites_rv);
             favorites_rv.setHasFixedSize(true);
             favorites_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
             favorites_rv.setAdapter(adapter);
 
             // for when the favorite button is clicked to unfavorite artist
+            /*
             adapter.setOnFavoriteClickListener(new FavoritesAdapter.OnFavoriteClickListener() {
                 final String TAG = "onFavClick";
                 @Override
@@ -110,7 +111,7 @@ public class FavoritesFragment extends Fragment {
                     });
                     Toast.makeText(getContext(), "Artist unfavorited", Toast.LENGTH_SHORT).show();
                 }
-            });
+            }); */
 
             // for when the user clicks an artist entirely
              adapter.setOnArtistClickListener(new FavoritesAdapter.OnArtistClickListener() {

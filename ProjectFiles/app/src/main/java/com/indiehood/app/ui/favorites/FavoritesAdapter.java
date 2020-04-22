@@ -9,8 +9,11 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,12 +24,22 @@ import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.indiehood.app.MainActivity;
 import com.indiehood.app.R;
+import com.indiehood.app.User;
 import com.indiehood.app.ui.GlideApp;
 import com.indiehood.app.ui.artist_view.Artist;
 
@@ -38,9 +51,11 @@ import java.io.InputStream;
 public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, FavoritesAdapter.FavoritesHolder> {
     private OnFavoriteClickListener favoriteClickListener;
     private OnArtistClickListener artistClickListener;
-    private TextView emptyList;
     private Context context;
+    private FavoritesFragment fragment;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private User currentUser;
     // this interface and its public function are callbacks for favorite click listener
     public interface OnFavoriteClickListener {
         void onFavoriteClick(DocumentSnapshot snapshot, int position);
@@ -56,10 +71,13 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
         this.artistClickListener = listener;
     }
 
-    FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options, TextView emptyList) {
+    FavoritesAdapter(@NonNull FirestoreRecyclerOptions<Artist> options, FavoritesFragment fragment) {
         super(options);
-        this.emptyList = emptyList;
-    }
+        MainActivity activity = (MainActivity)fragment.getActivity();
+        assert activity != null;
+        this.fragment = fragment;
+        this.currentUser = activity.currentUser;
+     }
 
     class FavoritesHolder extends RecyclerView.ViewHolder {
         TextView artistName;
@@ -82,12 +100,41 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && favoriteClickListener != null) {
-                        favoriteClickListener.onFavoriteClick(getSnapshots().getSnapshot(position), position);
-                    }
-                }
+                    Artist selected = FavoritesAdapter.super.getSnapshots().get(position);
 
+                    final String UID = currentUser.getUID();
+                    final DocumentReference userRef = db.collection("UserCol").document(UID);
+                    currentUser.removeFavoritedBand(selected.getArtistName());
+                    db.runTransaction(new Transaction.Function<Void>() {
+                        @Nullable
+                        @Override
+                        public Void apply(@NonNull Transaction transaction) {
+                            transaction.update(userRef, "favoritedBands", currentUser.getFavoritedBands());
+
+                            return null;
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            //  Log.w(TAG, "Transaction failure.", e);
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            refreshFavorites();
+                        }
+                    });
+                    Toast.makeText(fragment.getContext(), "Artist unfavorited", Toast.LENGTH_SHORT).show();
+
+                }
             });
+                    /*
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && favoriteClickListener != null) {
+                      //  favoriteClickListener.onFavoriteClick(getSnapshots().getSnapshot(position), position, adapter);
+
+                    } */
+
             // sets on click listener for when a card is clicked
             artistCard.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -137,6 +184,32 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
 
     @Override
     public void onDataChanged() {
-        emptyList.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
+       // emptyList.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
+    }
+
+    private void refreshFavorites() {
+        if (currentUser.getFavoritedBands().size() == 0) {
+            fragment.emptyList.setVisibility(View.VISIBLE);
+            fragment.favoritesList.setVisibility(View.GONE);
+        } else {
+            fragment.favoritesList.setVisibility(View.VISIBLE);
+            final Query query = db.collection("ArtistCollection").whereIn("artistName", currentUser.getFavoritedBands());
+            // add listener to see if there are no favorites to show
+            query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                    @Nullable FirebaseFirestoreException e) {
+                    if (queryDocumentSnapshots != null && queryDocumentSnapshots.isEmpty()) {
+                        fragment.emptyList.setVisibility(View.VISIBLE);
+                        fragment.favoritesList.setVisibility(View.GONE);
+                    }
+                }
+            });
+
+            FirestoreRecyclerOptions<Artist> options = new FirestoreRecyclerOptions.Builder<Artist>()
+                    .setQuery(query, Artist.class)
+                    .build();
+            FavoritesAdapter.super.updateOptions(options);
+        }
     }
 }
