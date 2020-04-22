@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/bandName"
             android:paddingTop="13dp"
-            />
+            android:tint="#FFD600"
+            app:srcCompat="@drawable/favorites_icon" />
 
         <ImageView
             android:id="@+id/venueFavorited"
@@ -52,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="8dp"
-            android:buttonTint="@android:color/holo_green_light" />
+            android:buttonTint="?android:attr/textColorLinkInverse" />
 
         <TextView
             android:id="@+id/interested_text"
@@ -62,7 +63,7 @@
             android:layout_marginStart="45dp"
             android:layout_marginBottom="5dp"
             android:text="@string/people_interested"
-            android:textColor="@android:color/holo_green_dark"
+            android:textColor="?android:attr/textColorLinkInverse"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -86,7 +87,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:animateLayoutChanges="false"
-            android:background="#E700B8D4"
+            android:background="@drawable/button_background"
             android:padding="6dp">
 
             <TextView

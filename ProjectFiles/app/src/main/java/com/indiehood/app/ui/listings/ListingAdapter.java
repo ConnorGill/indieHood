@@ -1,5 +1,6 @@
 package com.indiehood.app.ui.listings;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -62,17 +63,21 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
         this.currentUser = ((MainActivity) fragment.requireActivity()).currentUser;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onBindViewHolder(@NonNull final ListingHolder holder, final int position, @NonNull final ShowListing model) {
         model.formatValues();
         holder.mTextBandName.setText(model.getBandName());
-        holder.mTextVenue.setText(model.getVenueName());
+        holder.mTextVenue.setText("@ " + model.getVenueName());
         holder.mTextMonth.setText(model.dateMonth);
         holder.mTextDay.setText(model.dateDay);
         holder.mTimeStart.setText(model.startTimeFormatted);
         holder.mInterestedText.setText(model.getInterestedText());
         if (currentUser.getFavoritedBands().contains(model.getBandName())) {
-            holder.mBandFavorited.setImageResource(R.drawable.favorites_icon);
+            holder.mBandFavorited.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.mBandFavorited.setVisibility(View.GONE);
         }
         if (currentUser.getInterestedShows().contains(model.getShowID())) {
             holder.mUserInterested.setChecked(true);
@@ -85,20 +90,24 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
             @Override
             public void onClick(View view) {
                 if (holder.mUserInterested.isChecked()) {       //chose to be interested
+                    holder.mUserInterested.setClickable(false);     //this prevents the logic from manipulation during processing
                     System.out.println("CHECKED NOW");
                     String docID = currentUser.getUID();
                     currentUser.getInterestedShows().add(model.getShowID());
                     db.collection("UserCol").document(docID).update("interestedShows", currentUser.getInterestedShows());
                     int newInterested = model.getNumberInterested() + 1;
                     updateInterested(position, newInterested);
+                    holder.mUserInterested.setClickable(true);
                 }
                 else {  //chose not to be interested
+                    holder.mUserInterested.setClickable(false);
                     String docID = currentUser.getUID();
                     currentUser.getInterestedShows().remove(model.getShowID());
                     db.collection("UserCol").document(docID).update("interestedShows", currentUser.getInterestedShows());
                     int newInterested = model.getNumberInterested() - 1;
                     updateInterested(position, newInterested);
                     System.out.println("NOT CHECKED");
+                    holder.mUserInterested.setClickable(true);
                 }
             }
             public void updateInterested(int position, int newInterested) {
@@ -236,88 +245,3 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
     }
 }
 
-/*
-public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, ListingAdapter.ListingViewHolder> {
-    private ArrayList<ShowListing> showListings;
-    private OnItemClickListener mListener;
-
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mListener = listener;
-    }
-
-    public class ListingViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextBandName;
-        public TextView mTextVenue;
-        public TextView mTextTime;
-        public TextView mInterestedText;
-        public ImageView mBandFavorited;
-        public ImageView mVenueFavorited;
-        public CheckBox mUserInterested;
-
-        public ListingViewHolder(View itemView, final OnItemClickListener listener){
-            super(itemView);
-            mTextBandName = itemView.findViewById(R.id.bandName);
-            mTextVenue = itemView.findViewById(R.id.venue);
-            mTextTime = itemView.findViewById(R.id.time);
-            mInterestedText = itemView.findViewById(R.id.interested_text);
-            mBandFavorited = itemView.findViewById(R.id.bandFavorited);
-            mVenueFavorited = itemView.findViewById(R.id.venueFavorited);
-            mUserInterested = itemView.findViewById(R.id.interested);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null){
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
-                        }
-                    }
-                }
-            });
-        }
-    }
-
-    public ListingAdapter(FirestoreRecyclerOptions<ShowListing> options) {
-        super(options);
-    }
-
-
-
-    @NonNull
-    @Override
-    public ListingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_listing, parent, false);
-        ListingViewHolder evh = new ListingViewHolder(v, mListener);
-        return evh;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemCount() {
-        return this.showListings.size();
-    }
-
-    @Override
-    protected void onBindViewHolder(@NonNull ListingViewHolder holder, int position, @NonNull Object model) {
-
-        final ShowListing currentItem = this.showListings.get(position);
-        holder.mTextBandName.setText(currentItem.getBandName());
-        holder.mTextVenue.setText(currentItem.getVenue());
-        holder.mTextTime.setText(currentItem.getTime());
-        holder.mInterestedText.setText(currentItem.getNumberInterested());
-        if (currentItem.getBandFavorite()){
-            holder.mBandFavorited.setImageResource(R.drawable.favorites_icon);
-        }
-        if (currentItem.getVenueFavorite()){
-            holder.mVenueFavorited.setImageResource(R.drawable.favorites_icon);
-        }
-    }
-} */
