@@ -18,4 +18,7 @@ public class SharedArtistViewModel extends ViewModel {
     public LiveData<String> getArtistPath() {
         return artistPath;
     }
+    private MutableLiveData<String> artistName = new MutableLiveData<>();
+    public void setArtistName(String input) { artistName.setValue(input); }
+    public LiveData<String> getArtistName() { return artistName; }
 }

@@ -1,5 +1,6 @@
 package com.indiehood.app.ui.favorites;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,24 +9,38 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
-
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.indiehood.app.R;
+import com.indiehood.app.ui.GlideApp;
 import com.indiehood.app.ui.artist_view.Artist;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 // implements a recycler view using data pulled directly from firestore
 public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, FavoritesAdapter.FavoritesHolder> {
     private OnFavoriteClickListener favoriteClickListener;
     private OnArtistClickListener artistClickListener;
     private TextView emptyList;
+    private Context context;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
     // this interface and its public function are callbacks for favorite click listener
     public interface OnFavoriteClickListener {
         void onFavoriteClick(DocumentSnapshot snapshot, int position);
@@ -71,6 +86,7 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
                         favoriteClickListener.onFavoriteClick(getSnapshots().getSnapshot(position), position);
                     }
                 }
+
             });
             // sets on click listener for when a card is clicked
             artistCard.setOnClickListener(new View.OnClickListener() {
@@ -90,18 +106,30 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
     public FavoritesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View favoriteView = inflater.inflate(R.layout.favorited_band_row, parent, false);
+        context = parent.getContext();
 
         return new FavoritesHolder(favoriteView);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull FavoritesHolder viewHolder, final int position,
+    protected void onBindViewHolder(@NonNull final FavoritesHolder viewHolder, final int position,
                                     @NonNull Artist currArtist) {
+        String fileName = currArtist.getArtistName().toLowerCase() + ".jpg";
+        StorageReference proPicRef = storage.getReference().child("bandProfilePictures/" + fileName);
+        Log.d("proPicRef", proPicRef.toString());
         if (currArtist.getArtistName() != null) {
             viewHolder.artistName.setText(currArtist.getArtistName());
         }
         if (currArtist.getBio() != null) { viewHolder.artistBio.setText(currArtist.getBio()); }
-        // icon.setImageIcon(); TODO implement firebase storage
+        // set artist icon
+        GlideApp.with(context)
+                .load(proPicRef)
+                .apply(new RequestOptions()
+                        .placeholder(R.drawable.band_venue_icon)
+                        .error(R.drawable.band_venue_icon)
+                        .fallback(R.drawable.band_venue_icon)
+                        .fitCenter())
+                .into(viewHolder.artistIcon);
         if (currArtist.getFavorited()) {
             viewHolder.favorite.setEnabled(currArtist.getFavorited());
         }

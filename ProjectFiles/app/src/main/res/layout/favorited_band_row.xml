@@ -22,16 +22,17 @@
         android:focusable="true"
         >
 
-        <ImageView
+        <ImageButton
             android:id="@+id/band_venue_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:src="@drawable/band_venue_icon"
             android:layout_gravity="center"
             android:layout_centerVertical="true"
             android:contentDescription="@string/band_venue_icon"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
+            android:background="@null"
             />
 
         <CheckBox

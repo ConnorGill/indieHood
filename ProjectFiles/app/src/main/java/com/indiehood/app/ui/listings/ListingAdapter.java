@@ -2,8 +2,8 @@ package com.indiehood.app.ui.listings;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,32 +12,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.ObservableSnapshotArray;
-import com.google.android.material.chip.Chip;
-import com.google.firebase.events.Event;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.indiehood.app.MainActivity;
 import com.indiehood.app.R;
+import com.indiehood.app.User;
+import com.indiehood.app.ui.show.ShowFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.indiehood.app.User;
-import com.indiehood.app.ui.show.ShowFragment;
 
 public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, ListingAdapter.ListingHolder> {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
