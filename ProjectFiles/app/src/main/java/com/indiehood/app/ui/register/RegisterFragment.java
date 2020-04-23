@@ -20,6 +20,7 @@ import androidx.navigation.Navigation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -31,6 +32,7 @@ import com.indiehood.app.R;
 import org.w3c.dom.Text;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class RegisterFragment extends Fragment {
     private com.indiehood.app.ui.register.RegisterViewModel registerViewModel;
@@ -84,6 +86,8 @@ public class RegisterFragment extends Fragment {
 
 
                 HashMap<String, Object> regMap = new HashMap<>();
+                HashMap<String, Object> regMap2 = new HashMap<>();
+                Random rand = new Random();
 
                 regMap.put("artistName", registerName);
                 regMap.put("bio", registerBio);
@@ -95,7 +99,9 @@ public class RegisterFragment extends Fragment {
                 regMap.put("favorited", false);
                 regMap.put("password", registerPass);
                 regMap.put("email", registerEmail);
-
+                regMap2.put("artist", registerName);
+                regMap2.put("isArtist", true);
+                regMap2.put("UID", rand.nextInt(100000));
 
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(registerEmail, registerPass);
 
@@ -111,13 +117,20 @@ public class RegisterFragment extends Fragment {
                         mregister_media_two.setText("");
                         mregister_email.setText("");
 
-                        Navigation.findNavController(v).navigate(R.id.nav_login);
-                        Toast.makeText(getActivity(), "Artist Registration Complete", Toast.LENGTH_SHORT).show();
-
+                        //Toast.makeText(getActivity(), "Please Wait 3 Minutes Before Logging In", Toast.LENGTH_LONG).show();
+                        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                R.string.wait, Snackbar.LENGTH_LONG).show();
                     }
                 });
 
-            }
+
+                mFireStore.collection("UserCol").add(regMap2).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Navigation.findNavController(v).navigate(R.id.nav_login);
+                    }
+                    });
+                }
         });
         return root;
     }
