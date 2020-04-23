@@ -78,13 +78,17 @@ public class PostFragment extends Fragment {
 
                 //ShowListing newList = new ShowListing("LoggedIn Artist", postVenName, postDate, postTime, postPrice, postAdd, postDesc, false, 0);
 
-                postMap.put("bandName", "LOGGED IN ARTIST");
+                postMap.put("bandName", "Banana Rays");
                 postMap.put("numberInterested", 0);
-                postMap.put("userInterested", false);
                 postMap.put("venueName", postVenName);
-                postMap.put("address", postAdd);
-                postMap.put("day", postDate);
-                postMap.put("time", postTime);
+                postMap.put("address1", postAdd);
+                postMap.put("address2", "Tuscaloosa, AL 35401");
+                postMap.put("addressLat", 33.2104992);
+                postMap.put("addressLong", -87.551923);
+                postMap.put("startDay", postDate);
+                postMap.put("startTime", postTime);
+                postMap.put("endDay", postDate);
+                postMap.put("endTime", postTime);
                 postMap.put("price", postPrice);
                 postMap.put("description", postDesc);
 
