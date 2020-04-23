@@ -17,16 +17,21 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.indiehood.app.R;
 
 import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
-// TODO COMPLETE
 public class RegisterFragment extends Fragment {
     private com.indiehood.app.ui.register.RegisterViewModel registerViewModel;
 
@@ -41,7 +46,6 @@ public class RegisterFragment extends Fragment {
     private EditText mregister_email;
 
     private FirebaseFirestore mFireStore;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         registerViewModel = ViewModelProviders.of(this).get(com.indiehood.app.ui.register.RegisterViewModel.class);
@@ -68,7 +72,7 @@ public class RegisterFragment extends Fragment {
 
         mbtn_submit_registration.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 final String registerName = mregister_name.getText().toString();
                 String registerBio = mregister_bio.getText().toString();
                 String registerSoc1 = mregister_social_one.getText().toString();
@@ -93,13 +97,11 @@ public class RegisterFragment extends Fragment {
                 regMap.put("email", registerEmail);
 
 
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(registerEmail, registerPass);
+
                 mFireStore.collection("ArtistCollection").add(regMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Toast regToast = Toast.makeText(getActivity(), "Artist Registration Complete", Toast.LENGTH_SHORT);
-                        regToast.show();
-
-
                         mregister_name.setText("");
                         mregister_bio.setText("");
                         mregister_password.setText("");
@@ -107,17 +109,16 @@ public class RegisterFragment extends Fragment {
                         mregister_social_two.setText("");
                         mregister_media_one.setText("");
                         mregister_media_two.setText("");
+                        mregister_email.setText("");
 
+                        Navigation.findNavController(v).navigate(R.id.nav_login);
+                        Toast.makeText(getActivity(), "Artist Registration Complete", Toast.LENGTH_SHORT).show();
 
-                        //FIX NAVIGATE TO LOGIN PAGE
-                        //Navigation.findNavController(textView).navigate(R.id.nav_login);
                     }
                 });
 
-
             }
         });
-
         return root;
     }
 }
