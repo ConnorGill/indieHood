@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -10,7 +9,7 @@
     android:layout_marginBottom="6dp"
     app:cardBackgroundColor="#eaeaea"
     app:cardCornerRadius="4dp"
-    tools:viewBindingIgnore="true">
+    >
 
     <RelativeLayout
         android:id="@+id/show_listing"
@@ -28,7 +27,7 @@
             android:paddingTop="8dp"
             android:text="Venue"
             android:textColor="@color/colorAccent"
-            android:textSize="45sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             android:layout_centerVertical="true"/>
 

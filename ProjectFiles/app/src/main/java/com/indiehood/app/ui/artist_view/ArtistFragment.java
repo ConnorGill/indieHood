@@ -174,8 +174,8 @@ public class ArtistFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_artist_view, container, false);
         // gets band name from bundle
         Bundle bundle = getArguments();
-        assert bundle != null;
-        setName((String) bundle.get("docID"));
+        if (bundle != null) setName((String) bundle.get("docID"));
+        else Log.d("ONCREATEVIEW", "Artistname null");
 
         setAttributes(root);
         pullArtistPath();

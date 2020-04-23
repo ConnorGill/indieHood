@@ -196,12 +196,14 @@ public class ShowFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 viewModel.setArtistPath(artistPath);
                 viewModel.setArtistName(show.getBandName());
+                Bundle bundle = new Bundle();
+                bundle.putString("docID", show.getBandName());
                 FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
               //  ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                // ft.replace(R.id.full_show, artistFragment);
                 ft.addToBackStack(null);
                // ft.commit();
-                Navigation.findNavController(requireView()).navigate(R.id.nav_artist_view);
+                Navigation.findNavController(requireView()).navigate(R.id.nav_artist_view, bundle);
             }
         });
     }
