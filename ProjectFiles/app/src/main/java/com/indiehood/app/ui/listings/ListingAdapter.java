@@ -3,6 +3,7 @@ package com.indiehood.app.ui.listings;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 
+import android.database.Observable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,19 +19,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.ObservableSnapshotArray;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.indiehood.app.MainActivity;
 import com.indiehood.app.R;
 import com.indiehood.app.User;
 import com.indiehood.app.ui.show.ShowFragment;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, ListingAdapter.ListingHolder> {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -110,7 +118,6 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
             }
         });
 
-
     }
 
     @NonNull
@@ -119,9 +126,10 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_listing, parent, false);
         return new ListingHolder(v);
     }
+
     private void UpdateListings() {
         System.out.println("Starting Reload");
-        CollectionReference ShowListing = db.collection("ShowListingCol");
+        final CollectionReference ShowListing = db.collection("ShowListingCol");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date currentDate = new Date();
         String formattedCurrent = dateFormat.format(currentDate);
@@ -134,32 +142,6 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
                 result = ShowListing.whereEqualTo("userInterested", true);
             }
         }
-        if (this.filters.contains("Date: Within 1 Week")) {
-            Calendar c = Calendar.getInstance();
-            c.setTime(currentDate);
-            c.add(Calendar.DATE, 7);
-            Date currentDatePlusWeek = c.getTime();
-            String formattedWeek = dateFormat.format(currentDatePlusWeek);
-            if (result != null){
-                result = result.whereLessThan("startDay", formattedWeek);
-            }
-            else {
-                result = ShowListing.whereLessThan("startDay", formattedWeek);
-            }
-        }
-        if (this.filters.contains("Date: Within 1 Day")) {
-            Calendar d = Calendar.getInstance();
-            d.setTime(currentDate);
-            d.add(Calendar.DATE, 1);
-            Date currentDatePlusDay = d.getTime();
-            String formattedDay = dateFormat.format(currentDatePlusDay);
-            if (result != null){
-                result = result.whereLessThan("startDay", formattedDay);
-            }
-            else {
-                result = ShowListing.whereLessThan("startDay", formattedDay);
-            }
-        }
         if (this.filters.contains("Price: Free")) {
             if (result != null){
                 result = result.whereEqualTo("price", 0);
@@ -168,23 +150,62 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
                 result = ShowListing.whereEqualTo("price", 0);
             }
         }
-        if (result == null) {
-            if ("Interested: Most First".contains(sort)) {
-                result = ShowListing.whereGreaterThan("numberInterested", -1).orderBy("numberInterested", Query.Direction.DESCENDING);
-            }
-            else if ("Price: Cheapest First".contains(sort)) {
-                result = ShowListing.whereGreaterThan("price", -1).orderBy("price", Query.Direction.ASCENDING);
-            }
-            else if ("Date: Soonest First".contains(sort)) {
-                result = ShowListing.whereGreaterThan("startDay", formattedCurrent).orderBy("startDay", Query.Direction.ASCENDING);
+        if (this.filters.contains("Interested: Yes")) {
+            if (result != null) {
+                result = result.whereIn("showID", currentUser.getInterestedShows());
             }
             else {
-                result = ShowListing.whereGreaterThan("startDay", formattedCurrent);
+                result = ShowListing.whereIn("showID", currentUser.getInterestedShows());
             }
         }
-        FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
-                .setQuery(result, ShowListing.class).build();
-        ListingAdapter.super.updateOptions(options);
+        if (this.filters.contains("Date: Within 1 Day")) {
+            Calendar d = Calendar.getInstance();
+            d.setTime(currentDate);
+            d.add(Calendar.DATE, 1);
+            Date currentDatePlusDay = d.getTime();
+            String formattedDay = dateFormat.format(currentDatePlusDay);
+            System.out.println(formattedDay);
+            if (result != null){
+                result = result.whereLessThanOrEqualTo("startDay", formattedDay);
+            }
+            else {
+                result = ShowListing.whereLessThanOrEqualTo("startDay", formattedDay);
+            }
+        }
+        else if (this.filters.contains("Date: Within 1 Week")) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(currentDate);
+            c.add(Calendar.DATE, 7);
+            Date currentDatePlusWeek = c.getTime();
+            String formattedWeek = dateFormat.format(currentDatePlusWeek);
+            if (result != null){
+                result = result.whereLessThanOrEqualTo("startDay", formattedWeek);
+            }
+            else {
+                result = ShowListing.whereLessThanOrEqualTo("startDay", formattedWeek);
+            }
+        }
+
+        if (result == null && sort.contains("Date: Soonest First")) {
+            result = ShowListing.whereGreaterThan("startDay", formattedCurrent).orderBy("startDay", Query.Direction.ASCENDING).orderBy("startTime", Query.Direction.ASCENDING);
+        }
+        else if (result == null && sort.contains("Price: Cheapest First") && !filters.contains("Price: Free")) {
+            result = ShowListing.whereGreaterThan("price", -1).orderBy("price", Query.Direction.ASCENDING);
+        }
+        else if (result == null && sort.contains("Interested: Most First")) {
+            result = ShowListing.whereGreaterThan("numberInterested", -1).orderBy("numberInterested", Query.Direction.DESCENDING);
+        }
+        else if (this.filters.contains("Date: Within 1 Day") || this.filters.contains("Date: Within 1 Week")) {
+            System.out.println("HERE");
+            result =  result.orderBy("startDay", Query.Direction.ASCENDING).orderBy("startTime", Query.Direction.ASCENDING);
+        }
+        else if (this.filters.contains("Favorited: Bands")) {
+            result = result.whereGreaterThan("startDay", formattedCurrent).orderBy("startDay", Query.Direction.ASCENDING).orderBy("startTime", Query.Direction.ASCENDING);
+        }
+        else if (!this.filters.contains("Price: Free")){
+            result = result.orderBy("price", Query.Direction.ASCENDING);
+        }
+        ListingAdapter.super.updateOptions(new FirestoreRecyclerOptions.Builder<ShowListing>().setQuery(result, ShowListing.class).build());
         System.out.println("Done Reloading");
     }
 
@@ -194,7 +215,6 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
     }
 
     public void SortListing(String sortingChoice) {
-        System.out.println(sortingChoice);
         this.sort = sortingChoice;
         this.UpdateListings();
     }

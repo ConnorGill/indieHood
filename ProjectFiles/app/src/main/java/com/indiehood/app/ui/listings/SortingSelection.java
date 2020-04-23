@@ -14,6 +14,7 @@ public class SortingSelection implements AdapterView.OnItemSelectedListener {
         String sortingChoice = parent.getItemAtPosition(position).toString();
         Toast.makeText(parent.getContext(), "Sorting by " + sortingChoice, Toast.LENGTH_SHORT).show();
         listingAdapter.SortListing(sortingChoice);
+        listingAdapter.notifyDataSetChanged();
     }
 
     @Override

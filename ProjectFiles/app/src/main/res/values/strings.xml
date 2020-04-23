@@ -31,6 +31,7 @@
         <item>Date: Within 1 Week</item>
         <item>Date: Within 1 Day</item>
         <item>Price: Free</item>
+        <item>Interested: Yes</item>
     <!--    <item>Interested: I'm Interested</item> add once mega user exists -->
     </string-array>
 

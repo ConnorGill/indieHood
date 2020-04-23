@@ -85,7 +85,7 @@ public class ListingsFragment extends Fragment {
         String[] stuff = {"Banana Rays", "Bonnie Prince Billy", "Four Tet",  "Gears", "Hollow Hand", "Julia Jacklin", "Mapache", "Prince Fatty"};
         Double[] prices = {0.0, 6.50, 9.0, 10.00, 5.00};
         String[][] times = { {"18:00", "20:00"}, {"18:30", "20:30"}, {"22:15", "1:30"}};
-        String[][] dates = { {"2020-08-12", "2020-08-13"}, {"2020-10-02", "2020-10-03"}, {"2020-07-01", "2020-07-02"}};
+        String[][] dates = { {"2020-04-24", "2020-04-24"}, {"2020-04-24", "2020-04-24"}, {"2020-04-25", "2020-04-25"}, {"2020-04-27", "2020-04-28"}, {"2020-07-01", "2020-07-02"}};
         //CollectionReference ShowListing = db.collection("ShowListingCol");
         for (int i = 0;  i < 20; i++) {
             Map<String, Object> data = new HashMap<>();
@@ -120,8 +120,8 @@ public class ListingsFragment extends Fragment {
                 }
             });
 
-        } */
-
+        }
+        */
         @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String currentDate = dateFormat.format(date);
