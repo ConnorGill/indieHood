@@ -136,10 +136,10 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
         Query result = null;
         if (this.filters.contains("Favorited: Bands")) {
             if (result != null) {
-                result = result.whereEqualTo("userInterested", true);
+                result = result.whereIn("bandName", currentUser.getFavoritedBands());
             }
             else {
-                result = ShowListing.whereEqualTo("userInterested", true);
+                result = ShowListing.whereIn("bandName", currentUser.getFavoritedBands());
             }
         }
         if (this.filters.contains("Price: Free")) {
@@ -202,8 +202,11 @@ public class ListingAdapter extends FirestoreRecyclerAdapter<ShowListing, Listin
         else if (this.filters.contains("Favorited: Bands")) {
             result = result.whereGreaterThan("startDay", formattedCurrent).orderBy("startDay", Query.Direction.ASCENDING).orderBy("startTime", Query.Direction.ASCENDING);
         }
-        else if (!this.filters.contains("Price: Free")){
+        else if (!this.filters.contains("Price: Free") && !this.filters.contains("Interested: Yes")){
             result = result.orderBy("price", Query.Direction.ASCENDING);
+        }
+        else {
+            result =  result.whereGreaterThan("startDay", formattedCurrent).orderBy("startDay", Query.Direction.ASCENDING).orderBy("startTime", Query.Direction.ASCENDING);
         }
         ListingAdapter.super.updateOptions(new FirestoreRecyclerOptions.Builder<ShowListing>().setQuery(result, ShowListing.class).build());
         System.out.println("Done Reloading");
