@@ -72,7 +72,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         if(v.getId() == R.id.btnRegister)
         {
-            Toast.makeText(v.getContext(), "Go to registration page", Toast.LENGTH_LONG).show();
+            Toast.makeText(v.getContext(), "Going to registration page", Toast.LENGTH_LONG).show();
             Navigation.findNavController(v).navigate(R.id.nav_register);
         }
         else if(v.getId() == R.id.btnLogin)
@@ -90,7 +90,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     if(task.isSuccessful())
                     {
                         Toast.makeText(v.getContext(), "Success!", Toast.LENGTH_LONG).show();
-                        Navigation.findNavController(v).navigate(R.id.nav_artist_view);
+                        Navigation.findNavController(v).navigate(R.id.nav_post);
+                    }
+                    else if (mUser != null) {
+                        Toast.makeText(v.getContext(), "User Currently Logged In", Toast.LENGTH_LONG).show();
+                        Navigation.findNavController(v).navigate(R.id.nav_post);
                     }
                     else {
                         Snackbar.make(getActivity().findViewById(android.R.id.content),
