@@ -172,6 +172,20 @@ public class ArtistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View root = inflater.inflate(R.layout.fragment_artist_view, container, false);
+        // gets band name from bundle
+        Bundle bundle = getArguments();
+        assert bundle != null;
+        setName((String) bundle.get("docID"));
+
+        setAttributes(root);
+        pullArtistPath();
+        setCoverPhoto();
+        setUpRecyclerView(root);
+
+        return root;
+    }
+
+    private void setAttributes(View root) {
         bandName = root.findViewById(R.id.band_name);
         bandBio = root.findViewById(R.id.band_bio);
         coverPhoto = root.findViewById(R.id.cover_photo);
@@ -185,11 +199,38 @@ public class ArtistFragment extends Fragment {
         instagram.setOnClickListener(new InstaButtonClick());
         appleMusic.setOnClickListener(new AMButtonClick());
         spotify.setOnClickListener(new SpotifyButtonClick());
-        pullArtistPath();
-        setUpRecyclerView(root);
-        setCoverPhoto();
+    }
 
-        return root;
+    private void pullArtistPath() {
+        artist = new Artist();
+        // to communicate with favorites view
+        viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
+        artistPathObserver = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable final String s) {
+                assert s != null;
+                artistRef = db.document(s);
+                // get data from artist document reference
+                artistRef.get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                assert documentSnapshot != null;
+                                artist = documentSnapshot.toObject(Artist.class);
+                                assert artist != null;
+                                bandName.setText(artist.getArtistName());
+                                bandBio.setText(artist.getBio());
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                String TAG = "artistRef.get()";
+                                Log.d(TAG, "Transaction failure", e);
+                            }
+                        });
+            }
+        };
     }
 
     private void setCoverPhoto() {
@@ -215,66 +256,39 @@ public class ArtistFragment extends Fragment {
         };
     }
 
-    private void setUpRecyclerView(final View r) {
-        viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
-        artistNameObserver = new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                assert s != null;
-                artistName = s;
-                final Query query = ShowListings
-                        .whereEqualTo("bandName", artistName)
-                        .orderBy("startDay", Query.Direction.ASCENDING);
-                FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
-                        .setQuery(query, ShowListing.class)
-                        .build();
-                adapter = new ArtistAdapter(options);
-                final RecyclerView artist_shows_rv = r.findViewById(R.id.artist_shows);
-                artist_shows_rv.setHasFixedSize(true);
-                artist_shows_rv.setLayoutManager(new LinearLayoutManager(getContext()));
-                artist_shows_rv.setAdapter(adapter);
-            }
-        };
+    private void setUpRecyclerView(View r) {
+        String TAG = "setUpRecyclerView";
+        Log.d(TAG, "shows for " + artistName);
+        final Query query = ShowListings.whereEqualTo("bandName", artistName);
+                                        //.orderBy("startDay", Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
+                .setQuery(query, ShowListing.class)
+                .build();
+
+        adapter = new ArtistAdapter(options);
+
+        final RecyclerView artist_shows_rv = r.findViewById(R.id.artist_shows);
+        artist_shows_rv.setHasFixedSize(true);
+        artist_shows_rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        artist_shows_rv.setAdapter(adapter);
     }
 
-    private void pullArtistPath() {
-        artist = new Artist();
-        // to communicate with favorites view
-        viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
-        artistPathObserver = new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable final String s) {
-                assert s != null;
-                artistRef = db.document(s);
-                // get data from artist document reference
-                artistRef.get()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                assert documentSnapshot != null;
-                                artist = documentSnapshot.toObject(Artist.class);
-                                assert artist != null;
-                                bandName.setText(artist.getArtistName());
-                                bandBio.setText(artist.getBio());
-                                artistName = artist.getArtistName();
-                                Log.d("Artist Fragment", artistName);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                String TAG = "artistRef.get()";
-                                Log.d(TAG, "Transaction failure", e);
-                            }
-                        });
-            }
-        };
+    private void setName(String n) {
+        this.artistName = n;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        adapter.startListening();
         viewModel.getArtistPath().observe(getViewLifecycleOwner(), artistPathObserver);
         viewModel.getArtistName().observe(getViewLifecycleOwner(), artistNameObserver);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }
