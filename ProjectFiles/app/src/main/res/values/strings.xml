@@ -44,6 +44,10 @@
 
     <!-- Strings used for fragments for navigation -->
 
+    <!-- Strings used for fragments for registration -->
+
+    <string name="wait">Please Wait 3 Minutes Before Logging In the First Time. Welcome to indieHood! </string>
+
 
     <!-- Strings for Show Listing Placeholders -->
     <string name="description">Description:</string>

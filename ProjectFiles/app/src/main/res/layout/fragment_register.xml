@@ -180,15 +180,16 @@
     <EditText
         android:id="@+id/register_email"
         android:layout_width="341dp"
-        android:layout_height="57dp"
+        android:layout_height="52dp"
         android:background="@drawable/text_view_border"
         android:ems="10"
         android:fontFamily="@font/nunito_semibold"
+        android:hint="Artist Email"
         android:inputType="textEmailAddress"
-        android:text="Artist Email"
         android:textAlignment="center"
         android:textColor="#8A8A8A"
         android:textSize="18sp"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/register_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

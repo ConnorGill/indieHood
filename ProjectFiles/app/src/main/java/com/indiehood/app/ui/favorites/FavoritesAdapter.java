@@ -1,7 +1,6 @@
 package com.indiehood.app.ui.favorites;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Registry;
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -42,10 +37,6 @@ import com.indiehood.app.R;
 import com.indiehood.app.User;
 import com.indiehood.app.ui.GlideApp;
 import com.indiehood.app.ui.artist_view.Artist;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 // implements a recycler view using data pulled directly from firestore
 public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, FavoritesAdapter.FavoritesHolder> {
@@ -163,7 +154,6 @@ public class FavoritesAdapter extends FirestoreRecyclerAdapter<Artist, Favorites
                                     @NonNull Artist currArtist) {
         String fileName = currArtist.getArtistName().toLowerCase() + ".jpg";
         StorageReference proPicRef = storage.getReference().child("bandProfilePictures/" + fileName);
-        Log.d("proPicRef", proPicRef.toString());
         if (currArtist.getArtistName() != null) {
             viewHolder.artistName.setText(currArtist.getArtistName());
         }

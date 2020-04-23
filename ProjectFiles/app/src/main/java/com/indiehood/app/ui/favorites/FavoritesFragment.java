@@ -36,6 +36,7 @@ import com.indiehood.app.ui.artist_view.Artist;
 public class FavoritesFragment extends Fragment {
     // to communicate with artist view
     private SharedArtistViewModel viewModel;
+    // firestore
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ArtistCollection = db.collection("ArtistCollection");
     private CollectionReference UserCollection = db.collection("UserCol");
@@ -55,8 +56,7 @@ public class FavoritesFragment extends Fragment {
 
         return root;
     }
-    // TODO recyclerView no longer updates automatically; app crashes if currUser's fav bands list is == 0.
-    // TODO see fixes in onStart and onDestroy to prevent this crash; cannot update automatically though
+
     private void setUpRecyclerView(View r) {
         if (currUser.getFavoritedBands().size() == 0) {
             emptyList.setVisibility(View.VISIBLE);
@@ -122,7 +122,9 @@ public class FavoritesFragment extends Fragment {
                     String name = snapshot.getId();
                     viewModel.setArtistPath(path);
                     viewModel.setArtistName(name);
-                    Navigation.findNavController(requireView()).navigate(R.id.nav_artist_view);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("docID", name);
+                    Navigation.findNavController(requireView()).navigate(R.id.nav_artist_view, bundle);
                 }
             });
         }

@@ -45,6 +45,8 @@ public class ArtistFragment extends Fragment {
     private SharedArtistViewModel viewModel;
     private Observer<String> artistPathObserver;
     private Observer<String> artistNameObserver;
+    private Artist artist;
+    private String artistName;
     // elements of the artist profile
     private ImageView coverPhoto;
     private TextView bandName;
@@ -52,10 +54,9 @@ public class ArtistFragment extends Fragment {
     // for Firestore read/writes
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference ShowListings = db.collection("ShowListingCol");
-    private DocumentReference artistRef;
     private CollectionReference UserCollection = db.collection("UserCol");
-    private Artist artist;
-    private String artistName;
+    private DocumentReference artistRef;
+    private ArtistAdapter adapter;
 
     class FavoriteButtonClick implements View.OnClickListener {
         @Override
@@ -171,6 +172,20 @@ public class ArtistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View root = inflater.inflate(R.layout.fragment_artist_view, container, false);
+        // gets band name from bundle
+        Bundle bundle = getArguments();
+        if (bundle != null) setName((String) bundle.get("docID"));
+        else Log.d("ONCREATEVIEW", "Artistname null");
+
+        setAttributes(root);
+        pullArtistPath();
+        setCoverPhoto();
+        setUpRecyclerView(root);
+
+        return root;
+    }
+
+    private void setAttributes(View root) {
         bandName = root.findViewById(R.id.band_name);
         bandBio = root.findViewById(R.id.band_bio);
         coverPhoto = root.findViewById(R.id.cover_photo);
@@ -184,48 +199,6 @@ public class ArtistFragment extends Fragment {
         instagram.setOnClickListener(new InstaButtonClick());
         appleMusic.setOnClickListener(new AMButtonClick());
         spotify.setOnClickListener(new SpotifyButtonClick());
-        pullArtistPath();
-        setUpRecyclerView(root);
-        setCoverPhoto();
-
-        return root;
-    }
-
-    private void setCoverPhoto() {
-        viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
-        artistNameObserver = new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                assert s != null;
-                artistName = s;
-                String fileName = artistName.toLowerCase() + ".jpg";
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference coverPhotoRef = storage.getReference().child("bandCoverPhotos/" + fileName);
-                GlideApp.with(getParentFragment())
-                        .load(coverPhotoRef)
-                        .apply(new RequestOptions()
-                                .placeholder(R.drawable.abbey_road_2)
-                                .error(R.drawable.abbey_road_2)
-                                .fallback(R.drawable.abbey_road_2)
-                                .fitCenter())
-                        .into(coverPhoto);
-            }
-        };
-    }
-
-    private void setUpRecyclerView(View r) {
-        // TODO this query might not be correct
-        final Query query = ShowListings
-                .whereEqualTo("bandName", artist.getArtistName())
-                .orderBy("startDay", Query.Direction.ASCENDING);
-        FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
-                .setQuery(query, ShowListing.class)
-                .build();
-        ArtistAdapter adapter = new ArtistAdapter(options);
-        final RecyclerView artist_shows_rv = r.findViewById(R.id.artist_shows);
-        artist_shows_rv.setHasFixedSize(true);
-        artist_shows_rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        artist_shows_rv.setAdapter(adapter);
     }
 
     private void pullArtistPath() {
@@ -247,8 +220,6 @@ public class ArtistFragment extends Fragment {
                                 assert artist != null;
                                 bandName.setText(artist.getArtistName());
                                 bandBio.setText(artist.getBio());
-                                artistName = artist.getArtistName();
-                                Log.d("Artist Fragment", artistName);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -262,10 +233,62 @@ public class ArtistFragment extends Fragment {
         };
     }
 
+    private void setCoverPhoto() {
+        viewModel = new ViewModelProvider(requireActivity()).get(SharedArtistViewModel.class);
+        artistNameObserver = new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                assert s != null;
+                artistName = s;
+                String fileName = artistName.toLowerCase() + ".jpg";
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference coverPhotoRef = storage.getReference().child("bandCoverPhotos/" + fileName);
+                assert getParentFragment() != null;
+                GlideApp.with(getParentFragment())
+                        .load(coverPhotoRef)
+                        .apply(new RequestOptions()
+                                .placeholder(R.drawable.abbey_road_2)
+                                .error(R.drawable.abbey_road_2)
+                                .fallback(R.drawable.abbey_road_2)
+                                .fitCenter())
+                        .into(coverPhoto);
+            }
+        };
+    }
+
+    private void setUpRecyclerView(View r) {
+        String TAG = "setUpRecyclerView";
+        Log.d(TAG, "shows for " + artistName);
+        final Query query = ShowListings.whereEqualTo("bandName", artistName);
+                                        //.orderBy("startDay", Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
+                .setQuery(query, ShowListing.class)
+                .build();
+
+        adapter = new ArtistAdapter(options);
+
+        final RecyclerView artist_shows_rv = r.findViewById(R.id.artist_shows);
+        artist_shows_rv.setHasFixedSize(true);
+        artist_shows_rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        artist_shows_rv.setAdapter(adapter);
+    }
+
+    private void setName(String n) {
+        this.artistName = n;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
+        adapter.startListening();
         viewModel.getArtistPath().observe(getViewLifecycleOwner(), artistPathObserver);
         viewModel.getArtistName().observe(getViewLifecycleOwner(), artistNameObserver);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }
