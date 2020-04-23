@@ -14,7 +14,7 @@ public class MoreShowListingTests {
     public void defaultConstructor_works() {
             ShowListing testListing = new ShowListing();
             assertThat(testListing).isNotNull();
-        }
+    }
 
     //Add a band named "testBand" and check that it was added correctly
     @Test
