@@ -120,7 +120,9 @@ public class FavoritesFragment extends Fragment {
                     String name = snapshot.getId();
                     viewModel.setArtistPath(path);
                     viewModel.setArtistName(name);
-                    Navigation.findNavController(requireView()).navigate(R.id.nav_artist_view);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("docID", name);
+                    Navigation.findNavController(requireView()).navigate(R.id.nav_artist_view, bundle);
                 }
             });
         }
