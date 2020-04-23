@@ -259,8 +259,8 @@ public class ArtistFragment extends Fragment {
     private void setUpRecyclerView(View r) {
         String TAG = "setUpRecyclerView";
         Log.d(TAG, "shows for " + artistName);
-        final Query query = ShowListings.whereEqualTo("bandName", artistName);
-                                        //.orderBy("startDay", Query.Direction.ASCENDING);
+        final Query query = ShowListings.whereEqualTo("bandName", artistName)
+                                        .orderBy("startDay", Query.Direction.ASCENDING).orderBy("startTime", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<ShowListing> options = new FirestoreRecyclerOptions.Builder<ShowListing>()
                 .setQuery(query, ShowListing.class)
