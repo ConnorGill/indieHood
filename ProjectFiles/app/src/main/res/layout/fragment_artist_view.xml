@@ -7,150 +7,145 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-     <ImageView
-         android:id="@+id/cover_photo"
-         android:src="@drawable/default_cover"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_alignParentStart="true"
-         android:layout_alignParentEnd="true"
-         />
 
-    <TextView
-        android:id="@+id/band_name"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="2"
-        android:text="@string/bandname"
-        android:textColor="@color/colorAccent"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:layout_below="@id/cover_photo"
-        />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/band_bio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/band_bio"
-        android:textSize="20sp"
-        android:textColor="@android:color/black"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="10dp"
-        android:layout_below="@id/band_name"
-        />
-
-    <TextView
-        android:id="@+id/connect_tip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/connect_prompt"
-        android:layout_below="@id/band_bio"
-        android:layout_marginBottom="5dp"
-        />
-
-    <LinearLayout
-        android:id="@+id/social_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_below="@id/connect_tip"
-        android:layout_marginBottom="10dp">
-
-        <ImageButton
-            android:id="@+id/twitter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/twitter"
-            android:background="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginEnd="10dp"
-            />
-
-        <ImageButton
-            android:id="@+id/instagram"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ig"
-            android:background="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginEnd="10dp"
-            />
-
-        <ImageButton
-            android:id="@+id/appleMusic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/am"
-            android:background="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginEnd="10dp"
-            />
-
-        <ImageButton
-            android:id="@+id/spotify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/spotify"
-            android:background="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginEnd="10dp"
-            />
-
-        <CheckBox
-            android:id="@+id/favorite_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?android:attr/starStyle"
-            android:buttonTint="@color/favorite_button_filled"
-            android:clickable="true"
-            android:focusable="true"
-            />
-
-        <TextView
-            android:id="@+id/favorite_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/favorite_prompt"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/show_listing_tip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Check out the artist's shows below!"
-        android:layout_marginBottom="5dp"
-        android:layout_below="@id/social_container"
-        />
-
-    <LinearLayout
-        android:id="@+id/listing_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@id/show_listing_tip"
-        android:layout_alignParentBottom="true"
-        >
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/artist_shows"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:orientation="vertical" >
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/cover_photo"
+                android:layout_width="match_parent"
+                android:layout_height="186dp"
+                android:layout_marginEnd="0dp"
+                android:src="@drawable/default_cover" />
+
+            <TextView
+                android:id="@+id/band_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/bandname"
+                android:textColor="@color/colorAccent"
+                android:textSize="35sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/band_bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/band_bio"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/connect_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/connect_prompt" />
+
+            <LinearLayout
+                android:id="@+id/social_container"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/twitter"
+                    android:layout_width="34dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/twitter" />
+
+                <ImageButton
+                    android:id="@+id/instagram"
+                    android:layout_width="37dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ig" />
+
+                <ImageButton
+                    android:id="@+id/appleMusic"
+                    android:layout_width="37dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/am" />
+
+                <ImageButton
+                    android:id="@+id/spotify"
+                    android:layout_width="37dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/spotify" />
+
+                <CheckBox
+                    android:id="@+id/favorite_button"
+                    style="?android:attr/starStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/favorite_button_filled"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <TextView
+                    android:id="@+id/favorite_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/favorite_prompt"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <TextView
+                        android:id="@+id/show_listing_tip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center"
+                        android:text="Check out the artist's shows below!" />
+
+            <LinearLayout
+                android:id="@+id/listing_container"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/artist_shows"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
 </RelativeLayout>
